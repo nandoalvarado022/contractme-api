@@ -10,13 +10,9 @@ export class UserController {
     return this.userService.getUser(uid);
   }
 
-  @Post('login')
-  login(@Body() formData) {
-    return this.userService.login(formData);
-  }
-
-  @Post('register')
-  registerUser(@Body() formData) {
-    return this.userService.registerUser(formData);
-  }
+  // @Post('login')
+  // login(@Body() formData) {
+  //   return this.userService.login(formData);
+  // }
+  
 }

@@ -4,7 +4,7 @@ import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { loginDto } from 'src/types/user';
-import bcrypt from "bcrypt";
+import * as bcryptjs from 'bcryptjs'
 
 @Injectable()
 export class UserService {
@@ -21,31 +21,18 @@ export class UserService {
     return userFound;
   }
 
-  async login(params: loginDto) {
-    const userFound = await this.userRepository.findOne({
-      where: params,
-    });
-
-    return userFound;
+  create(createUserDto) {
+    return this.userRepository.save(createUserDto);
   }
 
-  async registerUser(params) {
-    const emailFound = await this.userRepository.findOne({
-      where: {
-        email: params.email,
-      },
+  findOneByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
+  }
+
+  findByEmailWithPassword(email: string) {
+    return this.userRepository.findOne({
+      where: { email },
+      select: ['uid', 'name', 'email', 'password', 'role'],
     });
-
-    if (emailFound) {
-      return {
-        code: 400,
-        message: "User already exists",
-      }
-    }
-
-    const hashedPassword = await bcrypt.hash(params.password, 10);
-    params.password = hashedPassword;
-    const newUser = this.userRepository.create(params)
-    return newUser;
   }
 }
