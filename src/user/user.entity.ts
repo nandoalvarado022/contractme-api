@@ -1,4 +1,6 @@
+import { AuditLogsEntity } from 'src/audit_logs/audit_logs.entity';
 import { Role } from 'src/common/enums/rol.enum';
+import { StudiesAndExperiencesEntity } from 'src/experience/experience.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -33,4 +35,10 @@ export class UserEntity {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @OneToMany(() => StudiesAndExperiencesEntity, exp => exp.user)
+  experiences: StudiesAndExperiencesEntity[];
+
+  @OneToMany(() => StudiesAndExperiencesEntity, exp => exp.user)
+  logs: AuditLogsEntity[];
 }

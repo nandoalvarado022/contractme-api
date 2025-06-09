@@ -5,14 +5,23 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) { }
 
-  @Get(':uid')
+  // @Get()
+  // getUser(@Param('uid') uid: number) {
+  //   return this.userService.getUser(null);
+  // }
+  
+  @Get(':uid?')
   getUser(@Param('uid') uid: number) {
     return this.userService.getUser(uid);
   }
 
-  // @Post('login')
-  // login(@Body() formData) {
-  //   return this.userService.login(formData);
-  // }
-  
+  @Post('save')
+  async login(@Body() formData) {
+    try {
+     await this.userService.postCreateUser(formData);
+    } catch (error) {
+      console.error('Error saving user:', error);
+      return { status: 'error', message: 'Error al guardar el usuario' };
+    }
+  }  
 }
