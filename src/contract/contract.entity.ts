@@ -2,19 +2,26 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 
-@Entity({ name: 'contracts_templates' })
-export class ContractTemplateEntity {
+@Entity({ name: 'contracts' })
+export class ContractEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  cid: number;
 
   @Column()
   name: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column()
   type: string;
+
+  @Column()
+  url: string;
 
   @Column({ nullable: false })
   created_at: string;
+
+  // @OneToMany('ContractFieldsEntity', 'contract')
+  // fields: any[];
 }

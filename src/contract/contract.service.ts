@@ -11,14 +11,27 @@ import { StudiesAndExperiencesEntity } from 'src/experience/experience.entity';
 export class ContractService {
   constructor(
     @InjectRepository(ContractTemplateEntity)
-    private contractRepository: Repository<ContractTemplateEntity>,
+    private contractTemplatesRepository: Repository<ContractTemplateEntity>,
   ) { }
 
   async getContracts(params = {}) {
-    const contractsFound = await this.contractRepository.find({
+    const contractsFound = await this.contractTemplatesRepository.find({
       where: params,
     });
 
     return contractsFound;
+  }
+
+  async getTemplates(id?: number) {
+    const whereCondition = id ? { ct_id: id } : {};
+    
+    const templates = await this.contractTemplatesRepository.find({
+      where: whereCondition,
+      relations: {
+        fields: true,
+      },
+    });
+
+    return templates;
   }
 }

@@ -14,4 +14,9 @@ export class ContractController {
   getContracts(@Param('uid') uid: number) {
     return this.contractService.getContracts(uid);
   } 
+
+  @Get('templates/:id?')
+  getContractsTemplates(@Param('id') id?: number) {
+    return this.contractService.getTemplates(id);
+  } 
 }
