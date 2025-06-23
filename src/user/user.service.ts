@@ -24,6 +24,12 @@ export class UserService {
     return userFound;
   }
 
+  async getUsers() {
+    const userFound = await this.userRepository.find();
+
+    return userFound;
+  }
+
   async postCreateUser(body) {
     const { uid, email, password, name } = body;
     if (uid) {

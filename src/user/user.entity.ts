@@ -26,7 +26,10 @@ export class UserEntity {
 
   @Column()
   phone: string;
-  
+
+  @Column()
+  picture: string;
+
   @Column({ type: 'enum', default: Role.USER, enum: Role })
   role: Role;
 

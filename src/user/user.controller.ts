@@ -9,6 +9,11 @@ export class UserController {
   // getUser(@Param('uid') uid: number) {
   //   return this.userService.getUser(null);
   // }
+
+  @Get()
+  getUsers() {
+    return this.userService.getUsers();
+  }
   
   @Get(':uid?')
   getUser(@Param('uid') uid: number) {
