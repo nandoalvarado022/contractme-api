@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,             // Si usas cookies o auth
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    origin: ['https://contractme.cloud', 'http://localhost'],  // permite el frontend
+    origin: ['https://contractme.cloud', 'https://www.contractme.cloud', 'http://localhost'],  // permite el frontend
   });
   await app.listen(process.env.PORT ?? 3000);
 }
