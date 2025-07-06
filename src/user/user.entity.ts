@@ -1,4 +1,4 @@
-import { AuditLogsEntity } from 'src/audit_logs/audit_logs.entity';
+import { AuditLogsEntity } from 'src/audit_logs/audit.entity';
 import { Role } from 'src/common/enums/rol.enum';
 import { StudiesAndExperiencesEntity } from 'src/experience/experience.entity';
 import {

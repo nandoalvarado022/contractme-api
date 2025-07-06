@@ -4,9 +4,12 @@ import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants/jwt.constant';
+import { AuditLogService } from 'src/audit_logs/audit.service';
+import { AuditModule } from 'src/audit_logs/audit.module';
 
 @Module({
   imports: [
+    AuditModule,
     UserModule,
     JwtModule.register({
       global: true,
@@ -15,6 +18,7 @@ import { jwtConstants } from './constants/jwt.constant';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService],
 })
+
 export class AuthModule {}

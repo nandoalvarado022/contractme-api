@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { StudiesAndExperiencesEntity } from './experience/experience.entity';
-import { AuditLogsEntity } from './audit_logs/audit_logs.entity';
+import { AuditLogsEntity } from './audit_logs/audit.entity';
 import { ContractModule } from './contract/contract.module';
 
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -34,8 +34,8 @@ const connection = process.env.NODE_ENV === 'production' ? remoteConection : rem
     TypeOrmModule.forRoot({
       ...connection,
       entities: [__dirname + '/**/*.entity{.ts,.js}'], // Con esto le decimos a TypeORM donde estan las entidades (models) y creará las tablas en la BD.
-      logging: true,
-      logger: 'advanced-console',
+      // logging: true,
+      // logger: 'advanced-console',
       // synchronize: true, // Con esto le decimos a TypeORM que cada vez que arranque la aplicacion, sincronice las entidades con la base de datos. Es decir que cree las tablas si no existen, y las modifique si es necesario segun las entidades en los archivos .ts y .js
     }),
     TypeOrmModule.forFeature([

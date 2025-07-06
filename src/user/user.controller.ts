@@ -1,9 +1,13 @@
 import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) { }
 
   // @Get()
   // getUser(@Param('uid') uid: number) {
@@ -14,19 +18,19 @@ export class UserController {
   getUsers() {
     return this.userService.getUsers();
   }
-  
+
   @Get(':uid?')
   getUser(@Param('uid') uid: number) {
     return this.userService.getUser(uid);
   }
 
-  @Post('save')
-  async login(@Body() formData) {
+  @Post('auth/register')
+  async saveUser(@Body() formData) {
     try {
-     await this.userService.postCreateUser(formData);
+      return await this.authService.register(formData);
     } catch (error) {
       console.error('Error saving user:', error);
-      return { status: 'error', message: 'Error al guardar el usuario' };
+      return { status: 'error', message: error.message };
     }
-  }  
+  }
 }

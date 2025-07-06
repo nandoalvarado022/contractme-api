@@ -21,10 +21,17 @@ export class AuditLogsEntity {
   @Column()
   table: string;
 
-  @Column({ nullable: false })
+  @Column()
+  data: string;
+
+  @Column({ nullable: true })
   created_at: string;
 
-  @ManyToOne(() => UserEntity, user => user.logs)
+  @ManyToOne(() => UserEntity, user => user.logs, { nullable: true })
   @JoinColumn({ name: 'uid' }) 
   user: UserEntity;
+
+  @ManyToOne(() => UserEntity, user => user.logs, { nullable: true })
+  @JoinColumn({ name: 'uid_compromised' }) 
+  user_compromised: UserEntity;
 }

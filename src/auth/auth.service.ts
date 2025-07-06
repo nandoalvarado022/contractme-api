@@ -18,31 +18,37 @@ export class AuthService {
       throw new BadRequestException('User already exists');
     }
 
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
+
     return this.userService.create({
       email,
       name,
-      password: await bcryptjs.hash(password, 10),
+      password: hashedPassword
     });
   }
 
   async login({ email, password }) {
-    const user = await this.userService.findByEmailWithPassword(email);
-    if (!user) {
+    const userBd = await this.userService.findByEmailWithPassword(email);
+    if (!userBd) {
       throw new UnauthorizedException('email is wrong');
     }
 
-    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    const isPasswordValid = await bcryptjs.compare(password, userBd.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('password is wrong');
     }
 
-    const payload = { email: user.email, role: user.role };
+    const payload = { email: userBd.email, role: userBd.role };
     const token = await this.jwtService.signAsync(payload);
 
     return {
       email,
+      message: `Bienvenido ${userBd.name}`,
       token,
-      uid: user.uid,
+      uid: userBd.uid,
+      status: 'success',
+      statusCode: 200,
     };
   }
 }

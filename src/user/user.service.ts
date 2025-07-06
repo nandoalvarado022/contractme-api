@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { loginDto } from 'src/types/user';
-import * as bcryptjs from 'bcryptjs'
 import { StudiesAndExperiencesEntity } from 'src/experience/experience.entity';
+import { AuditLogService } from 'src/audit_logs/audit.service';
+import { AuditLogsEntity } from 'src/audit_logs/audit.entity';
 
 @Injectable()
 export class UserService {
@@ -14,6 +13,7 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
     @InjectRepository(StudiesAndExperiencesEntity)
     private experiencesRepository: Repository<StudiesAndExperiencesEntity>,
+    private auditLogService: AuditLogService
   ) { }
 
   async getUser(params = {}) {
@@ -27,7 +27,10 @@ export class UserService {
   async getUsers() {
     const userFound = await this.userRepository.find();
 
-    return userFound;
+    return {
+      data: userFound,
+      total: userFound.length,
+    }
   }
 
   async postCreateUser(body) {
@@ -54,6 +57,13 @@ export class UserService {
           await this.createStudyAndExperience(newExperienceDto);
         }
       }
+
+      // Creating the log
+      const auditLog = new AuditLogsEntity();
+      auditLog.description = 'Usuario creado';
+      auditLog.table = 'users';
+      auditLog.data = JSON.stringify(newUser);
+      await this.auditLogService.createAuditLog(auditLog);
 
       return { status: 'success', message: 'Usuario guardado con éxito' };
     }

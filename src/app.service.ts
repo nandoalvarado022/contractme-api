@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuditLogsEntity } from './audit_logs/audit_logs.entity';
+import { AuditLogsEntity } from './audit_logs/audit.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { formatDistanceToNow } from 'date-fns';
@@ -17,7 +17,12 @@ export class AppService {
   }
 
   async getLogs() {
-    const result = await this.logsRepository.find();
+    const result = await this.logsRepository.find({
+      relations: ['user', 'user_compromised'],
+      order: { created_at: 'DESC' },
+      take: 10,
+    });
+
     return result.map(item => {
       return {
         ...item,
