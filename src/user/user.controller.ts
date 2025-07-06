@@ -24,6 +24,26 @@ export class UserController {
     return this.userService.getUser(uid);
   }
 
+  @Post('/create')
+  async createUser(@Body() formData) {
+    try {
+      return await this.userService.postCreateUser(formData);
+    } catch (error) {
+      console.error('Error creating user:', error);
+      return { status: 'error', message: error.message };
+    }
+  }
+
+  @Post('/edit')
+  async editUser(@Body() formData) {
+    try {
+      return await this.userService.postEditUser(formData);
+    } catch (error) {
+      console.error('Error editing user:', error);
+      return { status: 'error', message: error.message };
+    }
+  }
+
   @Post('auth/register')
   async saveUser(@Body() formData) {
     try {

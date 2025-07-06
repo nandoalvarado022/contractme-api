@@ -47,13 +47,13 @@ export class UserService {
       }
     } else {
       // Creating a new user
-      const newUser = this.userRepository.create(body);
-      await this.userRepository.save(newUser);
+      const userCreated = this.userRepository.create(body);
+      await this.userRepository.save(userCreated);
 
       // Saving formation
       if (body.formation && body.formation.length > 0) {
         for (const newExperienceDto of body.formation) {
-          newExperienceDto.user = newUser;
+          newExperienceDto.user = userCreated;
           await this.createStudyAndExperience(newExperienceDto);
         }
       }
@@ -62,10 +62,55 @@ export class UserService {
       const auditLog = new AuditLogsEntity();
       auditLog.description = 'Usuario creado';
       auditLog.table = 'users';
-      auditLog.data = JSON.stringify(newUser);
+      auditLog.data = JSON.stringify(userCreated);
       await this.auditLogService.createAuditLog(auditLog);
 
-      return { status: 'success', message: 'Usuario guardado con éxito' };
+      return {
+        data: userCreated,
+        message: 'Usuario guardado con éxito',
+        status: 'success',
+      };
+    }
+  }
+
+  async postEditUser(body) {
+    const { uid, email, password, name } = body;
+    if (uid) {
+      const userFound = await this.userRepository.findOne({
+        where: {
+          uid: body?.uid,
+        },
+      });
+
+      if (userFound) {
+        await this.userRepository.update(userFound.uid, body);
+
+        // Updating formation
+        if (body.formation && body.formation.length > 0) {
+          for (const newExperienceDto of body.formation) {
+            newExperienceDto.user = userFound;
+            await this.createStudyAndExperience(newExperienceDto);
+          }
+        }
+
+        // Creating the log
+        const auditLog = new AuditLogsEntity();
+        auditLog.description = 'Usuario editado';
+        auditLog.table = 'users';
+        auditLog.data = JSON.stringify(userFound);
+        await this.auditLogService.createAuditLog(auditLog);
+
+        return {
+          data: userFound,
+          message: 'Usuario editado con éxito',
+          status: 'success',
+        };
+      } else {
+        return {
+          message: 'Usuario no encontrado',
+          status: 'error',
+        };
+      }
     }
   }
 
