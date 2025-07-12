@@ -24,7 +24,7 @@ export class ContractService {
 
   async getTemplates(id?: number) {
     const whereCondition = id ? { ct_id: id } : {};
-    
+
     const templates = await this.contractTemplatesRepository.find({
       where: whereCondition,
       relations: {
@@ -32,6 +32,8 @@ export class ContractService {
       },
     });
 
-    return templates;
+    return (id)
+      ? templates[0]
+      : templates;
   }
 }

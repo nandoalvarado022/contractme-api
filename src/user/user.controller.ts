@@ -21,7 +21,9 @@ export class UserController {
 
   @Get(':uid?')
   getUser(@Param('uid') uid: number) {
-    return this.userService.getUser(uid);
+    const params: any = {}
+    if (uid) params.uid = uid;
+    return this.userService.getUser(params);
   }
 
   @Post('/create')

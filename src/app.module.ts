@@ -10,7 +10,7 @@ import { ContractModule } from './contract/contract.module';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 const localConection: TypeOrmModuleOptions = {
-  type: 'mysql' as const,
+  type: 'mysql',
   host: 'localhost',
   username: 'root',
   password: '12345678',
@@ -19,7 +19,7 @@ const localConection: TypeOrmModuleOptions = {
 };
 
 const remoteConection: TypeOrmModuleOptions = {
-  type: 'mysql' as const,
+  type: 'mysql',
   host: '3.209.97.88',
   username: 'remote_user',
   password: 'Gabs1515++',
