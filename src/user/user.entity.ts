@@ -28,7 +28,16 @@ export class UserEntity {
   phone: string;
 
   @Column()
+  document_type: string;
+  
+  @Column()
+  document_number: number;
+
+  @Column()
   picture: string;
+
+  @Column()
+  birth_date: string;
 
   @Column({ type: 'enum', default: Role.USER, enum: Role })
   role: Role;

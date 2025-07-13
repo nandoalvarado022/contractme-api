@@ -14,6 +14,9 @@ export class ContractTemplateFieldsEntity {
 
   @Column()
   ct_id: number;
+
+  @Column()
+  order: number;
   
   @Column()
   name: string;

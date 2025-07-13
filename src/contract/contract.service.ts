@@ -30,6 +30,11 @@ export class ContractService {
       relations: {
         fields: true,
       },
+      order: {
+        fields: {
+          order: 'ASC',
+        },
+      },
     });
 
     return (id)
