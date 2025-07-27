@@ -42,7 +42,7 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
         entities: [__dirname + "/**/*.entity{.ts,.js}"], // Con esto le decimos a TypeORM donde estan las entidades (models) y creará las tablas en la BD.
         // logging: true,
         // logger: 'advanced-console',
-        synchronize: configService.get<string>("NODE_ENV") === "development",
+        // synchronize: configService.get<string>("NODE_ENV") === "development",
       }),
       inject: [ConfigService],
     }),
