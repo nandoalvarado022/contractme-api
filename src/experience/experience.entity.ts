@@ -18,7 +18,7 @@ export class StudiesAndExperiencesEntity {
   @Column()
   title: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true, nullable: true })
   entity: string;
 
   @Column({ nullable: false })

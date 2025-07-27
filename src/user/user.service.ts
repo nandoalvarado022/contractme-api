@@ -53,8 +53,10 @@ export class UserService {
       // Saving formation
       if (body.formation && body.formation.length > 0) {
         for (const newExperienceDto of body.formation) {
-          newExperienceDto.user = userCreated;
-          await this.createStudyAndExperience(newExperienceDto);
+          if (newExperienceDto.title && newExperienceDto.title.trim() !== '') {
+            newExperienceDto.user = userCreated;
+            await this.createStudyAndExperience(newExperienceDto);
+          }
         }
       }
 
@@ -88,8 +90,10 @@ export class UserService {
         // Updating formation
         if (body.formation && body.formation.length > 0) {
           for (const newExperienceDto of body.formation) {
-            newExperienceDto.user = userFound;
-            await this.createStudyAndExperience(newExperienceDto);
+            if (newExperienceDto.title && newExperienceDto.title.trim() !== '') {
+              newExperienceDto.user = userFound;
+              await this.createStudyAndExperience(newExperienceDto);
+            }
           }
         }
 
@@ -115,6 +119,10 @@ export class UserService {
   }
 
   createStudyAndExperience(newExperienceDto) {
+    // Validamos que entity no sea un string vacío
+    if (!newExperienceDto.entity || newExperienceDto.entity.trim() === '') {
+      newExperienceDto.entity = null;
+    }
     const newExperience = this.experiencesRepository.create(newExperienceDto);
     return this.experiencesRepository.save(newExperience);
   }
