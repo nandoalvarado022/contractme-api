@@ -7,6 +7,7 @@ import { UpdatePropertyDto } from "./dto/update-property.dto"
 import { PropertyNote } from "./property-note.entity"
 import { PropertyInterested } from "./property-interested.entity"
 import { UserEntity } from "src/user/user.entity"
+import { CreatePropertyNoteDto } from "./dto/create-property-note.dto"
 
 @Injectable()
 export class PropertyService {
@@ -170,7 +171,7 @@ export class PropertyService {
     })
   }
 
-  async addNote(propertyId: number, noteData: any): Promise<PropertyNote> {
+  async addNote(propertyId: number, noteData: CreatePropertyNoteDto): Promise<PropertyNote> {
     const property = await this.findOne(propertyId)
 
     const note = this.noteRepository.create({
