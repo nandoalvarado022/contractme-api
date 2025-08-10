@@ -9,7 +9,6 @@ import { PropertyModule } from "./property/property.module"
 import { EducationModule } from "./education/education.module"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { TypeOrmModuleOptions } from "@nestjs/typeorm"
-import { AIModule } from "./ai/ai.module"
 import { ExperienceModule } from "./experience/experience.module"
 import { UserModule } from "./user/user.module"
 
@@ -44,7 +43,7 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
       useFactory: async (configService: ConfigService) => ({
         ...getConnection(configService),
         entities: [__dirname + "/**/*.entity{.ts,.js}"],
-        synchronize: true,
+        synchronize: false,
         // logging: true,
         // logger: 'advanced-console',
         // synchronize: configService.get<string>("NODE_ENV") === "development",
@@ -56,7 +55,6 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     ContractModule,
     PropertyModule,
     EducationModule,
-    AIModule,
     UserModule,
     ExperienceModule,
   ],
