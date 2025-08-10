@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { loginDto } from 'src/types/user';
 import * as bcryptjs from 'bcryptjs'
-import { StudiesAndExperiencesEntity } from 'src/experience/experience.entity';
 
 @Injectable()
 export class ContractService {

@@ -6,8 +6,12 @@ import { AuthModule } from "./auth/auth.module"
 import { AuditLogsEntity } from "./audit_logs/audit.entity"
 import { ContractModule } from "./contract/contract.module"
 import { PropertyModule } from "./property/property.module"
+import { EducationModule } from "./education/education.module"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { TypeOrmModuleOptions } from "@nestjs/typeorm"
+import { AIModule } from "./ai/ai.module"
+import { ExperienceModule } from "./experience/experience.module"
+import { UserModule } from "./user/user.module"
 
 const getDBConfig = (
   configService: ConfigService,
@@ -39,7 +43,8 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         ...getConnection(configService),
-        entities: [__dirname + "/**/*.entity{.ts,.js}"], // Con esto le decimos a TypeORM donde estan las entidades (models) y creará las tablas en la BD.
+        entities: [__dirname + "/**/*.entity{.ts,.js}"],
+        synchronize: true,
         // logging: true,
         // logger: 'advanced-console',
         // synchronize: configService.get<string>("NODE_ENV") === "development",
@@ -50,6 +55,10 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     AuthModule,
     ContractModule,
     PropertyModule,
+    EducationModule,
+    AIModule,
+    UserModule,
+    ExperienceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
