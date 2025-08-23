@@ -46,7 +46,7 @@ export class CreateUserDto {
   role: Role
 
   @IsOptional()
-  formation?: CreateEducationDto[]
+  education?: CreateEducationDto[]
 
   @IsOptional()
   experience?: CreateExperienceDto[]

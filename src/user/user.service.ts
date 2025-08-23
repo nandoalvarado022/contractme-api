@@ -62,10 +62,10 @@ export class UserService {
     const userToCreate = this.userRepository.create(userDataToCreate)
     const savedUser = await this.userRepository.save(userToCreate)
 
-    // Saving formation
-    if (body.formation && body.formation.length > 0) {
-      for (const newFormationDto of body.formation) {
-        const educationData = { ...newFormationDto, uid: savedUser.uid }
+    // Saving education
+    if (body.education && body.education.length > 0) {
+      for (const newEducationDto of body.education) {
+        const educationData = { ...newEducationDto, uid: savedUser.uid }
         await this.educationService.createEducation(educationData)
       }
     }
@@ -113,10 +113,10 @@ export class UserService {
     const updatedUser = this.userRepository.merge(userFound, body)
     await this.userRepository.save(updatedUser)
 
-    // Updating formation
-    if (body.formation && body.formation.length > 0) {
-      for (const newFormationDto of body.formation) {
-        const educationData = { ...newFormationDto, uid }
+    // Updating education
+    if (body.education && body.education.length > 0) {
+      for (const newEducationDto of body.education) {
+        const educationData = { ...newEducationDto, uid }
         await this.educationService.updateEducationByUserId(educationData)
       }
     }
