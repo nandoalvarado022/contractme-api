@@ -12,6 +12,7 @@ import { UserService } from "./user.service"
 import { AuthService } from "src/auth/auth.service"
 import { UpdateUserDto } from "./dtos/update-user.dto"
 import { RegisterDto } from "src/auth/dto/register.dto"
+import { CreateUserDto } from "./dtos/create-user.dto"
 
 @Controller("users")
 export class UserController {
@@ -38,7 +39,7 @@ export class UserController {
   }
 
   @Post("/create")
-  async createUser(@Body() formData) {
+  async createUser(@Body() formData: CreateUserDto) {
     try {
       return await this.userService.createUser(formData)
     } catch (error) {

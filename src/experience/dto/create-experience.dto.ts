@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsOptional, IsNumber } from "class-validator"
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsDateString,
+  IsNumber,
+} from "class-validator"
 
 export class CreateExperienceDto {
   @IsString()
@@ -9,15 +15,15 @@ export class CreateExperienceDto {
   @IsNotEmpty()
   position: string
 
-  @IsString()
+  @IsDateString()
   @IsNotEmpty()
   start_date: string
 
-  @IsString()
+  @IsDateString()
   @IsOptional()
   end_date?: string
 
   @IsNumber()
   @IsOptional()
-  user_id?: number
+  uid?: number
 }

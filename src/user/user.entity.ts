@@ -1,4 +1,5 @@
 import { AuditLogsEntity } from "src/audit_logs/audit.entity"
+import { DocumentType } from "src/common/enums/document-type"
 import { Role } from "src/common/enums/rol.enum"
 import { EducationEntity } from "src/education/education.entity"
 import { ExperienceEntity } from "src/experience/experience.entity"
@@ -16,7 +17,7 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   uid: number
 
-  @Column()
+  @Column({ type: "varchar", length: 100 })
   name: string
 
   @Column({ nullable: true, type: "varchar", length: 100 })
@@ -28,19 +29,19 @@ export class UserEntity {
   @Column({ nullable: false })
   password: string
 
-  @Column()
+  @Column({ type: "varchar", length: 15 })
   phone: string
 
-  @Column()
-  document_type: string
+  @Column({ type: "enum", enum: DocumentType })
+  document_type: DocumentType
 
-  @Column()
+  @Column({ type: "int" })
   document_number: number
 
-  @Column()
+  @Column({ type: "varchar", length: 255 })
   picture: string
 
-  @Column()
+  @Column({ type: "varchar" })
   birth_date: string
 
   @Column({ type: "enum", default: Role.USER, enum: Role })
@@ -52,10 +53,14 @@ export class UserEntity {
   @DeleteDateColumn()
   deleted_at: Date
 
-  @OneToMany(() => EducationEntity, (education) => education.user)
+  @OneToMany(() => EducationEntity, (education) => education.user, {
+    nullable: true,
+  })
   education: EducationEntity[]
 
-  @OneToMany(() => ExperienceEntity, (experience) => experience.user)
+  @OneToMany(() => ExperienceEntity, (experience) => experience.user, {
+    nullable: true,
+  })
   experience: ExperienceEntity[]
 
   @OneToMany(() => AuditLogsEntity, (log) => log.user)

@@ -65,7 +65,7 @@ export class UserService {
     // Saving formation
     if (body.formation && body.formation.length > 0) {
       for (const newFormationDto of body.formation) {
-        const educationData = { ...newFormationDto, user_id: savedUser.uid }
+        const educationData = { ...newFormationDto, uid: savedUser.uid }
         await this.educationService.createEducation(educationData)
       }
     }
@@ -73,7 +73,7 @@ export class UserService {
     // Saving work experience
     if (body.experience && body.experience.length > 0) {
       for (const newExperienceDto of body.experience) {
-        const experienceData = { ...newExperienceDto, user_id: savedUser.uid }
+        const experienceData = { ...newExperienceDto, uid: savedUser.uid }
         await this.experienceService.createExperience(experienceData)
       }
     }
@@ -116,16 +116,16 @@ export class UserService {
     // Updating formation
     if (body.formation && body.formation.length > 0) {
       for (const newFormationDto of body.formation) {
-        const educationData = { ...newFormationDto, user_id: uid }
-        await this.educationService.updateEducation(educationData)
+        const educationData = { ...newFormationDto, uid }
+        await this.educationService.updateEducationByUserId(educationData)
       }
     }
 
     // Updating work experience
     if (body.experience && body.experience.length > 0) {
       for (const newExperienceDto of body.experience) {
-        const experienceData = { ...newExperienceDto, user_id: uid }
-        await this.experienceService.updateExperience(experienceData)
+        const experienceData = { ...newExperienceDto, uid }
+        await this.experienceService.updateExperienceByUserId(experienceData)
       }
     }
 

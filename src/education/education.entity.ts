@@ -21,10 +21,10 @@ export class EducationEntity {
   @Column({ nullable: false, type: "varchar", length: 100 })
   title: string
 
-  @Column({ nullable: false, type: "date" })
+  @Column({ nullable: false, type: "datetime" })
   start_date: Date
 
-  @Column({ nullable: true, type: "date" })
+  @Column({ nullable: true, type: "datetime" })
   end_date: Date
 
   @CreateDateColumn()
@@ -36,10 +36,9 @@ export class EducationEntity {
   @DeleteDateColumn()
   deleted_at: Date
 
-  @Column()
-  user_id: number
-
-  @ManyToOne(() => UserEntity, (user) => user.education, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "user_id", referencedColumnName: "uid" })
+  @ManyToOne(() => UserEntity, (user) => user.education, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "uid" })
   user: UserEntity
 }

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { ExperienceEntity } from "./experience.entity"
 import { Repository } from "typeorm"
@@ -13,35 +13,76 @@ export class ExperienceService {
 
   async getExperienceByUid(uid: number): Promise<ExperienceEntity[]> {
     return this.experienceRepository.find({
-      where: { user_id: uid },
+      where: { user: { uid } },
       relations: ["user"],
     })
+  }
+
+  async getExperienceById(id: number): Promise<ExperienceEntity> {
+    const experience = await this.experienceRepository.findOne({
+      where: { id },
+      relations: ["user"],
+    })
+
+    if (!experience) {
+      throw new NotFoundException(`Experience record with ID ${id} not found`)
+    }
+
+    return experience
   }
 
   async createExperience(
     experienceData: CreateExperienceDto
   ): Promise<ExperienceEntity> {
-    const experience = this.experienceRepository.create(experienceData)
+    const { uid, ...restData } = experienceData
+
+    const experienceToCreate = {
+      ...restData,
+      ...(uid && { user: { uid } }),
+    }
+
+    const experience = this.experienceRepository.create(experienceToCreate)
     return this.experienceRepository.save(experience)
   }
 
   async updateExperience(
-    experienceData: UpdateExperienceDto & { user_id: number }
+    id: number,
+    updateData: UpdateExperienceDto
+  ): Promise<ExperienceEntity> {
+    const experience = await this.getExperienceById(id)
+
+    Object.assign(experience, updateData)
+
+    return this.experienceRepository.save(experience)
+  }
+
+  async updateExperienceByUserId(
+    experienceData: UpdateExperienceDto & { uid: number }
   ): Promise<ExperienceEntity[]> {
-    const { user_id, ...updateData } = experienceData
+    const { uid, ...updateData } = experienceData
 
     // Delete existing experience records for this user
-    await this.experienceRepository.delete({ user_id })
+    await this.experienceRepository.delete({ user: { uid } })
 
-    // Create new experience record
-    const experience = this.experienceRepository.create(experienceData)
+    // Create new experience record with proper user relationship
+    const experienceToCreate = {
+      ...updateData,
+      user: { uid },
+    }
+    const experience = this.experienceRepository.create(experienceToCreate)
     await this.experienceRepository.save(experience)
 
     // Return all experience records for this user
-    return this.getExperienceByUid(user_id)
+    return this.getExperienceByUid(uid)
   }
 
-  async deleteExperience(id: number): Promise<void> {
-    await this.experienceRepository.delete(id)
+  async deleteExperience(
+    id: number
+  ): Promise<{ deleted: boolean; id: number }> {
+    const experience = await this.getExperienceById(id)
+
+    await this.experienceRepository.remove(experience)
+
+    return { deleted: true, id }
   }
 }

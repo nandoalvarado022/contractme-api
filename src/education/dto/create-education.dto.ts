@@ -25,5 +25,5 @@ export class CreateEducationDto {
 
   @IsNumber()
   @IsOptional()
-  user_id?: number
+  uid?: number
 }

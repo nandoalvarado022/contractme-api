@@ -1,5 +1,14 @@
 import { UserEntity } from "src/user/user.entity"
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm"
 
 @Entity({ name: "experience" })
 export class ExperienceEntity {
@@ -12,10 +21,10 @@ export class ExperienceEntity {
   @Column({ nullable: false, type: "varchar", length: 100 })
   position: string
 
-  @Column({ nullable: false, type: "date" })
+  @Column({ nullable: false, type: "datetime" })
   start_date: Date
 
-  @Column({ nullable: false, type: "date" })
+  @Column({ nullable: false, type: "datetime" })
   end_date: Date
 
   @CreateDateColumn()
@@ -27,10 +36,9 @@ export class ExperienceEntity {
   @DeleteDateColumn()
   deleted_at: Date
 
-  @Column()
-  user_id: number
-
-  @ManyToOne(() => UserEntity, (user) => user.experience, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "user_id", referencedColumnName: "uid" })
+  @ManyToOne(() => UserEntity, (user) => user.experience, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "uid" })
   user: UserEntity
 }

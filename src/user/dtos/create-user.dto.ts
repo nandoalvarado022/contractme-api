@@ -1,7 +1,8 @@
-import { IsString, IsNotEmpty, IsOptional, IsEmail, IsEnum, IsNumber } from 'class-validator'
+import { IsString, IsNotEmpty, IsOptional, IsEmail, IsEnum, IsNumber, IsDate, IsDateString } from 'class-validator'
 import { Role } from 'src/common/enums/rol.enum'
 import { CreateEducationDto } from 'src/education/dto'
 import { CreateExperienceDto } from 'src/experience/dto'
+import { DocumentType } from 'src/common/enums/document-type'
 
 export class CreateUserDto {
   @IsString()
@@ -21,32 +22,28 @@ export class CreateUserDto {
   password: string
 
   @IsString()
-  @IsOptional()
-  phone?: string
+  @IsNotEmpty()
+  phone: string
 
-  @IsString()
-  @IsOptional()
-  document_type?: string
+  @IsEnum(DocumentType)
+  @IsNotEmpty()
+  document_type: DocumentType
 
   @IsNumber()
-  @IsOptional()
-  document_number?: number
+  @IsNotEmpty()
+  document_number: number
 
   @IsString()
-  @IsOptional()
-  picture?: string
+  @IsNotEmpty()
+  picture: string
 
-  @IsString()
-  @IsOptional()
-  birth_date?: string
+  @IsDateString()
+  @IsNotEmpty()
+  birth_date: string
 
   @IsEnum(Role)
-  @IsOptional()
-  role?: Role
-
-  @IsNumber()
-  @IsOptional()
-  uid?: number
+  @IsNotEmpty()
+  role: Role
 
   @IsOptional()
   formation?: CreateEducationDto[]
