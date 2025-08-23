@@ -3,6 +3,7 @@ import { Role } from 'src/common/enums/rol.enum'
 import { CreateEducationDto } from 'src/education/dto'
 import { CreateExperienceDto } from 'src/experience/dto'
 import { DocumentType } from 'src/common/enums/document-type'
+import { CreateReferenceDto } from 'src/reference/dto/create-reference.dto'
 
 export class CreateUserDto {
   @IsString()
@@ -50,4 +51,7 @@ export class CreateUserDto {
 
   @IsOptional()
   experience?: CreateExperienceDto[]
+
+  @IsOptional()
+  reference?: CreateReferenceDto[]
 }

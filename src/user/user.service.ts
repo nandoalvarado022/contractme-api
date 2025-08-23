@@ -10,6 +10,7 @@ import { CreateUserDto } from "./dtos/create-user.dto"
 import { UpdateUserDto } from "./dtos/update-user.dto"
 import { RegisterDto } from "src/auth/dto/register.dto"
 import * as bcrypt from "bcrypt"
+import { ReferenceService } from "src/reference/reference.service"
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,8 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
     private auditLogService: AuditLogService,
     private educationService: EducationService,
-    private experienceService: ExperienceService
+    private experienceService: ExperienceService,
+    private referenceService: ReferenceService
   ) {}
 
   async getUser(params = {}) {
@@ -78,6 +80,14 @@ export class UserService {
       }
     }
 
+    // Saving references
+    if (body.reference && body.reference.length > 0) {
+      for (const newReferenceDto of body.reference) {
+        const referenceData = { ...newReferenceDto, uid: savedUser.uid }
+        await this.referenceService.createReference(referenceData)
+      }
+    }
+
     // Creating the log
     const auditLog = new AuditLogsEntity()
     auditLog.description = "Usuario creado"
@@ -129,26 +139,33 @@ export class UserService {
       }
     }
 
-    // Creating the log
-    const auditLog = new AuditLogsEntity()
-    auditLog.description = "Usuario editado"
-    auditLog.table = "users"
-    const auditData = {
-      uid: userFound.uid,
-      name: userFound.name,
-      email: userFound.email,
-      updated_at: new Date().toISOString(),
-    }
-    auditLog.data = JSON.stringify(auditData)
-    await this.auditLogService.createAuditLog(auditLog)
+    // Updating references
+    if (body.reference && body.reference.length > 0) {
+      for (const newReferenceDto of body.reference) {
+        const referenceData = { ...newReferenceDto, uid }
+        await this.referenceService.updateReferenceByUserId(referenceData)
+      }
 
-    return {
-      data: userFound,
-      message: "Usuario editado con éxito",
-      status: "success",
+      // Creating the log
+      const auditLog = new AuditLogsEntity()
+      auditLog.description = "Usuario editado"
+      auditLog.table = "users"
+      const auditData = {
+        uid: userFound.uid,
+        name: userFound.name,
+        email: userFound.email,
+        updated_at: new Date().toISOString(),
+      }
+      auditLog.data = JSON.stringify(auditData)
+      await this.auditLogService.createAuditLog(auditLog)
+
+      return {
+        data: userFound,
+        message: "Usuario editado con éxito",
+        status: "success",
+      }
     }
   }
-
   async registerUser(user: RegisterDto) {
     const { email, name, password } = user
 

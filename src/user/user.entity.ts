@@ -3,6 +3,7 @@ import { DocumentType } from "src/common/enums/document-type"
 import { Role } from "src/common/enums/rol.enum"
 import { EducationEntity } from "src/education/education.entity"
 import { ExperienceEntity } from "src/experience/experience.entity"
+import { ReferenceEntity } from "src/reference/reference.entity"
 import {
   Column,
   CreateDateColumn,
@@ -62,6 +63,11 @@ export class UserEntity {
     nullable: true,
   })
   experience: ExperienceEntity[]
+
+  @OneToMany(() => ReferenceEntity, (reference) => reference.user, {
+    nullable: true,
+  })
+  reference: ReferenceEntity[]
 
   @OneToMany(() => AuditLogsEntity, (log) => log.user)
   logs: AuditLogsEntity[]
