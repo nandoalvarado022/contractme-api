@@ -4,16 +4,16 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
+} from "typeorm";
 
-@Entity({ name: 'users' })
+@Entity({ name: "users" })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   uid: number;
 
   @Column()
   id: number; // TODO: Remove this field
-  
+
   @Column()
   name: string;
 
@@ -34,7 +34,7 @@ export class UserEntity {
 
   @Column()
   rol: string;
-  
+
   @Column()
   phone: string;
 
@@ -50,6 +50,10 @@ export class UserEntity {
   @Column()
   city: string;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP', nullable: false })
+  @Column({
+    type: "datetime",
+    default: () => "CURRENT_TIMESTAMP",
+    nullable: false,
+  })
   created_at: Date;
 }
