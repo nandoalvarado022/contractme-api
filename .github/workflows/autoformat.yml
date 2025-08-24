@@ -1,4 +1,4 @@
-name: Autofix — Prettier & ESLint
+name: Autofix — Prettier
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  autofix:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # evita forks
+  prettier-autofix:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
 
     steps:
@@ -28,18 +28,12 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Run Prettier fix
+      - name: Run Prettier (fix)
         run: npm run format
-
-      - name: Run ESLint fix
-        run: npm run lint:fix
 
       - name: Commit & push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: auto-fix formatting & lint"
+          commit_message: "chore: auto-format with Prettier"
           branch: ${{ github.head_ref }}
-          file_pattern: |
-            src/**
-            package.json
-            package-lock.json
+          file_pattern: "src/**"
