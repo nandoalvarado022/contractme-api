@@ -27,48 +27,38 @@ export class PropertyService {
 
   async create(createPropertyDto: CreatePropertyDto): Promise<PropertyEntity> {
     const owner = await this.userRepository.findOne({
-      where: { uid: createPropertyDto.owner_id },
+      where: { uid: createPropertyDto.owner_uid },
     })
+
     if (!owner) {
       throw new NotFoundException(
-        `Owner with ID ${createPropertyDto.owner_id} not found`
+        `Owner with ID ${createPropertyDto.owner_uid} not found`
       )
-    }
-
-    if (createPropertyDto.tenant_id) {
-      const tenant = await this.userRepository.findOne({
-        where: { uid: createPropertyDto.tenant_id },
-      })
-      if (!tenant) {
-        throw new NotFoundException(
-          `Tenant with ID ${createPropertyDto.tenant_id} not found`
-        )
-      }
     }
 
     const { notes, interested, ...propertyData } = createPropertyDto
     const newProperty = this.propertyRepository.create(propertyData)
     const savedProperty = await this.propertyRepository.save(newProperty)
 
-    if (notes && notes.length > 0) {
-      for (const noteDto of notes) {
-        const note = this.noteRepository.create({
-          ...noteDto,
-          property_id: savedProperty.id,
-        })
-        await this.noteRepository.save(note)
-      }
-    }
+    // if (notes && notes.length > 0) {
+    //   for (const noteDto of notes) {
+    //     const note = this.noteRepository.create({
+    //       ...noteDto,
+    //       property_id: savedProperty.id,
+    //     })
+    //     await this.noteRepository.save(note)
+    //   }
+    // }
 
-    if (interested && interested.length > 0) {
-      for (const interestedDto of interested) {
-        const interestedPerson = this.interestedRepository.create({
-          ...interestedDto,
-          property_id: savedProperty.id,
-        })
-        await this.interestedRepository.save(interestedPerson)
-      }
-    }
+    // if (interested && interested.length > 0) {
+    //   for (const interestedDto of interested) {
+    //     const interestedPerson = this.interestedRepository.create({
+    //       ...interestedDto,
+    //       property_id: savedProperty.id,
+    //     })
+    //     await this.interestedRepository.save(interestedPerson)
+    //   }
+    // }
 
     return this.findOne(savedProperty.id)
   }
@@ -91,27 +81,27 @@ export class PropertyService {
   ): Promise<PropertyEntity> {
     const property = await this.findOne(id)
 
-    if (updatePropertyDto.owner_id) {
+    if (updatePropertyDto.owner_uid) {
       const owner = await this.userRepository.findOne({
-        where: { uid: updatePropertyDto.owner_id },
+        where: { uid: updatePropertyDto.owner_uid },
       })
       if (!owner) {
         throw new NotFoundException(
-          `Owner with ID ${updatePropertyDto.owner_id} not found`
+          `Owner with ID ${updatePropertyDto.owner_uid} not found`
         )
       }
     }
 
-    if (updatePropertyDto.tenant_id) {
-      const tenant = await this.userRepository.findOne({
-        where: { uid: updatePropertyDto.tenant_id },
-      })
-      if (!tenant) {
-        throw new NotFoundException(
-          `Tenant with ID ${updatePropertyDto.tenant_id} not found`
-        )
-      }
-    }
+    // if (updatePropertyDto.tenant_id) {
+    //   const tenant = await this.userRepository.findOne({
+    //     where: { uid: updatePropertyDto.tenant_id },
+    //   })
+    //   if (!tenant) {
+    //     throw new NotFoundException(
+    //       `Tenant with ID ${updatePropertyDto.tenant_id} not found`
+    //     )
+    //   }
+    // }
 
     const { notes, interested, ...updateData } = updatePropertyDto
 
@@ -161,7 +151,7 @@ export class PropertyService {
 
   async findByOwner(ownerId: number): Promise<PropertyEntity[]> {
     return this.propertyRepository.find({
-      where: { owner_id: ownerId },
+      where: { owner_uid: ownerId },
     })
   }
 
