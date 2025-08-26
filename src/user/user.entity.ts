@@ -1,56 +1,68 @@
-import { AuditLogsEntity } from 'src/audit_logs/audit.entity';
-import { Role } from 'src/common/enums/rol.enum';
-import { StudiesAndExperiencesEntity } from 'src/experience/experience.entity';
+import { AuditLogsEntity } from "src/audit_logs/audit.entity"
+import { DocumentType } from "src/common/enums/document-type"
+import { Role } from "src/common/enums/rol.enum"
+import { EducationEntity } from "src/education/education.entity"
+import { ExperienceEntity } from "src/experience/experience.entity"
 import {
   Column,
+  CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
+} from "typeorm"
 
-@Entity({ name: 'users' })
+@Entity({ name: "users" })
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  uid: number;
+  uid: number
 
-  @Column()
-  name: string;
+  @Column({ type: "varchar", length: 100 })
+  name: string
+
+  @Column({ nullable: true, type: "varchar", length: 100 })
+  last_name: string
 
   @Column({ unique: true, nullable: false })
-  email: string;
+  email: string
 
   @Column({ nullable: false })
-  password: string;
+  password: string
 
-  @Column()
-  phone: string;
+  @Column({ type: "varchar", length: 15 })
+  phone: string
 
-  @Column()
-  document_type: string;
-  
-  @Column()
-  document_number: number;
+  @Column({ type: "enum", enum: DocumentType })
+  document_type: DocumentType
 
-  @Column()
-  picture: string;
+  @Column({ type: "int" })
+  document_number: number
 
-  @Column()
-  birth_date: string;
+  @Column({ type: "varchar", length: 255 })
+  picture: string
 
-  @Column({ type: 'enum', default: Role.USER, enum: Role })
-  role: Role;
+  @Column({ type: "varchar" })
+  birth_date: string
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP', nullable: false })
-  created_at: Date;
+  @Column({ type: "enum", default: Role.USER, enum: Role })
+  role: Role
+
+  @CreateDateColumn()
+  created_at: Date
 
   @DeleteDateColumn()
-  deleted_at: Date;
+  deleted_at: Date
 
-  @OneToMany(() => StudiesAndExperiencesEntity, exp => exp.user)
-  experiences: StudiesAndExperiencesEntity[];
+  @OneToMany(() => EducationEntity, (education) => education.user, {
+    nullable: true,
+  })
+  education: EducationEntity[]
 
-  @OneToMany(() => StudiesAndExperiencesEntity, exp => exp.user)
-  logs: AuditLogsEntity[];
+  @OneToMany(() => ExperienceEntity, (experience) => experience.user, {
+    nullable: true,
+  })
+  experience: ExperienceEntity[]
+
+  @OneToMany(() => AuditLogsEntity, (log) => log.user)
+  logs: AuditLogsEntity[]
 }
