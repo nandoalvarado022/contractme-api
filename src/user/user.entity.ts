@@ -7,12 +7,10 @@ import { ReferenceEntity } from "src/reference/reference.entity"
 import {
   Column,
   CreateDateColumn,
-  CreateDateColumn,
   DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm"
 } from "typeorm"
 
 @Entity({ name: "users" })
@@ -23,26 +21,16 @@ export class UserEntity {
 
   @Column({ type: "varchar", length: 100 })
   name: string
-  uid: number
 
-  @Column({ type: "varchar", length: 100 })
-  name: string
-
-  @Column({ nullable: true, type: "varchar", length: 100 })
-  last_name: string
   @Column({ nullable: true, type: "varchar", length: 100 })
   last_name: string
 
   @Column({ unique: true, nullable: false })
   email: string
-  email: string
 
   @Column({ nullable: false })
   password: string
-  password: string
 
-  @Column({ type: "varchar", length: 15 })
-  phone: string
   @Column({ type: "varchar", length: 15 })
   phone: string
 
@@ -51,35 +39,21 @@ export class UserEntity {
 
   @Column({ type: "int" })
   document_number: number
-  @Column({ type: "enum", enum: DocumentType })
-  document_type: DocumentType
 
-  @Column({ type: "int" })
-  document_number: number
-
-  @Column({ type: "varchar", length: 255 })
-  picture: string
   @Column({ type: "varchar", length: 255 })
   picture: string
 
   @Column({ type: "varchar" })
   birth_date: string
-  @Column({ type: "varchar" })
-  birth_date: string
 
   @Column({ type: "enum", default: Role.USER, enum: Role })
   role: Role
-  @Column({ type: "enum", default: Role.USER, enum: Role })
-  role: Role
 
-  @CreateDateColumn()
-  created_at: Date
   @CreateDateColumn()
   created_at: Date
 
   @DeleteDateColumn()
   deleted_at: Date
-  deleted_at: Date
 
   @OneToMany(() => EducationEntity, (education) => education.user, {
     nullable: true,
@@ -90,16 +64,7 @@ export class UserEntity {
     nullable: true,
   })
   experience: ExperienceEntity[]
-  @OneToMany(() => EducationEntity, (education) => education.user, {
-    nullable: true,
-  })
-  education: EducationEntity[]
-
-  @OneToMany(() => ExperienceEntity, (experience) => experience.user, {
-    nullable: true,
-  })
-  experience: ExperienceEntity[]
-
+  
   @OneToMany(() => ReferenceEntity, (reference) => reference.user, {
     nullable: true,
   })
