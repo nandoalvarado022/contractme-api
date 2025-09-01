@@ -10,9 +10,6 @@ export class CreatePropertyDto {
   address: string
 
   @IsString()
-  searchBy: string
-
-  @IsString()
   @IsOptional()
   image?: string
 
@@ -20,7 +17,7 @@ export class CreatePropertyDto {
   price: number
 
   @IsString()
-  type: string
+  type: PROPERTY_TYPE
 
   @IsNumber()
   bedrooms: number
@@ -35,11 +32,7 @@ export class CreatePropertyDto {
   description: string
 
   @IsNumber()
-  owner_id: number
-
-  @IsNumber()
-  @IsOptional()
-  tenant_id?: number
+  owner_uid: number
 
   @IsArray()
   @IsOptional()

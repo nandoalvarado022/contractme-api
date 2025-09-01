@@ -1,0 +1,1 @@
+type PROPERTY_TYPE = "house" | "apartment"

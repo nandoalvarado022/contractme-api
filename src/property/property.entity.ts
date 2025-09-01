@@ -22,9 +22,6 @@ export class PropertyEntity {
   address: string
 
   @Column()
-  searchBy: string
-
-  @Column()
   image: string
 
   @Column("decimal", { precision: 10, scale: 2 })
@@ -46,11 +43,11 @@ export class PropertyEntity {
   description: string
 
   @ManyToOne(() => UserEntity, { eager: true })
-  @JoinColumn({ name: "owner_id" })
+  @JoinColumn({ name: "owner_uid" })
   owner: UserEntity
 
   @Column()
-  owner_id: number
+  owner_uid: number
 
   @ManyToOne(() => UserEntity, { nullable: true, eager: true })
   @JoinColumn({ name: "tenant_id" })
