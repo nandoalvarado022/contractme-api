@@ -15,12 +15,10 @@ export class PropertyNote {
   @Column("text")
   text: string
 
-  @Column("date")
-  date: Date
-
   @ManyToOne(() => PropertyEntity, (property) => property.notes, {
     onDelete: "CASCADE",
   })
+
   @JoinColumn({ name: "property_id" })
   property: PropertyEntity
 

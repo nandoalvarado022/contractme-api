@@ -19,6 +19,9 @@ export class CreatePropertyDto {
   @IsString()
   type: PROPERTY_TYPE
 
+  @IsString()
+  operation_type: OPERATION_TYPE
+
   @IsNumber()
   bedrooms: number
 

@@ -51,7 +51,6 @@ export class PropertyController {
     return this.propertyService.remove(id)
   }
 
-  // Rutas adicionales
   @Get("owner/:ownerId")
   findByOwner(@Param("ownerId", ParseIntPipe) ownerId: number) {
     return this.propertyService.findByOwner(ownerId)
