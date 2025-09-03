@@ -10,10 +10,11 @@ async function bootstrap() {
     methods: ["GET", "POST", "PUT", "DELETE"],
     origin: [
       "https://contractme.cloud",
+      "https://www.contractme.cloud",
       "http://localhost",
       "https://qa.contractme.cloud",
       "https://develop.contractme.cloud",
-    ], // permite el frontend
+    ],
   })
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
