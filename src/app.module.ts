@@ -12,6 +12,7 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm"
 import { ExperienceModule } from "./experience/experience.module"
 import { UserModule } from "./user/user.module"
 import { ReferenceModule } from "./reference/reference.module"
+import { FilesModule } from "./files/files.module"
 
 const getDBConfig = (
   configService: ConfigService,
@@ -59,6 +60,7 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     UserModule,
     ExperienceModule,
     ReferenceModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
