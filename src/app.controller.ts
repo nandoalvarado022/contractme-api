@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { sendEmail } from './utils/brevo';
 import { MailService } from './common/emails/mail.service';
-import { MailerService } from '@nestjs-modules/mailer';
+// import { MailerService } from '@nestjs-modules/mailer';
 
 @Controller()
 export class AppController {
@@ -33,10 +32,5 @@ export class AppController {
   @Get('logs')
   getLogs() {
     return this.appService.getLogs();
-  }
-
-  @Post('send-email')
-  sendEmail(@Body() emailData: any) {
-    return sendEmail(emailData);
   }
 }
