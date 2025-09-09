@@ -14,7 +14,7 @@ import {
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3"
 import { ConfigService } from "@nestjs/config"
-import { UserEntity } from "src/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity"
 
 @Injectable()
 export class FilesService {

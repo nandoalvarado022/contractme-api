@@ -8,6 +8,7 @@ import { CreateReferenceDto } from 'src/entities/reference/dto/create-reference.
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   name: string
 
   @IsString()
@@ -16,14 +17,17 @@ export class CreateUserDto {
 
   @IsEmail()
   @IsNotEmpty()
+  @IsOptional()
   email: string
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   password: string
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   phone: string
 
   @IsEnum(DocumentType)
@@ -36,14 +40,17 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   picture: string
 
   @IsDateString()
   @IsNotEmpty()
+  @IsOptional()
   birth_date: string
 
   @IsEnum(Role)
   @IsNotEmpty()
+  @IsOptional()
   role: Role
 
   @IsOptional()

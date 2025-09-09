@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsOptional, IsEmail, IsEnum, IsNumber, IsDate, IsDateString } from 'class-validator'
 import { Role } from 'src/common/enums/rol.enum'
-import { CreateEducationDto } from 'src/education/dto'
-import { CreateExperienceDto } from 'src/experience/dto'
+import { CreateEducationDto } from 'src/entities/education/dto'
+import { CreateExperienceDto } from 'src/entities/experience/dto'
 import { DocumentType } from 'src/common/enums/document-type'
 import { CreateReferenceDto } from 'src/reference/dto/create-reference.dto'
 
