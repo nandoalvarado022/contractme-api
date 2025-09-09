@@ -5,7 +5,7 @@ import { PropertyService } from "./property.service"
 import { PropertyEntity } from "./property.entity"
 import { PropertyNote } from "./property-note.entity"
 import { PropertyInterested } from "./property-interested.entity"
-import { UserEntity } from "src/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity"
 
 @Module({
   imports: [

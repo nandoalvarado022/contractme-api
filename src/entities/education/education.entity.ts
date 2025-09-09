@@ -10,19 +10,22 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 
-@Entity({ name: "reference" })
-export class ReferenceEntity {
+@Entity({ name: "education" })
+export class EducationEntity {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column({ nullable: false, type: "varchar", length: 100 })
-  name: string
-
-  @Column({ nullable: true, type: "varchar", length: 15 })
-  phone: string
+  place: string
 
   @Column({ nullable: false, type: "varchar", length: 100 })
-  relationship: string
+  title: string
+
+  @Column({ nullable: false, type: "datetime" })
+  start_date: Date
+
+  @Column({ nullable: true, type: "datetime" })
+  end_date: Date
 
   @CreateDateColumn()
   created_at: Date
@@ -33,7 +36,7 @@ export class ReferenceEntity {
   @DeleteDateColumn()
   deleted_at: Date
 
-  @ManyToOne(() => UserEntity, (user) => user.reference, {
+  @ManyToOne(() => UserEntity, (user) => user.education, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "uid" })

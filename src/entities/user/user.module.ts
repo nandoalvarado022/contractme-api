@@ -4,10 +4,10 @@ import { TypeOrmModule } from "@nestjs/typeorm"
 import { UserEntity } from "./user.entity"
 import { UserController } from "./user.controller"
 import { AuthService } from "src/auth/auth.service"
-import { AuditModule } from "src/audit_logs/audit.module"
-import { EducationModule } from "src/education/education.module"
-import { ExperienceModule } from "src/experience/experience.module"
-import { ReferenceModule } from "src/reference/reference.module"
+import { AuditModule } from "src/entities/audit_logs/audit.module"
+import { EducationModule } from "src/entities/education/education.module"
+import { ExperienceModule } from "src/entities/experience/experience.module"
+import { ReferenceModule } from "src/entities/reference/reference.module"
 
 @Module({
   imports: [

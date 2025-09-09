@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuditLogsEntity } from './audit_logs/audit.entity';
+import { AuditLogsEntity } from './entities/audit_logs/audit.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { formatDistanceToNow } from 'date-fns';

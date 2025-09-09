@@ -8,19 +8,27 @@ import {
   Put,
   ParseIntPipe,
   UseInterceptors,
+  Req,
 } from "@nestjs/common"
-import { TransformResponseInterceptor } from "../common/interceptors"
-import { ResponseMessage } from "../common/decorators"
+import { TransformResponseInterceptor } from "../../common/interceptors"
+import { ResponseMessage } from "../../common/decorators"
 import { PropertyService } from "./property.service"
 import { CreatePropertyDto } from "./dto/create-property.dto"
 import { UpdatePropertyDto } from "./dto/update-property.dto"
 import { CreatePropertyNoteDto } from "./dto/create-property-note.dto"
 import { CreatePropertyInterestedDto } from "./dto/create-property-interested.dto"
+import { Request } from "express"
 
 @Controller("properties")
 @UseInterceptors(TransformResponseInterceptor)
 export class PropertyController {
-  constructor(private readonly propertyService: PropertyService) {}
+  constructor(private readonly propertyService: PropertyService) { }
+
+  @Get("owner")
+  findByOwner(@Req() req: Request) {
+    const uid = Number(req.headers['uid']);
+    return this.propertyService.findByOwner(uid);
+  }
 
   @Post()
   @ResponseMessage("Propiedad creada exitosamente")
@@ -49,11 +57,6 @@ export class PropertyController {
   @Delete(":id")
   remove(@Param("id", ParseIntPipe) id: number) {
     return this.propertyService.remove(id)
-  }
-
-  @Get("owner/:ownerId")
-  findByOwner(@Param("ownerId", ParseIntPipe) ownerId: number) {
-    return this.propertyService.findByOwner(ownerId)
   }
 
   @Get("tenant/:tenantId")

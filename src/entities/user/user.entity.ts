@@ -1,9 +1,9 @@
-import { AuditLogsEntity } from "src/audit_logs/audit.entity"
+import { AuditLogsEntity } from "src/entities/audit_logs/audit.entity"
 import { DocumentType } from "src/common/enums/document-type"
 import { Role } from "src/common/enums/rol.enum"
-import { EducationEntity } from "src/education/education.entity"
-import { ExperienceEntity } from "src/experience/experience.entity"
-import { ReferenceEntity } from "src/reference/reference.entity"
+import { EducationEntity } from "src/entities/education/education.entity"
+import { ExperienceEntity } from "src/entities/experience/experience.entity"
+import { ReferenceEntity } from "src/entities/reference/reference.entity"
 import {
   Column,
   CreateDateColumn,

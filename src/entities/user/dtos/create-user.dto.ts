@@ -3,11 +3,12 @@ import { Role } from 'src/common/enums/rol.enum'
 import { CreateEducationDto } from 'src/entities/education/dto'
 import { CreateExperienceDto } from 'src/entities/experience/dto'
 import { DocumentType } from 'src/common/enums/document-type'
-import { CreateReferenceDto } from 'src/reference/dto/create-reference.dto'
+import { CreateReferenceDto } from 'src/entities/reference/dto/create-reference.dto'
 
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   name: string
 
   @IsString()
@@ -16,14 +17,17 @@ export class CreateUserDto {
 
   @IsEmail()
   @IsNotEmpty()
+  @IsOptional()
   email: string
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   password: string
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   phone: string
 
   @IsEnum(DocumentType)
@@ -36,14 +40,17 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   picture: string
 
   @IsDateString()
   @IsNotEmpty()
+  @IsOptional()
   birth_date: string
 
   @IsEnum(Role)
   @IsNotEmpty()
+  @IsOptional()
   role: Role
 
   @IsOptional()

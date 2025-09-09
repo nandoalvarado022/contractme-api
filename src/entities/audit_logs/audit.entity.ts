@@ -1,5 +1,5 @@
 import { Role } from 'src/common/enums/rol.enum';
-import { UserEntity } from 'src/user/user.entity';
+import { UserEntity } from 'src/entities/user/user.entity';
 import {
   Column,
   DeleteDateColumn,
