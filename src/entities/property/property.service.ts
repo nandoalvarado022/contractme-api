@@ -6,8 +6,9 @@ import { CreatePropertyDto } from "./dto/create-property.dto"
 import { UpdatePropertyDto } from "./dto/update-property.dto"
 import { PropertyNote } from "./property-note.entity"
 import { PropertyInterested } from "./property-interested.entity"
-import { UserEntity } from "src/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity"
 import { CreatePropertyNoteDto } from "./dto/create-property-note.dto"
+// import { AuditLogsEntity } from "src/audit_logs/audit.entity"
 
 @Injectable()
 export class PropertyService {
@@ -22,7 +23,10 @@ export class PropertyService {
     private readonly interestedRepository: Repository<PropertyInterested>,
 
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>
+    private readonly userRepository: Repository<UserEntity>,
+
+    // @InjectRepository(AuditLogsEntity)
+    // private readonly logsRepository: Repository<AuditLogsEntity>
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<PropertyEntity> {
@@ -59,6 +63,14 @@ export class PropertyService {
     //     await this.interestedRepository.save(interestedPerson)
     //   }
     // }
+
+    // this.logsRepository.save({
+    //   description: "Property created",
+    //   data: JSON.stringify(savedProperty),
+    //   table: "properties",
+    //   entity_id: savedProperty.id,
+    //   uid: createPropertyDto.owner_uid,
+    // });
 
     return this.findOne(savedProperty.id)
   }
@@ -149,7 +161,7 @@ export class PropertyService {
     await this.propertyRepository.remove(property)
   }
 
-  async findByOwner(ownerId: number): Promise<PropertyEntity[]> {
+  findByOwner(ownerId: number): Promise<PropertyEntity[]> {
     return this.propertyRepository.find({
       where: { owner_uid: ownerId },
     })

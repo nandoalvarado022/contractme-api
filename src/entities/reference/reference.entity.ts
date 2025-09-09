@@ -1,4 +1,4 @@
-import { UserEntity } from "src/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity"
 import {
   Column,
   CreateDateColumn,
@@ -10,22 +10,19 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 
-@Entity({ name: "education" })
-export class EducationEntity {
+@Entity({ name: "reference" })
+export class ReferenceEntity {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column({ nullable: false, type: "varchar", length: 100 })
-  place: string
+  name: string
+
+  @Column({ nullable: true, type: "varchar", length: 15 })
+  phone: string
 
   @Column({ nullable: false, type: "varchar", length: 100 })
-  title: string
-
-  @Column({ nullable: false, type: "datetime" })
-  start_date: Date
-
-  @Column({ nullable: true, type: "datetime" })
-  end_date: Date
+  relationship: string
 
   @CreateDateColumn()
   created_at: Date
@@ -36,7 +33,7 @@ export class EducationEntity {
   @DeleteDateColumn()
   deleted_at: Date
 
-  @ManyToOne(() => UserEntity, (user) => user.education, {
+  @ManyToOne(() => UserEntity, (user) => user.reference, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "uid" })

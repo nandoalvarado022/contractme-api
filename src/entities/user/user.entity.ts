@@ -1,9 +1,9 @@
-import { AuditLogsEntity } from "src/audit_logs/audit.entity"
+import { AuditLogsEntity } from "src/entities/audit_logs/audit.entity"
 import { DocumentType } from "src/common/enums/document-type"
 import { Role } from "src/common/enums/rol.enum"
-import { EducationEntity } from "src/education/education.entity"
-import { ExperienceEntity } from "src/experience/experience.entity"
-import { ReferenceEntity } from "src/reference/reference.entity"
+import { EducationEntity } from "src/entities/education/education.entity"
+import { ExperienceEntity } from "src/entities/experience/experience.entity"
+import { ReferenceEntity } from "src/entities/reference/reference.entity"
 import {
   Column,
   CreateDateColumn,
@@ -14,24 +14,23 @@ import {
 } from "typeorm"
 
 @Entity({ name: "users" })
-@Entity({ name: "users" })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   uid: number
 
-  @Column({ type: "varchar", length: 100 })
+  @Column()
   name: string
 
-  @Column({ nullable: true, type: "varchar", length: 100 })
+  @Column()
   last_name: string
 
-  @Column({ unique: true, nullable: false })
+  @Column()
   email: string
 
   @Column({ nullable: false })
   password: string
 
-  @Column({ type: "varchar", length: 15 })
+  @Column()
   phone: string
 
   @Column({ type: "enum", enum: DocumentType })
@@ -40,10 +39,10 @@ export class UserEntity {
   @Column({ type: "int" })
   document_number: number
 
-  @Column({ type: "varchar", length: 255 })
+  @Column()
   picture: string
 
-  @Column({ type: "varchar" })
+  @Column()
   birth_date: string
 
   @Column({ type: "enum", default: Role.USER, enum: Role })

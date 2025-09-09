@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @Post("/create")
-  async createUser(@Body() formData: CreateUserDto) {
+  async createUser(@Body() formData/*: CreateUserDto*/) { // TODO: Hacer DTO
     try {
       return await this.userService.createUser(formData)
     } catch (error) {

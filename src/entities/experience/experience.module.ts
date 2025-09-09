@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common"
 import { ExperienceService } from "./experience.service"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { ExperienceEntity } from "./experience.entity"
-import { UserEntity } from "src/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity"
 import { ExperienceController } from "./experience.controller"
 
 @Module({

@@ -2,15 +2,16 @@ import { Injectable } from "@nestjs/common"
 import { UserEntity } from "./user.entity"
 import { Repository } from "typeorm"
 import { InjectRepository } from "@nestjs/typeorm"
-import { AuditLogService } from "src/audit_logs/audit.service"
-import { AuditLogsEntity } from "src/audit_logs/audit.entity"
-import { EducationService } from "src/education/education.service"
-import { ExperienceService } from "src/experience/experience.service"
+import { AuditLogService } from "src/entities/audit_logs/audit.service"
+import { AuditLogsEntity } from "src/entities/audit_logs/audit.entity"
+import { EducationService } from "src/entities/education/education.service"
+import { ExperienceService } from "src/entities/experience/experience.service"
 import { CreateUserDto } from "./dtos/create-user.dto"
 import { UpdateUserDto } from "./dtos/update-user.dto"
 import { RegisterDto } from "src/auth/dto/register.dto"
 import * as bcrypt from "bcrypt"
-import { ReferenceService } from "src/reference/reference.service"
+import { ReferenceService } from "src/entities/reference/reference.service"
+import { Role } from "src/common/enums/rol.enum"
 
 @Injectable()
 export class UserService {
@@ -59,6 +60,7 @@ export class UserService {
     const userDataToCreate = {
       ...body,
       password: hashedPassword,
+      role: Role.USER,
     }
 
     const userToCreate = this.userRepository.create(userDataToCreate)
@@ -73,12 +75,12 @@ export class UserService {
     }
 
     // Saving work experience
-    if (body.experience && body.experience.length > 0) {
-      for (const newExperienceDto of body.experience) {
-        const experienceData = { ...newExperienceDto, uid: savedUser.uid }
-        await this.experienceService.createExperience(experienceData)
-      }
-    }
+    // if (body.experience && body.experience.length > 0) {
+    //   for (const newExperienceDto of body.experience) {
+    //     const experienceData = { ...newExperienceDto, uid: savedUser.uid }
+    //     await this.experienceService.createExperience(experienceData)
+    //   }
+    // }
 
     // Saving references
     if (body.reference && body.reference.length > 0) {
