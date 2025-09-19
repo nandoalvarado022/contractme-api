@@ -168,7 +168,8 @@ export class UserService {
       status: "success",
     }
   }
-  async registerUser(user: RegisterDto) { 
+  
+  async registerUser(user: RegisterDto) {
     const { email, name, password } = user
 
     const newUser = this.userRepository.create({
@@ -195,5 +196,9 @@ export class UserService {
       where: { email },
       select: ["uid", "name", "email", "password", "role"],
     })
+  }
+
+  async updatePassword(email: string, hashedPassword: string): Promise<void> {
+    await this.userRepository.update({ email }, { password: hashedPassword })
   }
 }

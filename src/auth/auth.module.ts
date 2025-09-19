@@ -6,11 +6,16 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants/jwt.constant';
 import { AuditLogService } from 'src/entities/audit_logs/audit.service';
 import { AuditModule } from 'src/entities/audit_logs/audit.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { MailModule } from 'src/common/emails/mail.module';
+import { MailService } from 'src/common/emails/mail.service';
 
 @Module({
   imports: [
     AuditModule,
     UserModule,
+    MailerModule,
+    MailModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
@@ -18,7 +23,7 @@ import { AuditModule } from 'src/entities/audit_logs/audit.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, MailService],
 })
 
 export class AuthModule {}

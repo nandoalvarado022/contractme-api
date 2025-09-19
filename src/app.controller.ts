@@ -25,7 +25,7 @@ export class AppController {
 
   @Get('send-brevo')
   async sendBrevo() {
-    await this.mailService.SendWelcomeEmailBrevo('nandoalvarado022@gmail.com', 'Test User', 'password_remember');
+    await this.mailService.sendEmailBrevo('nandoalvarado022@gmail.com', 'Test User', 'welcome', {});
     return { message: 'Correo enviado con Brevo y template.' };
   }
 

@@ -15,6 +15,7 @@ import { ReferenceModule } from "./entities/reference/reference.module"
 import { MailService } from "./common/emails/mail.service"
 import { MailerModule, MailerService } from '@nestjs-modules/mailer'
 import { FilesModule } from "./files/files.module"
+import { MailModule } from "./common/emails/mail.module"
 
 const getDBConfig = (
   configService: ConfigService,
@@ -79,9 +80,10 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     ExperienceModule,
     ReferenceModule,
     FilesModule,
+    MailModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MailService],
+  providers: [AppService],
 })
 
 export class AppModule { }

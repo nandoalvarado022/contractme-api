@@ -1,7 +1,8 @@
+const nodemailer = require('nodemailer');
+
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { SendRawEmailCommand, SESClient } from '@aws-sdk/client-ses'
-const nodemailer = require('nodemailer');
 import * as fs from 'fs';
 import * as path from 'path';
 import { emailTemplates } from './templates';
@@ -11,33 +12,34 @@ const { SESv2Client, SendEmailCommand } = require("@aws-sdk/client-sesv2");
 export class MailService {
   // constructor(private mailerService: MailerService) { }
 
-  async sendWelcomeEmail(to: string, name: string) {
-    const sesClient = new SESv2Client({
-      region: 'us-east-1',
-      credentials: {
-        accessKeyId: process.env.BREVO_KEY,
-        secretAccessKey: process.env.BREVO_SECRET_KEY,
-      }
-    });
+  // async sendWelcomeEmail(to: string, name: string) {
+  //   const sesClient = new SESv2Client({
+  //     region: 'us-east-1',
+  //     credentials: {
+  //       accessKeyId: process.env.BREVO_KEY,
+  //       secretAccessKey: process.env.BREVO_SECRET_KEY,
+  //     }
+  //   });
 
-    const transporter = nodemailer.createTransport({
-      SES: { sesClient, SendEmailCommand },
-    });
+  //   const transporter = nodemailer.createTransport({
+  //     SES: { sesClient, SendEmailCommand },
+  //   });
 
-    try {
-      await transporter.sendMail({
-        from: "comunicaciones@contractme.cloud",
-        to: [to],
-        subject: '¡Bienvenido a nuestra app! 🎉',
-        text: `Hola ${name}, bienvenido a nuestra plataforma.`,
-      });
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  }
+  //   try {
+  //     await transporter.sendMail({
+  //       from: "comunicaciones@contractme.cloud",
+  //       to: [to],
+  //       subject: '¡Bienvenido a nuestra app! 🎉',
+  //       text: `Hola ${name}, bienvenido a nuestra plataforma.`,
+  //     });
+  //   } catch (error) {
+  //     console.error('Error sending email:', error);
+  //   }
+  // }
 
-  async SendWelcomeEmailBrevo(to: string, name: string, templateName: string) {
-    const fileName = emailTemplates[templateName];
+  async sendEmailBrevo(to: string, name: string, templateName: string, variables: any) {
+    const fileName = emailTemplates[templateName].template;
+    const subject = emailTemplates[templateName].subject;
     if (!fileName) {
       throw new Error('Template de email no encontrado.');
     }
@@ -47,6 +49,10 @@ export class MailService {
     try {
       html = fs.readFileSync(templatePath, 'utf8');
       html = html.replace(/{{\s*name\s*}}/g, name);
+      // Reemplaza las variables adicionales en el template
+      for (const key in variables) {
+        html = html.replace(new RegExp(`{{\\s*${key}\\s*}}`, 'g'), variables[key]);
+      }
     } catch (err) {
       console.error('Error loading email template:', err);
       throw new Error('No se pudo cargar el template de email.');
@@ -67,7 +73,7 @@ export class MailService {
       await transporter.sendMail({
         from: 'Gaby de ContractMe <comunicaciones@contractme.cloud>',
         to: [to],
-        subject: '¡Bienvenido a nuestra app! 🎉',
+        subject,
         html,
       });
     } catch (error) {

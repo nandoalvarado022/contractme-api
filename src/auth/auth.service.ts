@@ -3,12 +3,14 @@ import { RegisterDto } from './dto/register.dto';
 import { UserService } from 'src/entities/user/user.service';
 import * as bcryptjs from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt';
+import { MailService } from '../common/emails/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) { }
 
   async register({ email, name, password }: RegisterDto) {
@@ -26,6 +28,30 @@ export class AuthService {
       name,
       password: hashedPassword
     });
+  }
+
+  async passwordForgotten({ email }) {
+    const user = await this.userService.findOneByEmail(email);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    const tempPassword = Math.random().toString(36).slice(-6);
+
+    // Hashea la contraseña temporal
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(tempPassword, salt);
+
+    await this.userService.updatePassword(user.email, hashedPassword);
+
+    await this.mailService.sendEmailBrevo(
+      user.email,
+      user.name,
+      'password_remember',
+      { name: user.name, tempPassword }
+    );
+
+    return { message: 'Contraseña temporal enviada por correo.' };
   }
 
   async login({ email, password }) {

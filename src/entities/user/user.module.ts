@@ -8,6 +8,7 @@ import { AuditModule } from "src/entities/audit_logs/audit.module"
 import { EducationModule } from "src/entities/education/education.module"
 import { ExperienceModule } from "src/entities/experience/experience.module"
 import { ReferenceModule } from "src/entities/reference/reference.module"
+import { MailModule } from "src/common/emails/mail.module"
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ReferenceModule } from "src/entities/reference/reference.module"
     EducationModule,
     ExperienceModule,
     ReferenceModule,
+    MailModule
   ],
   controllers: [UserController],
   providers: [UserService, AuthService],

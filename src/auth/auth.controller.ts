@@ -46,4 +46,22 @@ export class AuthController {
 
         return this.authService.login(loginDto);
     }
+
+    @Post('password_forgotten')
+    async passwordForgotten(
+        @Body()
+        data,
+    ) {
+        await this.auditLogService.createAuditLog({
+            description: 'Solicitud de restablecimiento de contraseña para <span class="email">' + data.email + '</span>',
+            table: 'users',
+            data: JSON.stringify(data),
+            id: 0,
+            user: null as unknown as UserEntity,
+            created_at: null as unknown as string,
+            user_compromised: null as unknown as UserEntity,
+        });
+
+        return this.authService.passwordForgotten(data);
+    }
 }

@@ -1,11 +1,177 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <title>Bienvenido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Bienvenido a ContractMe!</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .logo {
+      text-align: center;
+      padding: 20px 0 0;
+    }
+
+    .content-box {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      background-color: #4b0082;
+      /* Púrpura oscuro */
+      color: #ffffff;
+      text-align: center;
+      padding: 20px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .footer {
+      background-color: #f5f5f5;
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #777;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      color: #ffffff;
+      background-color: #ff1493;
+      /* Rosa */
+      border-radius: 5px;
+      font-weight: bold;
+      margin: 10px 0;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background-color: #8a2be2;
+      /* Azul violeta */
+    }
+
+    .watermark {
+      opacity: 0.1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+    }
+
+    .purple-pink-line {
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, #4b0082, #ff1493);
+    }
+  </style>
 </head>
-<body>
-  <h1>¡Hola {{name}}!</h1>
-  <p>Bienvenido a nuestra plataforma. Nos alegra tenerte aquí.</p>
+
+<body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%;">
+    <tr>
+      <td align="center" style="padding: 20px 0;">
+        <table class="container" border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+          <tr>
+            <td align="center" style="padding: 0 10px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="content-box" role="presentation"
+                style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+                <tr>
+                  <td
+                    style="height: 5px; background: linear-gradient(to right, #4b0082, #ff1493); border-radius: 8px 8px 0 0;">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="logo">
+                    <img src="https://www.contractme.cloud/images/logo.png" alt="Logo de ContractMe.cloud"
+                      style="display:block; max-width: 220px; height: auto; margin: 0 auto;">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding: 20px;">
+                    <h1 style="color: #4b0082; font-size: 24px; text-align: center; margin-bottom: 20px;">
+                      ¡Bienvenido a ContractMe! 👋</h1>
+                    <p style="color: #333; font-size: 16px; line-height: 1.6; text-align: center;">
+                      Hola, {{name}},</p>
+                    <p style="color: #333; font-size: 16px; line-height: 1.6; text-align: center;">
+                      Estamos emocionados de tenerte con nosotros. A
+                      partir de ahora, puedes empezar a gestionar tus contratos e inmuebles de
+                      forma segura y eficiente.
+                    </p>
+
+                    <p style="color: #333; font-size: 16px; line-height: 1.6; text-align: center;">
+                      Fecha de Registro: <span style="color: #4b0082;">04 de Septiembre,
+                        2025</span></p>
+                    <br>
+
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 20px;">
+                      <tr>
+                        <td align="center">
+                          <a href="https://www.contractme.cloud/actualizar-contrase%C3%B1a" class="btn btn-secondary"
+                            style="display: inline-block; padding: 12px 25px; color: #ffffff; background-color: #8a2be2; border-radius: 5px; font-weight: bold; margin: 10px 0;">Crea
+                            aquí tu contraseña</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <a href="https://api.whatsapp.com/send?phone=573022738347&text=Quiero%20recomendar%20en%20ContractMe%20y%20obtener%20creditos"
+                            class="" style="display: inline-block; padding: 12px 25px; margin: 10px 0;">Recomiéndanos
+                            y obtén créditos gratis</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="footer" align="center" style="padding: 20px; font-size: 12px; color: #777;">
+              <p style="margin: 0;">© 2025 ContractMe.cloud. Todos los derechos reservados.</p>
+              <p style="margin: 5px 0 0;"><a href="URL_DESUSCRIBIRSE" style="color: #4b0082;">Desuscribirse</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
+
 </html>
