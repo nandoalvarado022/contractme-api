@@ -4,6 +4,7 @@ import { UserService } from 'src/entities/user/user.service';
 import * as bcryptjs from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from '../common/emails/mail.service';
+import { spanishMessages } from 'src/common/constants/messages';
 
 @Injectable()
 export class AuthService {
@@ -31,27 +32,32 @@ export class AuthService {
   }
 
   async passwordForgotten({ email }) {
-    const user = await this.userService.findOneByEmail(email);
-    if (!user) {
-      throw new BadRequestException('User not found');
+    try {
+      const user = await this.userService.findOneByEmail(email);
+      if (!user) {
+        throw new BadRequestException(spanishMessages.auth.USER_NOT_FOUND);
+      }
+
+      const tempPassword = Math.random().toString(36).slice(-6);
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash(tempPassword, salt);
+
+      await this.userService.updatePassword(user.email, hashedPassword);
+
+      await this.mailService.sendEmailBrevo(
+        user.email,
+        user.name,
+        'password_remember',
+        { name: user.name, tempPassword }
+      );
+
+      return { message: spanishMessages.auth.TEMP_PASSWORD_SENT };
+    } catch (error) {
+      return {
+        message: error.message,
+        code: error.status || 500,
+      }
     }
-
-    const tempPassword = Math.random().toString(36).slice(-6);
-
-    // Hashea la contraseña temporal
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(tempPassword, salt);
-
-    await this.userService.updatePassword(user.email, hashedPassword);
-
-    await this.mailService.sendEmailBrevo(
-      user.email,
-      user.name,
-      'password_remember',
-      { name: user.name, tempPassword }
-    );
-
-    return { message: 'Contraseña temporal enviada por correo.' };
   }
 
   async login({ email, password }) {
