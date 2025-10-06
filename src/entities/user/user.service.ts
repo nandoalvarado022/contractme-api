@@ -37,7 +37,6 @@ export class UserService {
         "picture",
         "document_number",
         "document_type",
-        "last_name",
       ],
     })
 

@@ -42,7 +42,6 @@ El módulo de usuarios es el núcleo del sistema ContractMe. Maneja la informaci
 {
   uid: number,                    // ID único del usuario
   name: string,                   // Nombre principal
-  last_name?: string,             // Apellido (opcional)
   email: string,                  // Email único
   password: string,               // Contraseña hasheada
   phone: string,                  // Teléfono
@@ -147,7 +146,6 @@ GET /users
     {
       "uid": 1,
       "name": "Juan Carlos",
-      "last_name": "Pérez García",
       "email": "juan.perez@email.com",
       "phone": "3001234567",
       "document_type": "cc",
@@ -178,7 +176,6 @@ GET /users/:uid
   "data": {
     "uid": 1,
     "name": "Juan Carlos",
-    "last_name": "Pérez García",
     "email": "juan.perez@email.com",
     "phone": "3001234567",
     "document_type": "cc",
@@ -201,7 +198,6 @@ POST /users/create
 ```json
 {
   "name": "Juan Carlos",
-  "last_name": "Pérez García",
   "email": "juan.perez@email.com",
   "password": "temporal123",
   "phone": "3001234567",
@@ -242,7 +238,6 @@ POST /users/create
   "data": {
     "uid": 1,
     "name": "Juan Carlos",
-    "last_name": "Pérez García",
     "email": "juan.perez@email.com",
     "created_at": "2024-08-23T10:30:00Z"
   },
@@ -264,7 +259,6 @@ PUT /users/edit/:id
 ```json
 {
   "name": "Juan Carlos",
-  "last_name": "Pérez García Actualizado",
   "phone": "3001234567",
   "education": [
     {
@@ -290,7 +284,6 @@ PUT /users/edit/:id
   "data": {
     "uid": 1,
     "name": "Juan Carlos",
-    "last_name": "Pérez García Actualizado"
   },
   "message": "Usuario editado con éxito",
   "status": "success",
@@ -371,7 +364,6 @@ POST /users/auth/register
 | Campo | Tipo | Validación | Requerido |
 |-------|------|------------|-----------|
 | `name` | string | No vacío | ✅ |
-| `last_name` | string | - | ❌ |
 | `email` | string | Email válido, único | ✅ |
 | `password` | string | No vacío (se hashea automáticamente) | ✅ |
 | `phone` | string | No vacío | ✅ |
