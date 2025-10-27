@@ -32,7 +32,7 @@ export class ContactService {
 
     try {
       await this.mailService.sendEmailBrevo(
-        'alvaropedrozo07@gmail.com',
+        'contractme395@gmail.com',
         'Equipo ContractMe',
         'new_lead_notification',
         {
