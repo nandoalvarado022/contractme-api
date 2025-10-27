@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Nuevo Lead - ContractMe</title>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #eaeaea;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #eaeaea; padding: 40px 0;">
+    <tr>
+      <td align="center">
+        <!-- Main Container -->
+        <table width="650" border="0" cellspacing="0" cellpadding="0"
+          style="max-width: 650px; background-color: #ffffff;">
+
+          <!-- Header -->
+          <tr>
+            <td bgcolor="#610d75" style="padding: 45px 40px; text-align: center;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <!-- Icon -->
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td bgcolor="#db42be" width="90" height="90"
+                          style="border-radius: 50%; text-align: center; vertical-align: middle;">
+                          <table border="0" cellspacing="0" cellpadding="0" width="50" height="50"
+                            style="margin: 20px auto;">
+                            <tr>
+                              <td bgcolor="#ffffff" width="50" height="50" style="border-radius: 50%;"></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-top: 25px;">
+                    <h1
+                      style="margin: 0; color: #fff; font-family: Arial, sans-serif; font-size: 30px; font-weight: bold;">
+                      Nuevo Lead Registrado
+                    </h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-top: 15px;">
+                    <table border="0" cellspacing="0" cellpadding="0" style="margin: 0 auto;">
+                      <tr>
+                        <td bgcolor="#db42be" style="padding: 10px 25px; border-radius: 20px;">
+                          <p
+                            style="margin: 0; color: #ffffff; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+                            REQUIERE ATENCIÓN
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Alert Banner -->
+          <tr>
+            <td bgcolor="#e7f0fb" style="padding: 20px 40px; border-bottom: 3px solid #610d75;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <p
+                      style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold;">
+                      Nuevo contacto recibido a través del formulario web
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Main Content -->
+          <tr>
+            <td style="padding: 45px 40px;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                <!-- Section Title -->
+                <tr>
+                  <td style="padding-bottom: 25px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td>
+                          <h2
+                            style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 22px; font-weight: bold;">
+                            Información del Lead
+                          </h2>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top: 10px;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td bgcolor="#610d75" width="60" height="3"></td>
+                              <td bgcolor="#eaeaea" height="1"></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Info Grid -->
+                <tr>
+                  <td style="padding-bottom: 30px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                      <!-- Row 1: Nombre -->
+                      <tr>
+                        <td bgcolor="#eaeaea" style="padding: 20px 25px;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="35%">
+                                <p
+                                  style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">
+                                  Nombre Completo
+                                </p>
+                              </td>
+                              <td>
+                                <p
+                                  style="margin: 0; color: #3a3a3a; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold;">
+                                  {{fullName}}
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- Spacer -->
+                      <tr>
+                        <td height="1"></td>
+                      </tr>
+
+                      <!-- Row 2: Email -->
+                      <tr>
+                        <td bgcolor="#ffffff" style="padding: 20px 25px; border: 1px solid #eaeaea;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="35%">
+                                <p
+                                  style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">
+                                  Email
+                                </p>
+                              </td>
+                              <td>
+                                <a href="mailto:{{email}}"
+                                  style="margin: 0; color: #db42be; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; text-decoration: none;">
+                                  {{email}}
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- Spacer -->
+                      <tr>
+                        <td height="1"></td>
+                      </tr>
+
+                      <!-- Row 3: Teléfono -->
+                      <tr>
+                        <td bgcolor="#eaeaea" style="padding: 20px 25px;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="35%">
+                                <p
+                                  style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">
+                                  Teléfono
+                                </p>
+                              </td>
+                              <td>
+                                <p
+                                  style="margin: 0; color: #3a3a3a; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold;">
+                                  {{phone}}
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- Spacer -->
+                      <tr>
+                        <td height="1"></td>
+                      </tr>
+
+                      <!-- Row 4: Motivo -->
+                      <tr>
+                        <td bgcolor="#ffffff" style="padding: 20px 25px; border: 1px solid #eaeaea;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="35%">
+                                <p
+                                  style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">
+                                  Motivo de Contacto
+                                </p>
+                              </td>
+                              <td>
+                                <table border="0" cellspacing="0" cellpadding="0">
+                                  <tr>
+                                    <td bgcolor="#610d75" style="padding: 8px 20px; border-radius: 20px;">
+                                      <p
+                                        style="margin: 0; color: #ffffff; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold;">
+                                        {{reason}}
+                                      </p>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- Spacer -->
+                      <tr>
+                        <td height="1"></td>
+                      </tr>
+
+                      <!-- Row 5: Fecha -->
+                      <tr>
+                        <td bgcolor="#eaeaea" style="padding: 20px 25px;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="35%">
+                                <p
+                                  style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">
+                                  Fecha de Registro
+                                </p>
+                              </td>
+                              <td>
+                                <p
+                                  style="margin: 0; color: #3a3a3a; font-family: Arial, sans-serif; font-size: 14px; font-style: italic;">
+                                  {{date}}
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Message Section -->
+                <tr>
+                  <td style="padding-bottom: 35px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#e7f0fb"
+                      style="border-left: 4px solid #db42be;">
+                      <tr>
+                        <td style="padding: 30px;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td style="padding-bottom: 15px;">
+                                <h3
+                                  style="margin: 0; color: #610d75; font-family: Arial, sans-serif; font-size: 18px; font-weight: bold;">
+                                  Mensaje del Lead
+                                </h3>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <p
+                                  style="margin: 0; color: #3a3a3a; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.7; white-space: pre-wrap;">
+                                  {{message}}</p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- CTA Button -->
+                <tr>
+                  <td style="padding-bottom: 35px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#610d75">
+                      <tr>
+                        <td style="padding: 35px; text-align: center;">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td align="center" style="padding-bottom: 15px;">
+                                <p
+                                  style="margin: 0; color: #ffffff; font-family: Arial, sans-serif; font-size: 20px; font-weight: bold;">
+                                  Acción Recomendada
+                                </p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="center" style="padding-bottom: 20px;">
+                                <p
+                                  style="margin: 0; color: #ffffff; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5;">
+                                  Responde al lead lo antes posible para aumentar las probabilidades de conversión
+                                </p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="center">
+                                <table border="0" cellspacing="0" cellpadding="0">
+                                  <tr>
+                                    <td bgcolor="#db42be" style="padding: 15px 40px; border-radius: 30px;">
+                                      <a href="mailto:{{email}}"
+                                        style="color: #ffffff; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Responder Ahora
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td bgcolor="#3a3a3a" style="padding: 35px 40px;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center" style="padding-bottom: 15px;">
+                    <p
+                      style="margin: 0; color: #ffffff; font-family: Arial, sans-serif; font-size: 18px; font-weight: bold;">
+                      ContractMe
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 15px; border-top: 1px solid #ffffff;">
+                    <p style="margin: 10px 0 0 0; color: #eaeaea; font-family: Arial, sans-serif; font-size: 10px;">
+                      &copy; 2025 ContractMe. Todos los derechos reservados.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
