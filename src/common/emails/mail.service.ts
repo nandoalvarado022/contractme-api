@@ -57,7 +57,6 @@ export class MailService {
       console.error('Error loading email template:', err);
       throw new Error('No se pudo cargar el template de email.');
     }
-
     const transporter = nodemailer.createTransport({
       // host: 'smtp-relay.brevo.com',
       host: process.env.BREVO_SMTP_HOST,
