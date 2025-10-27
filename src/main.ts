@@ -12,6 +12,7 @@ async function bootstrap() {
       "https://contractme.cloud",
       "https://www.contractme.cloud",
       "http://localhost",
+      "http://localhost:4321", // Landing page port
       "https://qa.contractme.cloud",
       "https://develop.contractme.cloud",
     ],
