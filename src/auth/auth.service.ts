@@ -1,7 +1,12 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { UserService } from 'src/entities/user/user.service';
-import * as bcryptjs from 'bcryptjs'
+import * as bcryptjs from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from '../common/emails/mail.service';
 import { spanishMessages } from 'src/common/constants/messages';
@@ -11,8 +16,8 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly mailService: MailService,
-  ) { }
+    private readonly mailService: MailService
+  ) {}
 
   async register({ email, name, password }: RegisterDto) {
     const user = await this.userService.findOneByEmail(email);
@@ -27,7 +32,7 @@ export class AuthService {
     return this.userService.registerUser({
       email,
       name,
-      password: hashedPassword
+      password: hashedPassword,
     });
   }
 
@@ -56,7 +61,7 @@ export class AuthService {
       return {
         message: error.message,
         code: error.status || 500,
-      }
+      };
     }
   }
 
@@ -79,6 +84,38 @@ export class AuthService {
       message: `Bienvenido ${userBd.name}`,
       token,
       uid: userBd.uid,
+      status: 'success',
+      statusCode: 200,
+    };
+  }
+
+  async changePassword({
+    email,
+    currentPassword,
+    newPassword,
+  }: ChangePasswordDto) {
+    const user = await this.userService.findByEmailWithPassword(email);
+
+    if (!user) {
+      throw new BadRequestException(spanishMessages.auth.USER_NOT_FOUND);
+    }
+
+    const isPasswordValid = await bcryptjs.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('La contraseña actual es incorrecta');
+    }
+
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(newPassword, salt);
+
+    await this.userService.updatePassword(user.email, hashedPassword);
+
+    return {
+      message: 'Contraseña actualizada exitosamente',
       status: 'success',
       statusCode: 200,
     };
