@@ -24,6 +24,14 @@ export class AuthService {
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
+    // Enviando correo de bienvenida
+    await this.mailService.sendEmailBrevo(
+      email,
+      name,
+      'welcome',
+      { name }
+    );
+
     return this.userService.registerUser({
       email,
       name,

@@ -13,6 +13,9 @@ import * as bcrypt from "bcrypt"
 import { ReferenceService } from "src/entities/reference/reference.service"
 import { Role } from "src/common/enums/rol.enum"
 
+var StatsD = require('hot-shots');
+var dogstatsd = new StatsD();
+
 @Injectable()
 export class UserService {
   constructor(
@@ -44,6 +47,7 @@ export class UserService {
   }
 
   async getUsers() {
+    dogstatsd.increment('services.user.getUsers');
     const userFound = await this.userRepository.find()
 
     return {

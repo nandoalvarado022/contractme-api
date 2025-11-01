@@ -33,8 +33,9 @@ const getDBConfig = (
 }
 
 const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
-  const nodeEnv = configService.get<string>("NODE_ENV")
-  const env = nodeEnv === "production" ? "REMOTE" : "LOCAL"
+  // const nodeEnv = configService.get<string>("NODE_ENV")
+  // const env = nodeEnv === "production" ? "REMOTE" : "LOCAL"
+  const env = "REMOTE"
   return getDBConfig(configService, env)
 }
 

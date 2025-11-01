@@ -48,7 +48,7 @@ export class UserController {
     }
   }
 
-  @Put("/edit/:id")
+  @Post("/edit/:id")
   async editUser(
     @Param("id", ParseIntPipe) id: number,
     @Body() user: UpdateUserDto

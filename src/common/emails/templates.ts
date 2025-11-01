@@ -1,6 +1,6 @@
 export const emailTemplates = {
     welcome: {
-        subject: 'Welcome to Our Service',
+        subject: 'Bienvenido a ContractMe 💜',
         template: 'welcome.html'
     },
     password_remember: {
