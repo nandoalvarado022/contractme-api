@@ -16,6 +16,9 @@ import {
 import { ConfigService } from "@nestjs/config"
 import { UserEntity } from "src/entities/user/user.entity"
 
+var StatsD = require('hot-shots');
+var dogstatsd = new StatsD();
+
 @Injectable()
 export class FilesService {
   private readonly logger = new Logger(FilesService.name)
@@ -83,6 +86,8 @@ export class FilesService {
 
   async uploadFile(file: Express.Multer.File, uid: number) {
     this.logger.log(`Starting file upload for user uid: ${uid}`)
+    const start = Date.now();
+    dogstatsd.increment('services.files.uploadFile');
 
     try {
       const user = await this.validateUser(uid)
@@ -119,10 +124,25 @@ export class FilesService {
         uploadedAt: new Date(),
       }
 
+      dogstatsd.increment('services.files.uploadFile.success');
+      const durationMs = Date.now() - start;
+      dogstatsd.histogram('services.files.uploadFile.duration', durationMs, [
+        'repository:files',
+        'operation:upload',
+        'status:success',
+      ]);
+
       this.logger.log(`File uploaded successfully for user ${uid}: ${path}`)
       return result
     } catch (error) {
       this.logger.error(`Error uploading file for user ${uid}:`, error.stack)
+      dogstatsd.increment('services.files.uploadFile.error');
+      const durationMs = Date.now() - start;
+      dogstatsd.histogram('services.files.uploadFile.duration', durationMs, [
+        'repository:files',
+        'operation:upload',
+        'status:error',
+      ]);
 
       if (
         error instanceof NotFoundException ||

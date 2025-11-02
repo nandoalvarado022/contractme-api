@@ -6,6 +6,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { loginDto } from 'src/types/user';
 import * as bcryptjs from 'bcryptjs'
 
+var StatsD = require('hot-shots');
+var dogstatsd = new StatsD();
+
 @Injectable()
 export class ContractService {
   constructor(
@@ -24,20 +27,40 @@ export class ContractService {
   async getTemplates(id?: number) {
     const whereCondition = id ? { ct_id: id } : {};
 
-    const templates = await this.contractTemplatesRepository.find({
-      where: whereCondition,
-      relations: {
-        fields: true,
-      },
-      order: {
-        fields: {
-          order: 'ASC',
-        },
-      },
-    });
+    const start = Date.now();
+    dogstatsd.increment('services.contract.getTemplates');
 
-    return (id)
-      ? templates[0]
-      : templates;
+    try {
+      const templates = await this.contractTemplatesRepository.find({
+        where: whereCondition,
+        relations: {
+          fields: true,
+        },
+        order: {
+          fields: {
+            order: 'ASC',
+          },
+        },
+      });
+
+      const durationMs = Date.now() - start;
+      dogstatsd.histogram('services.contract.getTemplates.duration', durationMs, [
+        'repository:contract_templates',
+        'operation:getTemplates',
+        'status:success',
+      ]);
+
+      return (id)
+        ? templates[0]
+        : templates;
+    } catch (error) {
+      const durationMs = Date.now() - start;
+      dogstatsd.histogram('services.contract.getTemplates.duration', durationMs, [
+        'repository:contract_templates',
+        'operation:getTemplates',
+        'status:error',
+      ]);
+      throw error;
+    }
   }
 }

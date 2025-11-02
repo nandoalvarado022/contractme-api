@@ -6,6 +6,9 @@ import { JwtService } from '@nestjs/jwt';
 import { MailService } from '../common/emails/mail.service';
 import { spanishMessages } from 'src/common/constants/messages';
 
+var StatsD = require('hot-shots');
+var dogstatsd = new StatsD();
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -15,28 +18,52 @@ export class AuthService {
   ) { }
 
   async register({ email, name, password }: RegisterDto) {
-    const user = await this.userService.findOneByEmail(email);
+    const start = Date.now();
+    try {
+      const user = await this.userService.findOneByEmail(email);
 
-    if (user) {
-      throw new BadRequestException('User already exists');
+      if (user) {
+        throw new BadRequestException('User already exists');
+      }
+
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash(password, salt);
+
+      dogstatsd.increment('services.user.register');
+
+      // Enviando correo de bienvenida
+      await this.mailService.sendEmailBrevo(
+        email,
+        name,
+        'welcome',
+        { name }
+      );
+
+      const registerResp = await this.userService.registerUser({
+        email,
+        name,
+        password: hashedPassword
+      });
+
+      const durationMs = Date.now() - start;
+      dogstatsd.increment('services.user.register.success');
+      dogstatsd.histogram('services.user.register.duration', durationMs, [
+        'repository:user',
+        'operation:register',
+        'status:success',
+      ]);
+
+      return registerResp;
+    } catch (error) {
+      const durationMs = Date.now() - start;
+      dogstatsd.increment('services.user.register.error');
+      dogstatsd.histogram('services.user.register.duration', durationMs, [
+        'repository:user',
+        'operation:register',
+        'status:error',
+      ]);
+      throw error;
     }
-
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(password, salt);
-
-    // Enviando correo de bienvenida
-    await this.mailService.sendEmailBrevo(
-      email,
-      name,
-      'welcome',
-      { name }
-    );
-
-    return this.userService.registerUser({
-      email,
-      name,
-      password: hashedPassword
-    });
   }
 
   async passwordForgotten({ email }) {
@@ -45,6 +72,8 @@ export class AuthService {
       if (!user) {
         throw new BadRequestException(spanishMessages.auth.USER_NOT_FOUND);
       }
+
+      dogstatsd.increment('services.user.passwordForgotten');
 
       const tempPassword = Math.random().toString(36).slice(-6);
       const salt = await bcryptjs.genSalt(10);
@@ -69,6 +98,8 @@ export class AuthService {
   }
 
   async login({ email, password }) {
+    dogstatsd.increment('services.user.login');
+    const start = Date.now();
     const userBd = await this.userService.findByEmailWithPassword(email);
     if (!userBd) {
       throw new UnauthorizedException('email is wrong');
@@ -76,11 +107,19 @@ export class AuthService {
 
     const isPasswordValid = await bcryptjs.compare(password, userBd.password);
     if (!isPasswordValid) {
+      dogstatsd.increment('services.user.login.error');
       throw new UnauthorizedException('password is wrong');
     }
 
     const payload = { email: userBd.email, role: userBd.role };
     const token = await this.jwtService.signAsync(payload);
+    dogstatsd.increment('services.user.login.success');
+    const durationMs = Date.now() - start;
+
+    dogstatsd.histogram('services.user.login.duration', durationMs, [
+      'repository:user',
+      'operation:login',
+    ]);
 
     return {
       email,

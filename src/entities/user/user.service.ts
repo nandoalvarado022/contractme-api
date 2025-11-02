@@ -25,7 +25,7 @@ export class UserService {
     private educationService: EducationService,
     private experienceService: ExperienceService,
     private referenceService: ReferenceService
-  ) {}
+  ) { }
 
   async getUser(params = {}) {
     const userFound = await this.userRepository.findOne({
@@ -47,12 +47,29 @@ export class UserService {
   }
 
   async getUsers() {
-    dogstatsd.increment('services.user.getUsers');
-    const userFound = await this.userRepository.find()
+    const start = Date.now();
+    try {
+      dogstatsd.increment('services.user.getUsers');
+      const userFound = await this.userRepository.find()
+      const durationMs = Date.now() - start;
+      dogstatsd.increment('services.user.getUsers.success');
+      dogstatsd.histogram('services.user.getUsers.duration', durationMs, [
+        'repository:user',
+        'status:success',
+      ]);
 
-    return {
-      data: userFound,
-      total: userFound.length,
+      return {
+        data: userFound,
+        total: userFound.length,
+      }
+    } catch (error) {
+      const durationMs = Date.now() - start;
+      dogstatsd.increment('services.user.getUsers.error');
+      dogstatsd.histogram('services.user.getUsers.duration', durationMs, [
+        'repository:user',
+        'status:error',
+      ]);
+      throw error;
     }
   }
 
@@ -171,7 +188,7 @@ export class UserService {
       status: "success",
     }
   }
-  
+
   async registerUser(user: RegisterDto) {
     const { email, name, password } = user
 
