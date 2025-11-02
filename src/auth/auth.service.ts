@@ -67,12 +67,12 @@ export class AuthService {
   }
 
   async passwordForgotten({ email }) {
+    const start = Date.now();
     try {
       const user = await this.userService.findOneByEmail(email);
       if (!user) {
         throw new BadRequestException(spanishMessages.auth.USER_NOT_FOUND);
       }
-
       dogstatsd.increment('services.user.passwordForgotten');
 
       const tempPassword = Math.random().toString(36).slice(-6);
@@ -88,8 +88,24 @@ export class AuthService {
         { name: user.name, tempPassword }
       );
 
+      const durationMs = Date.now() - start;
+      dogstatsd.increment('services.user.passwordForgotten.success');
+      dogstatsd.histogram('services.user.passwordForgotten.duration', durationMs, [
+        'repository:user',
+        'operation:passwordForgotten',
+        'status:success',
+      ]);
+
       return { message: spanishMessages.auth.TEMP_PASSWORD_SENT };
     } catch (error) {
+      const durationMs = Date.now() - start;
+      dogstatsd.increment('services.user.passwordForgotten.error');
+      dogstatsd.histogram('services.user.passwordForgotten.duration', durationMs, [
+        'repository:user',
+        'operation:passwordForgotten',
+        'status:error',
+      ]);
+
       return {
         message: error.message,
         code: error.status || 500,

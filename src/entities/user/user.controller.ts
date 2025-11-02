@@ -31,6 +31,11 @@ export class UserController {
     return this.userService.getUsers()
   }
 
+  @Get("get-credits")
+  getCreditsUser() {
+    return this.userService.getCredits()
+  }
+
   @Get(":uid?")
   getUser(@Param("uid") uid: number) {
     const params: any = {}

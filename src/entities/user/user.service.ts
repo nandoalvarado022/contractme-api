@@ -73,6 +73,28 @@ export class UserService {
     }
   }
 
+  getCredits(params = {}) {
+    // TODO: For demo purposes
+    const randomNumber = Math.random();
+    if (randomNumber < 0.5) {
+      return {
+        data: {
+          credits: 0,
+        },
+        message: "No tienes créditos disponibles",
+        status: "error",
+      }
+    }
+
+    return {
+      data: {
+        credits: 100, // This would typically be fetched from a database
+      },
+      message: "Créditos disponibles",
+      status: "success",
+    }
+  }
+
   async createUser(body: CreateUserDto) {
     const defaultPassword = "contractme"
     const hashedPassword = await bcrypt.hash(defaultPassword, 10)

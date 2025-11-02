@@ -6,6 +6,7 @@ import { ContractTemplateEntity } from './contract_templates.entity';
 import { ContractEntity } from './contract.entity';
 import { ContractFieldsEntity } from './contract_fields.entity';
 import { ContractTemplateFieldsEntity } from './contract_templates_fields.entity';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -14,7 +15,9 @@ import { ContractTemplateFieldsEntity } from './contract_templates_fields.entity
       ContractFieldsEntity,
       ContractTemplateEntity,
       ContractTemplateFieldsEntity,
-    ])],
+    ]),
+    UserModule,
+  ],
   controllers: [ContractController],
   providers: [ContractService],
   exports: [ContractService],

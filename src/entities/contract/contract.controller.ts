@@ -19,4 +19,9 @@ export class ContractController {
   getContractsTemplates(@Param('id') id?: number) {
     return this.contractService.getTemplates(id);
   } 
+
+  @Post('generate')
+  generateContract() {
+    return this.contractService.generateContract();
+  }
 }
