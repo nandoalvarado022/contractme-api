@@ -49,10 +49,17 @@ export class UserService {
   async getUsers() {
     const start = Date.now();
     try {
-      dogstatsd.increment('services.user.getUsers');
+      dogstatsd.increment('services', [
+        'service:user',
+        'action:getUsers',
+      ]);
       const userFound = await this.userRepository.find()
       const durationMs = Date.now() - start;
-      dogstatsd.increment('services.user.getUsers.success');
+      dogstatsd.increment('services', [
+        'service:user',
+        'action:getUsers',
+        'status:success',
+      ]);
       dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
         'service:user',

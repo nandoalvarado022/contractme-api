@@ -87,7 +87,10 @@ export class FilesService {
   async uploadFile(file: Express.Multer.File, uid: number) {
     this.logger.log(`Starting file upload for user uid: ${uid}`)
     const start = Date.now();
-    dogstatsd.increment('services.files.uploadFile');
+    dogstatsd.increment('services', [
+      'service:files',
+      'action:uploadFile',
+    ]);
 
     try {
       const user = await this.validateUser(uid)
@@ -124,7 +127,11 @@ export class FilesService {
         uploadedAt: new Date(),
       }
 
-      dogstatsd.increment('services.files.uploadFile.success');
+      dogstatsd.increment('services', [
+        'service:files',
+        'action:uploadFile',
+        'status:success',
+      ]);
       const durationMs = Date.now() - start;
       dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
@@ -136,11 +143,15 @@ export class FilesService {
       return result
     } catch (error) {
       this.logger.error(`Error uploading file for user ${uid}:`, error.stack)
-      dogstatsd.increment('services.files.uploadFile.error');
+      dogstatsd.increment('services', [
+        'service:files',
+        'action:uploadFile',
+        'status:error',
+      ]);
       const durationMs = Date.now() - start;
       dogstatsd.histogram('services.duration', durationMs, [
         'service:files',
-        'action:upload',
+        'action:uploadFile',
         'status:error',
       ]);
 

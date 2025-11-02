@@ -30,7 +30,10 @@ export class ContractService {
     const whereCondition = id ? { ct_id: id } : {};
 
     const start = Date.now();
-    dogstatsd.increment('services.contract.getTemplates');
+    dogstatsd.increment('services', [
+      'service:contract',
+      'action:getTemplates',
+    ]);
 
     try {
       const templates = await this.contractTemplatesRepository.find({
@@ -68,18 +71,30 @@ export class ContractService {
 
   async generateContract(id?: number) {
     const start = Date.now();
-    dogstatsd.increment('services.contract.generate');
+    dogstatsd.increment('services', [
+      'service:contract',
+      'action:generateContract',
+    ]);
 
     try {
       const params = id ? { uid: id } : {};
       const creditsResp = this.userService.getCredits(params);
 
       if (creditsResp.data.credits < 1) {
-        dogstatsd.increment('services.contract.generate.insufficient_credits');
+        dogstatsd.increment('services', [
+          'service:contract',
+          'action:generateContract',
+          'status:error',
+          'reason:insufficient_credits',
+        ]);
       }
 
       const durationMs = Date.now() - start;
-      dogstatsd.increment('services.contract.generate.success');
+      dogstatsd.increment('services', [
+        'status:success',
+        'service:contract',
+        'action:generateContract',
+      ]);
       dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
         'service:contract',
@@ -89,7 +104,11 @@ export class ContractService {
       return creditsResp;
     } catch (error) {
       const durationMs = Date.now() - start;
-      dogstatsd.increment('services.contract.generate.error');
+      dogstatsd.increment('services', [
+        'status:error',
+        'service:contract',
+        'action:generateContract',
+      ]);
       dogstatsd.histogram('services.duration', durationMs, [
         'status:error',
         'service:contract',

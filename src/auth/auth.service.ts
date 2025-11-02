@@ -29,7 +29,10 @@ export class AuthService {
       const salt = await bcryptjs.genSalt(10);
       const hashedPassword = await bcryptjs.hash(password, salt);
 
-      dogstatsd.increment('services.user.register');
+      dogstatsd.increment('services', [
+        'service:auth',
+        'action:register',
+      ]);
 
       // Enviando correo de bienvenida
       await this.mailService.sendEmailBrevo(
@@ -46,9 +49,12 @@ export class AuthService {
       });
 
       const durationMs = Date.now() - start;
-      dogstatsd.increment('services.user.register.success');
+      dogstatsd.increment('services', [
+        'service:auth',
+        'action:register',
+        'status:success',
+      ]);
       dogstatsd.histogram('services.duration', durationMs, [
-        'operation:register',
         'status:success',
         'service:auth',
         'action:register',
@@ -57,9 +63,12 @@ export class AuthService {
       return registerResp;
     } catch (error) {
       const durationMs = Date.now() - start;
-      dogstatsd.increment('services.user.register.error');
+      dogstatsd.increment('services', [
+        'service:auth',
+        'action:register',
+        'status:error',
+      ]);
       dogstatsd.histogram('services.duration', durationMs, [
-        'operation:register',
         'status:error',
         'service:auth',
         'action:register',
@@ -75,7 +84,10 @@ export class AuthService {
       if (!user) {
         throw new BadRequestException(spanishMessages.auth.USER_NOT_FOUND);
       }
-      dogstatsd.increment('services.user.passwordForgotten');
+      dogstatsd.increment('services', [
+        'service:auth',
+        'action:passwordForgotten',
+      ]);
 
       const tempPassword = Math.random().toString(36).slice(-6);
       const salt = await bcryptjs.genSalt(10);
@@ -91,7 +103,11 @@ export class AuthService {
       );
 
       const durationMs = Date.now() - start;
-      dogstatsd.increment('services.user.passwordForgotten.success');
+      dogstatsd.increment('services', [
+        'service:auth',
+        'action:passwordForgotten',
+        'status:success',
+      ]);
       dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
         'service:auth',
@@ -101,7 +117,11 @@ export class AuthService {
       return { message: spanishMessages.auth.TEMP_PASSWORD_SENT };
     } catch (error) {
       const durationMs = Date.now() - start;
-      dogstatsd.increment('services.user.passwordForgotten.error');
+      dogstatsd.increment('services', [
+        'service:auth',
+        'action:passwordForgotten',
+        'status:error',
+      ]);
       dogstatsd.histogram('services.duration', durationMs, [
         'status:error',
         'service:auth',
@@ -116,7 +136,10 @@ export class AuthService {
   }
 
   async login({ email, password }) {
-    dogstatsd.increment('services.user.login');
+    dogstatsd.increment('services', [
+      'service:auth',
+      'action:login',
+    ]);
     const start = Date.now();
     const userBd = await this.userService.findByEmailWithPassword(email);
     if (!userBd) {
@@ -125,13 +148,23 @@ export class AuthService {
 
     const isPasswordValid = await bcryptjs.compare(password, userBd.password);
     if (!isPasswordValid) {
-      dogstatsd.increment('services.user.login.error');
+      dogstatsd.increment('services', [
+        'service:auth',
+        'action:login',
+        'status:error',
+        'reason:invalid_password',
+      ]);
+      const durationMs = Date.now() - start;
       throw new UnauthorizedException('password is wrong');
     }
 
     const payload = { email: userBd.email, role: userBd.role };
     const token = await this.jwtService.signAsync(payload);
-    dogstatsd.increment('services.user.login.success');
+    dogstatsd.increment('services', [
+      'service:auth',
+      'action:login',
+      'status:success',
+    ]);
     const durationMs = Date.now() - start;
 
     dogstatsd.histogram('services.duration', durationMs, [
