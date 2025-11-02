@@ -46,10 +46,10 @@ export class ContractService {
       });
 
       const durationMs = Date.now() - start;
-      dogstatsd.histogram('services.contract.getTemplates.duration', durationMs, [
-        'repository:contract_templates',
-        'operation:getTemplates',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
+        'service:contract',
+        'action:getTemplates',
       ]);
 
       return (id)
@@ -57,10 +57,10 @@ export class ContractService {
         : templates;
     } catch (error) {
       const durationMs = Date.now() - start;
-      dogstatsd.histogram('services.contract.getTemplates.duration', durationMs, [
-        'repository:contract_templates',
-        'operation:getTemplates',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:error',
+        'service:contract',
+        'action:getTemplates',
       ]);
       throw error;
     }
@@ -80,20 +80,20 @@ export class ContractService {
 
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.contract.generate.success');
-      dogstatsd.histogram('services.contract.generate.duration', durationMs, [
-        'repository:contract_templates',
-        'operation:generateContract',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
+        'service:contract',
+        'action:generateContract',
       ]);
 
       return creditsResp;
     } catch (error) {
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.contract.generate.error');
-      dogstatsd.histogram('services.contract.generate.duration', durationMs, [
-        'repository:contract_templates',
-        'operation:generateContract',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:error',
+        'service:contract',
+        'action:generateContract',
       ]);
       throw error;
     }

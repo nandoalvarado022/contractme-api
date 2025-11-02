@@ -126,10 +126,10 @@ export class FilesService {
 
       dogstatsd.increment('services.files.uploadFile.success');
       const durationMs = Date.now() - start;
-      dogstatsd.histogram('services.files.uploadFile.duration', durationMs, [
-        'repository:files',
-        'operation:upload',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
+        'service:files',
+        'operation:upload',
       ]);
 
       this.logger.log(`File uploaded successfully for user ${uid}: ${path}`)
@@ -138,9 +138,9 @@ export class FilesService {
       this.logger.error(`Error uploading file for user ${uid}:`, error.stack)
       dogstatsd.increment('services.files.uploadFile.error');
       const durationMs = Date.now() - start;
-      dogstatsd.histogram('services.files.uploadFile.duration', durationMs, [
-        'repository:files',
-        'operation:upload',
+      dogstatsd.histogram('services.duration', durationMs, [
+        'service:files',
+        'action:upload',
         'status:error',
       ]);
 

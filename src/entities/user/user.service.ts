@@ -53,9 +53,10 @@ export class UserService {
       const userFound = await this.userRepository.find()
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.user.getUsers.success');
-      dogstatsd.histogram('services.user.getUsers.duration', durationMs, [
-        'repository:user',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
+        'service:user',
+        'action:getUsers',
       ]);
 
       return {
@@ -65,9 +66,10 @@ export class UserService {
     } catch (error) {
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.user.getUsers.error');
-      dogstatsd.histogram('services.user.getUsers.duration', durationMs, [
-        'repository:user',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:error',
+        'service:user',
+        'action:getUsers',
       ]);
       throw error;
     }

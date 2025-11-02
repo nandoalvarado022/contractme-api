@@ -47,20 +47,22 @@ export class AuthService {
 
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.user.register.success');
-      dogstatsd.histogram('services.user.register.duration', durationMs, [
-        'repository:user',
+      dogstatsd.histogram('services.duration', durationMs, [
         'operation:register',
         'status:success',
+        'service:auth',
+        'action:register',
       ]);
 
       return registerResp;
     } catch (error) {
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.user.register.error');
-      dogstatsd.histogram('services.user.register.duration', durationMs, [
-        'repository:user',
+      dogstatsd.histogram('services.duration', durationMs, [
         'operation:register',
         'status:error',
+        'service:auth',
+        'action:register',
       ]);
       throw error;
     }
@@ -90,20 +92,20 @@ export class AuthService {
 
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.user.passwordForgotten.success');
-      dogstatsd.histogram('services.user.passwordForgotten.duration', durationMs, [
-        'repository:user',
-        'operation:passwordForgotten',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:success',
+        'service:auth',
+        'action:passwordForgotten',
       ]);
 
       return { message: spanishMessages.auth.TEMP_PASSWORD_SENT };
     } catch (error) {
       const durationMs = Date.now() - start;
       dogstatsd.increment('services.user.passwordForgotten.error');
-      dogstatsd.histogram('services.user.passwordForgotten.duration', durationMs, [
-        'repository:user',
-        'operation:passwordForgotten',
+      dogstatsd.histogram('services.duration', durationMs, [
         'status:error',
+        'service:auth',
+        'action:passwordForgotten',
       ]);
 
       return {
@@ -132,9 +134,10 @@ export class AuthService {
     dogstatsd.increment('services.user.login.success');
     const durationMs = Date.now() - start;
 
-    dogstatsd.histogram('services.user.login.duration', durationMs, [
-      'repository:user',
-      'operation:login',
+    dogstatsd.histogram('services.duration', durationMs, [
+      'status:success',
+      'service:auth',
+      'action:login',
     ]);
 
     return {
