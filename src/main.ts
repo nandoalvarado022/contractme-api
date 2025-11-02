@@ -9,11 +9,11 @@ async function bootstrap() {
     credentials: true, // Si usas cookies o auth
     methods: ["GET", "POST", "PUT", "DELETE"],
     origin: [
-      "https://contractme.cloud",
-      "https://www.contractme.cloud",
+      "https://app.contractme.cloud",
       "http://localhost",
-      "https://qa.contractme.cloud",
-      "https://develop.contractme.cloud",
+      "http://localhost:4321", // landing page
+      "https://qa.app.contractme.cloud",
+      "https://develop.app.contractme.cloud",
     ],
   })
 
