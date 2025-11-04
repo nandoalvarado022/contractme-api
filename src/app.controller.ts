@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AppService } from './app.service';
-import { MailService } from './common/emails/mail.service';
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { MailService } from "./common/emails/mail.service";
 // import { MailerService } from '@nestjs-modules/mailer';
 
 @Controller()
@@ -8,8 +8,8 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly mailService: MailService,
-    // private readonly mailerService: MailerService,
-  ) { }
+  ) // private readonly mailerService: MailerService,
+  {}
 
   @Get()
   async getHello() {
@@ -23,13 +23,18 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('send-brevo')
+  @Get("send-brevo")
   async sendBrevo() {
-    await this.mailService.sendEmailBrevo('nandoalvarado022@gmail.com', 'Test User', 'welcome', {});
-    return { message: 'Correo enviado con Brevo y template.' };
+    await this.mailService.sendEmailBrevo(
+      "nandoalvarado022@gmail.com",
+      "Test User",
+      "welcome",
+      {},
+    );
+    return { message: "Correo enviado con Brevo y template." };
   }
 
-  @Get('logs')
+  @Get("logs")
   getLogs() {
     return this.appService.getLogs();
   }

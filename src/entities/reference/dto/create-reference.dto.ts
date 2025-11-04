@@ -1,19 +1,19 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateReferenceDto {
   @IsString()
   @IsNotEmpty()
-  name: string
+  name: string;
 
   @IsString()
   @IsOptional()
-  phone?: string
+  phone?: string;
 
   @IsString()
   @IsNotEmpty()
-  relationship: string
+  relationship: string;
 
   @IsNumber()
   @IsOptional()
-  uid?: number
+  uid?: number;
 }
