@@ -23,7 +23,7 @@ export class AuthService {
     const user = await this.userService.findOneByEmail(email);
 
     if (user) {
-      throw new BadRequestException('User already exists');
+      throw new BadRequestException(spanishMessages.auth.USER_ALREADY_EXISTS);
     }
 
     const salt = await bcryptjs.genSalt(10);
@@ -68,12 +68,12 @@ export class AuthService {
   async login({ email, password }) {
     const userBd = await this.userService.findByEmailWithPassword(email);
     if (!userBd) {
-      throw new UnauthorizedException('email is wrong');
+      throw new UnauthorizedException(spanishMessages.auth.EMAIL_WRONG);
     }
 
     const isPasswordValid = await bcryptjs.compare(password, userBd.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('password is wrong');
+      throw new UnauthorizedException(spanishMessages.auth.PASSWORD_WRONG);
     }
 
     const payload = { email: userBd.email, role: userBd.role };
@@ -81,10 +81,10 @@ export class AuthService {
 
     return {
       email,
-      message: `Bienvenido ${userBd.name}`,
+      message: `${spanishMessages.auth.WELCOME} ${userBd.name}`,
       token,
       uid: userBd.uid,
-      status: 'success',
+      status: spanishMessages.common.SUCCESS,
       statusCode: 200,
     };
   }
@@ -106,7 +106,9 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('La contraseña actual es incorrecta');
+      throw new UnauthorizedException(
+        spanishMessages.auth.CURRENT_PASSWORD_WRONG
+      );
     }
 
     const salt = await bcryptjs.genSalt(10);
@@ -115,8 +117,8 @@ export class AuthService {
     await this.userService.updatePassword(user.email, hashedPassword);
 
     return {
-      message: 'Contraseña actualizada exitosamente',
-      status: 'success',
+      message: spanishMessages.auth.PASSWORD_CHANGED,
+      status: spanishMessages.common.SUCCESS,
       statusCode: 200,
     };
   }
