@@ -7,10 +7,10 @@ import {
   Param,
   Body,
   ParseIntPipe,
-} from "@nestjs/common"
-import { ExperienceService } from "./experience.service"
-import { CreateExperienceDto, UpdateExperienceDto } from "./dto"
-import { ResponseMessage } from "src/common/decorators"
+} from "@nestjs/common";
+import { ExperienceService } from "./experience.service";
+import { CreateExperienceDto, UpdateExperienceDto } from "./dto";
+import { ResponseMessage } from "src/common/decorators";
 
 @Controller("experience")
 export class ExperienceController {
@@ -19,33 +19,33 @@ export class ExperienceController {
   @Get("user/:uid")
   @ResponseMessage("Experience records retrieved successfully")
   getExperienceByUser(@Param("uid", ParseIntPipe) uid: number) {
-    return this.experienceService.getExperienceByUid(uid)
+    return this.experienceService.getExperienceByUid(uid);
   }
 
   @Get(":id")
   @ResponseMessage("Experience record retrieved successfully")
   getExperienceById(@Param("id", ParseIntPipe) id: number) {
-    return this.experienceService.getExperienceById(id)
+    return this.experienceService.getExperienceById(id);
   }
 
   @Post()
   @ResponseMessage("Experience record created successfully")
   createExperience(@Body() createExperienceDto: CreateExperienceDto) {
-    return this.experienceService.createExperience(createExperienceDto)
+    return this.experienceService.createExperience(createExperienceDto);
   }
 
   @Put(":id")
   @ResponseMessage("Experience record updated successfully")
   updateExperience(
     @Param("id", ParseIntPipe) id: number,
-    @Body() updateExperienceDto: UpdateExperienceDto
+    @Body() updateExperienceDto: UpdateExperienceDto,
   ) {
-    return this.experienceService.updateExperience(id, updateExperienceDto)
+    return this.experienceService.updateExperience(id, updateExperienceDto);
   }
 
   @Delete(":id")
   @ResponseMessage("Experience record deleted successfully")
   deleteExperience(@Param("id", ParseIntPipe) id: number) {
-    return this.experienceService.deleteExperience(id)
+    return this.experienceService.deleteExperience(id);
   }
 }

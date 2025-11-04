@@ -1,12 +1,7 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { ContractTemplateFieldsEntity } from './contract_templates_fields.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ContractTemplateFieldsEntity } from "./contract_templates_fields.entity";
 
-@Entity({ name: 'contracts_templates' })
+@Entity({ name: "contracts_templates" })
 export class ContractTemplateEntity {
   @PrimaryGeneratedColumn()
   ct_id: number;
@@ -29,6 +24,9 @@ export class ContractTemplateEntity {
   @Column({ nullable: false })
   created_at: string;
 
-  @OneToMany(() => ContractTemplateFieldsEntity, entity => entity.contractTemplate)
+  @OneToMany(
+    () => ContractTemplateFieldsEntity,
+    (entity) => entity.contractTemplate,
+  )
   fields: ContractTemplateFieldsEntity[];
 }

@@ -1,49 +1,49 @@
-import { UserEntity } from "src/entities/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity";
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from "typeorm"
-import { PropertyEntity } from "./property.entity"
+} from "typeorm";
+import { PropertyEntity } from "./property.entity";
 
 @Entity({ name: "property_interested" })
 export class PropertyInterested {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column()
-  name: string
+  name: string;
 
   @Column()
-  phone: string
+  phone: string;
 
   @Column()
-  email: string
+  email: string;
 
   @ManyToOne(() => PropertyEntity, (property) => property.interested, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "property_id" })
-  property: PropertyEntity
+  property: PropertyEntity;
 
   @Column()
-  property_id: number
+  property_id: number;
 
   @ManyToOne(() => UserEntity, { nullable: true })
   @JoinColumn({ name: "user_id" })
-  user: UserEntity
+  user: UserEntity;
 
   @Column({ nullable: true })
-  user_id: number
+  user_id: number;
 
   @Column({
     type: "datetime",
     default: () => "CURRENT_TIMESTAMP",
     nullable: false,
   })
-  created_at: Date
+  created_at: Date;
 
   @Column({
     type: "datetime",
@@ -51,5 +51,5 @@ export class PropertyInterested {
     onUpdate: "CURRENT_TIMESTAMP",
     nullable: false,
   })
-  updated_at: Date
+  updated_at: Date;
 }

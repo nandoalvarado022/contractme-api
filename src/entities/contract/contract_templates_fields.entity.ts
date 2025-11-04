@@ -4,10 +4,10 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { ContractTemplateEntity } from './contract_templates.entity';
+} from "typeorm";
+import { ContractTemplateEntity } from "./contract_templates.entity";
 
-@Entity({ name: 'contracts_templates_fields' })
+@Entity({ name: "contracts_templates_fields" })
 export class ContractTemplateFieldsEntity {
   @PrimaryGeneratedColumn()
   ctf_id: number;
@@ -17,7 +17,7 @@ export class ContractTemplateFieldsEntity {
 
   @Column()
   order: number;
-  
+
   @Column()
   name: string;
 
@@ -31,15 +31,15 @@ export class ContractTemplateFieldsEntity {
   type: string;
 
   @Column({ nullable: true })
-  x: number
+  x: number;
 
   @Column({ nullable: true })
-  y: number
-  
-  @Column({ nullable: true })
-  page: number
+  y: number;
 
-  @ManyToOne(() => ContractTemplateEntity, entity => entity.fields)
-  @JoinColumn({ name: 'ct_id', referencedColumnName: 'ct_id' })
+  @Column({ nullable: true })
+  page: number;
+
+  @ManyToOne(() => ContractTemplateEntity, (entity) => entity.fields)
+  @JoinColumn({ name: "ct_id", referencedColumnName: "ct_id" })
   contractTemplate: ContractTemplateEntity;
 }

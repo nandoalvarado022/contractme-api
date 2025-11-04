@@ -1,4 +1,4 @@
-import { UserEntity } from "src/entities/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity";
 import {
   Column,
   Entity,
@@ -6,74 +6,74 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm"
-import { PropertyNote } from "./property-note.entity"
-import { PropertyInterested } from "./property-interested.entity"
+} from "typeorm";
+import { PropertyNote } from "./property-note.entity";
+import { PropertyInterested } from "./property-interested.entity";
 
 @Entity({ name: "properties" })
 export class PropertyEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column()
-  city: string
+  city: string;
 
   @Column()
-  address: string
+  address: string;
 
   @Column()
-  image: string
+  image: string;
 
   @Column("decimal", { precision: 10, scale: 2 })
-  price: number
+  price: number;
 
   @Column()
-  type: string
+  type: string;
 
   @Column()
-  bedrooms: number
+  bedrooms: number;
 
   @Column()
-  bathrooms: number
+  bathrooms: number;
 
   @Column("decimal", { precision: 10, scale: 2 })
-  area: number
+  area: number;
 
   @Column("text")
-  description: string
+  description: string;
 
   @ManyToOne(() => UserEntity, { eager: true })
   @JoinColumn({ name: "owner_uid" })
-  owner: UserEntity
+  owner: UserEntity;
 
   @Column()
-  owner_uid: number
+  owner_uid: number;
 
   @ManyToOne(() => UserEntity, { nullable: true, eager: true })
   @JoinColumn({ name: "tenant_id" })
-  tenant: UserEntity
+  tenant: UserEntity;
 
   @Column({ nullable: true })
-  tenant_id: number
+  tenant_id: number;
 
   @OneToMany(() => PropertyNote, (note) => note.property, {
     cascade: true,
     eager: true,
   })
-  notes: PropertyNote[]
+  notes: PropertyNote[];
 
   @OneToMany(() => PropertyInterested, (interested) => interested.property, {
     cascade: true,
     eager: true,
   })
-  interested: PropertyInterested[]
+  interested: PropertyInterested[];
 
   @Column({
     type: "datetime",
     default: () => "CURRENT_TIMESTAMP",
     nullable: false,
   })
-  created_at: Date
+  created_at: Date;
 
   @Column({
     type: "datetime",
@@ -81,5 +81,5 @@ export class PropertyEntity {
     onUpdate: "CURRENT_TIMESTAMP",
     nullable: false,
   })
-  updated_at: Date
+  updated_at: Date;
 }
