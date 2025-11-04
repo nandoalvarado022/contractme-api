@@ -23,9 +23,8 @@ export class PropertyService {
     private readonly interestedRepository: Repository<PropertyInterested>,
 
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
-  ) // @InjectRepository(AuditLogsEntity)
-  // private readonly logsRepository: Repository<AuditLogsEntity>
+    private readonly userRepository: Repository<UserEntity>, // @InjectRepository(AuditLogsEntity)
+  ) // private readonly logsRepository: Repository<AuditLogsEntity>
   {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<PropertyEntity> {
