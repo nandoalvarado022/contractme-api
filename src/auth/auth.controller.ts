@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterDto } from "./dto/register.dto";
+import { ChangePasswordDto } from "./dto/change-password.dto";
 import { AuditLogService } from "src/entities/audit_logs/audit.service";
 import { UserEntity } from "src/entities/user/user.entity";
 
@@ -66,5 +67,26 @@ export class AuthController {
     });
 
     return this.authService.passwordForgotten(data);
+  }
+
+  @Post("change_password")
+  async changePassword(
+    @Body()
+    changePasswordDto: ChangePasswordDto,
+  ) {
+    await this.auditLogService.createAuditLog({
+      description:
+        'Cambio de contraseña para <span class="email">' +
+        changePasswordDto.email +
+        "</span>",
+      table: "users",
+      data: JSON.stringify({ email: changePasswordDto.email }),
+      id: 0,
+      user: null as unknown as UserEntity,
+      created_at: null as unknown as string,
+      user_compromised: null as unknown as UserEntity,
+    });
+
+    return this.authService.changePassword(changePasswordDto);
   }
 }

@@ -12,6 +12,7 @@ import { RegisterDto } from "src/auth/dto/register.dto";
 import * as bcrypt from "bcrypt";
 import { ReferenceService } from "src/entities/reference/reference.service";
 import { Role } from "src/common/enums/rol.enum";
+import { spanishMessages } from "src/common/constants/messages";
 
 @Injectable()
 export class UserService {
@@ -104,8 +105,8 @@ export class UserService {
 
     return {
       data: savedUser,
-      message: "Usuario guardado con éxito",
-      status: "success",
+      message: spanishMessages.user.USER_SAVED,
+      status: spanishMessages.common.SUCCESS,
     };
   }
 
@@ -117,8 +118,8 @@ export class UserService {
     });
     if (!userFound) {
       return {
-        message: "Usuario no encontrado",
-        status: "error",
+        message: spanishMessages.user.USER_NOT_FOUND,
+        status: spanishMessages.common.ERROR,
       };
     }
     const updatedUser = this.userRepository.merge(userFound, body);
@@ -163,8 +164,8 @@ export class UserService {
 
     return {
       data: userFound,
-      message: "Usuario editado con éxito",
-      status: "success",
+      message: spanishMessages.user.USER_EDITED,
+      status: spanishMessages.common.SUCCESS,
     };
   }
 
@@ -181,8 +182,8 @@ export class UserService {
 
     return {
       data: savedUser,
-      message: "Usuario registrado con éxito",
-      status: "success",
+      message: spanishMessages.user.USER_REGISTERED,
+      status: spanishMessages.common.SUCCESS,
     };
   }
 
