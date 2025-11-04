@@ -1,25 +1,25 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { AuditLogService } from 'src/entities/audit_logs/audit.service';
-import { UserEntity } from 'src/entities/user/user.entity';
+import { Body, Controller, Post } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { RegisterDto } from "./dto/register.dto";
+import { ChangePasswordDto } from "./dto/change-password.dto";
+import { AuditLogService } from "src/entities/audit_logs/audit.service";
+import { UserEntity } from "src/entities/user/user.entity";
 
 @Controller("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly auditLogService: AuditLogService
+    private readonly auditLogService: AuditLogService,
   ) {}
 
-  @Post('register')
+  @Post("register")
   register(
     @Body()
-    registerDto: RegisterDto
+    registerDto: RegisterDto,
   ) {
     this.auditLogService.createAuditLog({
-      description: 'Usuario creado',
-      table: 'users',
+      description: "Usuario creado",
+      table: "users",
       data: JSON.stringify(registerDto),
       id: 0,
       user: null as unknown as UserEntity,
@@ -30,14 +30,14 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
-  @Post('login')
+  @Post("login")
   async login(
     @Body()
-    loginDto
+    loginDto,
   ) {
     await this.auditLogService.createAuditLog({
       description: `<span class="email">${loginDto.email}</span> inició sesión`,
-      table: 'users',
+      table: "users",
       data: JSON.stringify(loginDto),
       id: 0,
       user: null as unknown as UserEntity,
@@ -48,17 +48,17 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Post('password_forgotten')
+  @Post("password_forgotten")
   async passwordForgotten(
     @Body()
-    data
+    data,
   ) {
     await this.auditLogService.createAuditLog({
       description:
         'Solicitud de restablecimiento de contraseña para <span class="email">' +
         data.email +
-        '</span>',
-      table: 'users',
+        "</span>",
+      table: "users",
       data: JSON.stringify(data),
       id: 0,
       user: null as unknown as UserEntity,
@@ -69,17 +69,17 @@ export class AuthController {
     return this.authService.passwordForgotten(data);
   }
 
-  @Post('change_password')
+  @Post("change_password")
   async changePassword(
     @Body()
-    changePasswordDto: ChangePasswordDto
+    changePasswordDto: ChangePasswordDto,
   ) {
     await this.auditLogService.createAuditLog({
       description:
         'Cambio de contraseña para <span class="email">' +
         changePasswordDto.email +
-        '</span>',
-      table: 'users',
+        "</span>",
+      table: "users",
       data: JSON.stringify({ email: changePasswordDto.email }),
       id: 0,
       user: null as unknown as UserEntity,

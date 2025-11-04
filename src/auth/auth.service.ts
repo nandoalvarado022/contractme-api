@@ -2,21 +2,21 @@ import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { RegisterDto } from './dto/register.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { UserService } from 'src/entities/user/user.service';
-import * as bcryptjs from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
-import { MailService } from '../common/emails/mail.service';
-import { spanishMessages } from 'src/common/constants/messages';
+} from "@nestjs/common";
+import { RegisterDto } from "./dto/register.dto";
+import { ChangePasswordDto } from "./dto/change-password.dto";
+import { UserService } from "src/entities/user/user.service";
+import * as bcryptjs from "bcryptjs";
+import { JwtService } from "@nestjs/jwt";
+import { MailService } from "../common/emails/mail.service";
+import { spanishMessages } from "src/common/constants/messages";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly mailService: MailService
+    private readonly mailService: MailService,
   ) {}
 
   async register({ email, name, password }: RegisterDto) {
@@ -102,12 +102,12 @@ export class AuthService {
 
     const isPasswordValid = await bcryptjs.compare(
       currentPassword,
-      user.password
+      user.password,
     );
 
     if (!isPasswordValid) {
       throw new UnauthorizedException(
-        spanishMessages.auth.CURRENT_PASSWORD_WRONG
+        spanishMessages.auth.CURRENT_PASSWORD_WRONG,
       );
     }
 
