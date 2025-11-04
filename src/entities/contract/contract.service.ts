@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Injectable } from '@nestjs/common';
-import { ContractTemplateEntity } from './contract_templates.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { loginDto } from 'src/types/user';
-import * as bcryptjs from 'bcryptjs'
+import { Injectable } from "@nestjs/common";
+import { ContractTemplateEntity } from "./contract_templates.entity";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { loginDto } from "src/types/user";
+import * as bcryptjs from "bcryptjs";
 
 @Injectable()
 export class ContractService {
   constructor(
     @InjectRepository(ContractTemplateEntity)
     private contractTemplatesRepository: Repository<ContractTemplateEntity>,
-  ) { }
+  ) {}
 
   async getContracts(params = {}) {
     const contractsFound = await this.contractTemplatesRepository.find({
@@ -31,13 +31,11 @@ export class ContractService {
       },
       order: {
         fields: {
-          order: 'ASC',
+          order: "ASC",
         },
       },
     });
 
-    return (id)
-      ? templates[0]
-      : templates;
+    return id ? templates[0] : templates;
   }
 }

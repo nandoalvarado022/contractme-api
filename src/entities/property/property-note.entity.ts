@@ -4,33 +4,32 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from "typeorm"
-import { PropertyEntity } from "./property.entity"
+} from "typeorm";
+import { PropertyEntity } from "./property.entity";
 
 @Entity({ name: "property_notes" })
 export class PropertyNote {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column("text")
-  text: string
+  text: string;
 
   @ManyToOne(() => PropertyEntity, (property) => property.notes, {
     onDelete: "CASCADE",
   })
-
   @JoinColumn({ name: "property_id" })
-  property: PropertyEntity
+  property: PropertyEntity;
 
   @Column()
-  property_id: number
+  property_id: number;
 
   @Column({
     type: "datetime",
     default: () => "CURRENT_TIMESTAMP",
     nullable: false,
   })
-  created_at: Date
+  created_at: Date;
 
   @Column({
     type: "datetime",
@@ -38,5 +37,5 @@ export class PropertyNote {
     onUpdate: "CURRENT_TIMESTAMP",
     nullable: false,
   })
-  updated_at: Date
+  updated_at: Date;
 }

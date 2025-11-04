@@ -1,9 +1,9 @@
-import { IsString, IsDateString, IsNumber } from "class-validator"
+import { IsString, IsDateString, IsNumber } from "class-validator";
 
 export class CreatePropertyNoteDto {
   @IsNumber()
-  property_id: number
+  property_id: number;
 
   @IsString()
-  text: string
+  text: string;
 }

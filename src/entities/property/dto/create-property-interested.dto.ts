@@ -1,16 +1,16 @@
-import { IsString, IsEmail, IsOptional, IsNumber } from "class-validator"
+import { IsString, IsEmail, IsOptional, IsNumber } from "class-validator";
 
 export class CreatePropertyInterestedDto {
   @IsString()
-  name: string
+  name: string;
 
   @IsString()
-  phone: string
+  phone: string;
 
   @IsEmail()
-  email: string
+  email: string;
 
   @IsNumber()
   @IsOptional()
-  user_id?: number
+  user_id?: number;
 }
