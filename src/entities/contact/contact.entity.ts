@@ -1,10 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { TYPE_CONTACT, TypeContact } from "./contact.model";
 
-@Entity('leads')
+@Entity("leads")
 export class ContactEntity {
   @PrimaryGeneratedColumn()
-  lid: number
+  lid: number;
 
   @Column({
     type: "varchar",
@@ -12,7 +12,7 @@ export class ContactEntity {
     name: "full_name",
     nullable: false,
   })
-  fullName: string
+  fullName: string;
 
   @Column({
     type: "varchar",
@@ -20,7 +20,7 @@ export class ContactEntity {
     name: "email",
     nullable: false,
   })
-  email: string
+  email: string;
 
   @Column({
     type: "varchar",
@@ -28,7 +28,7 @@ export class ContactEntity {
     name: "phone",
     nullable: true,
   })
-  phone: string
+  phone: string;
 
   @Column({
     type: "enum",
@@ -36,12 +36,12 @@ export class ContactEntity {
     name: "type_contact",
     nullable: false,
   })
-  reason: TypeContact
+  reason: TypeContact;
 
   @Column({
     type: "text",
     name: "message",
     nullable: false,
   })
-  message: string
+  message: string;
 }

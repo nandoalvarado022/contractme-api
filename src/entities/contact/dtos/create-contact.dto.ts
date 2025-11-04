@@ -4,8 +4,8 @@ import {
   IsOptional,
   IsString,
   MaxLength,
-} from 'class-validator';
-import { TypeContact } from '../contact.model';
+} from "class-validator";
+import { TypeContact } from "../contact.model";
 
 export class CreateContactDto {
   @IsString()
