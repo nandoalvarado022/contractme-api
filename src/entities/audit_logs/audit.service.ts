@@ -7,16 +7,15 @@ import { Repository } from "typeorm";
 export class AuditLogService {
   constructor(
     @InjectRepository(AuditLogsEntity)
-    private auditLogsRepository: Repository<AuditLogsEntity>
-  ) { }
+    private auditLogsRepository: Repository<AuditLogsEntity>,
+  ) {}
 
   async createAuditLog(auditLog: AuditLogsEntity) {
-    try{
-      
+    try {
       return this.auditLogsRepository.save(auditLog);
     } catch (error) {
-      console.error('Error creating audit log:', error);
-      throw new Error('Error creating audit log');
+      console.error("Error creating audit log:", error);
+      throw new Error("Error creating audit log");
     }
   }
 }

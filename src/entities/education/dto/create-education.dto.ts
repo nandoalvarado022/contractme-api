@@ -4,26 +4,26 @@ import {
   IsOptional,
   IsDateString,
   IsNumber,
-} from "class-validator"
+} from "class-validator";
 
 export class CreateEducationDto {
   @IsString()
   @IsNotEmpty()
-  place: string
+  place: string;
 
   @IsString()
   @IsNotEmpty()
-  title: string
+  title: string;
 
   @IsDateString()
   @IsNotEmpty()
-  start_date: string
+  start_date: string;
 
   @IsDateString()
   @IsOptional()
-  end_date?: string
+  end_date?: string;
 
   @IsNumber()
   @IsOptional()
-  uid?: number
+  uid?: number;
 }

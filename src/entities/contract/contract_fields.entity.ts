@@ -4,16 +4,16 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
-} from 'typeorm';
+} from "typeorm";
 
-@Entity({ name: 'contracts_fields' })
+@Entity({ name: "contracts_fields" })
 export class ContractFieldsEntity {
   @PrimaryGeneratedColumn()
   cf_id: number;
 
   @Column()
   cid: number;
-  
+
   @Column()
   name: string;
 

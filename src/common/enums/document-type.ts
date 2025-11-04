@@ -1,6 +1,6 @@
 export enum DocumentType {
-  CC = 'cc',
-  NIT = 'nit',
-  TI = 'ti',
-  CE = 'ce',
+  CC = "cc",
+  NIT = "nit",
+  TI = "ti",
+  CE = "ce",
 }
