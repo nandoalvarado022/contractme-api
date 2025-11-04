@@ -22,7 +22,7 @@ export class UserService {
     private auditLogService: AuditLogService,
     private educationService: EducationService,
     private experienceService: ExperienceService,
-    private referenceService: ReferenceService
+    private referenceService: ReferenceService,
   ) {}
 
   async getUser(params = {}) {

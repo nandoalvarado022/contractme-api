@@ -1,11 +1,6 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
-@Entity({ name: 'contracts' })
+@Entity({ name: "contracts" })
 export class ContractEntity {
   @PrimaryGeneratedColumn()
   cid: number;

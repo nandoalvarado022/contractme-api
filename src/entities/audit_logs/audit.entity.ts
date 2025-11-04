@@ -1,5 +1,5 @@
-import { Role } from 'src/common/enums/rol.enum';
-import { UserEntity } from 'src/entities/user/user.entity';
+import { Role } from "src/common/enums/rol.enum";
+import { UserEntity } from "src/entities/user/user.entity";
 import {
   Column,
   DeleteDateColumn,
@@ -8,9 +8,9 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
+} from "typeorm";
 
-@Entity({ name: 'audit_logs' })
+@Entity({ name: "audit_logs" })
 export class AuditLogsEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,11 +27,11 @@ export class AuditLogsEntity {
   @Column({ nullable: true })
   created_at: string;
 
-  @ManyToOne(() => UserEntity, user => user.logs, { nullable: true })
-  @JoinColumn({ name: 'uid' }) 
+  @ManyToOne(() => UserEntity, (user) => user.logs, { nullable: true })
+  @JoinColumn({ name: "uid" })
   user: UserEntity;
 
-  @ManyToOne(() => UserEntity, user => user.logs, { nullable: true })
-  @JoinColumn({ name: 'uid_compromised' }) 
+  @ManyToOne(() => UserEntity, (user) => user.logs, { nullable: true })
+  @JoinColumn({ name: "uid_compromised" })
   user_compromised: UserEntity;
 }

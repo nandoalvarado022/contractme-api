@@ -1,11 +1,11 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
-import { Injectable } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer';
-import { SendRawEmailCommand, SESClient } from '@aws-sdk/client-ses'
-import * as fs from 'fs';
-import * as path from 'path';
-import { emailTemplates } from './templates';
+import { Injectable } from "@nestjs/common";
+import { MailerService } from "@nestjs-modules/mailer";
+import { SendRawEmailCommand, SESClient } from "@aws-sdk/client-ses";
+import * as fs from "fs";
+import * as path from "path";
+import { emailTemplates } from "./templates";
 const { SESv2Client, SendEmailCommand } = require("@aws-sdk/client-sesv2");
 
 @Injectable()
@@ -37,25 +37,37 @@ export class MailService {
   //   }
   // }
 
-  async sendEmailBrevo(to: string, name: string, templateName: string, variables: any) {
+  async sendEmailBrevo(
+    to: string,
+    name: string,
+    templateName: string,
+    variables: any,
+  ) {
     const fileName = emailTemplates[templateName].template;
     const subject = emailTemplates[templateName].subject;
     if (!fileName) {
-      throw new Error('Template de email no encontrado.');
+      throw new Error("Template de email no encontrado.");
     }
 
-    const templatePath = path.join(__dirname, '../../assets/email_templates', fileName);
-    let html = '';
+    const templatePath = path.join(
+      __dirname,
+      "../../assets/email_templates",
+      fileName,
+    );
+    let html = "";
     try {
-      html = fs.readFileSync(templatePath, 'utf8');
+      html = fs.readFileSync(templatePath, "utf8");
       html = html.replace(/{{\s*name\s*}}/g, name);
       // Reemplaza las variables adicionales en el template
       for (const key in variables) {
-        html = html.replace(new RegExp(`{{\\s*${key}\\s*}}`, 'g'), variables[key]);
+        html = html.replace(
+          new RegExp(`{{\\s*${key}\\s*}}`, "g"),
+          variables[key],
+        );
       }
     } catch (err) {
-      console.error('Error loading email template:', err);
-      throw new Error('No se pudo cargar el template de email.');
+      console.error("Error loading email template:", err);
+      throw new Error("No se pudo cargar el template de email.");
     }
 
     const transporter = nodemailer.createTransport({
@@ -71,13 +83,13 @@ export class MailService {
 
     try {
       await transporter.sendMail({
-        from: 'Gaby de ContractMe <comunicaciones@contractme.cloud>',
+        from: "Gaby de ContractMe <comunicaciones@contractme.cloud>",
         to: [to],
         subject,
         html,
       });
     } catch (error) {
-      console.error('Error sending email with Brevo:', error);
+      console.error("Error sending email with Brevo:", error);
     }
   }
 

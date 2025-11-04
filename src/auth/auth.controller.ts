@@ -5,7 +5,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuditLogService } from 'src/entities/audit_logs/audit.service';
 import { UserEntity } from 'src/entities/user/user.entity';
 
-@Controller('auth')
+@Controller("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,

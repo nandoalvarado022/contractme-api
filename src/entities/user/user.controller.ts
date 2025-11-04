@@ -7,18 +7,18 @@ import {
   ParseIntPipe,
   Post,
   Put,
-} from "@nestjs/common"
-import { UserService } from "./user.service"
-import { AuthService } from "src/auth/auth.service"
-import { UpdateUserDto } from "./dtos/update-user.dto"
-import { RegisterDto } from "src/auth/dto/register.dto"
-import { CreateUserDto } from "./dtos/create-user.dto"
+} from "@nestjs/common";
+import { UserService } from "./user.service";
+import { AuthService } from "src/auth/auth.service";
+import { UpdateUserDto } from "./dtos/update-user.dto";
+import { RegisterDto } from "src/auth/dto/register.dto";
+import { CreateUserDto } from "./dtos/create-user.dto";
 
 @Controller("users")
 export class UserController {
   constructor(
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   // @Get()
@@ -28,46 +28,47 @@ export class UserController {
 
   @Get()
   getUsers() {
-    return this.userService.getUsers()
+    return this.userService.getUsers();
   }
 
   @Get(":uid?")
   getUser(@Param("uid") uid: number) {
-    const params: any = {}
-    if (uid) params.uid = uid
-    return this.userService.getUser(params)
+    const params: any = {};
+    if (uid) params.uid = uid;
+    return this.userService.getUser(params);
   }
 
   @Post("/create")
-  async createUser(@Body() formData/*: CreateUserDto*/) { // TODO: Hacer DTO
+  async createUser(@Body() formData /*: CreateUserDto*/) {
+    // TODO: Hacer DTO
     try {
-      return await this.userService.createUser(formData)
+      return await this.userService.createUser(formData);
     } catch (error) {
-      console.error("Error creating user:", error)
-      return { status: "error", message: error.message }
+      console.error("Error creating user:", error);
+      return { status: "error", message: error.message };
     }
   }
 
   @Put("/edit/:id")
   async editUser(
     @Param("id", ParseIntPipe) id: number,
-    @Body() user: UpdateUserDto
+    @Body() user: UpdateUserDto,
   ) {
     try {
-      return await this.userService.updateUser(id, user)
+      return await this.userService.updateUser(id, user);
     } catch (error) {
-      console.error("Error editing user:", error)
-      return { status: "error", message: error.message }
+      console.error("Error editing user:", error);
+      return { status: "error", message: error.message };
     }
   }
 
   @Post("auth/register")
   async saveUser(@Body() formData: RegisterDto) {
     try {
-      return await this.authService.register(formData)
+      return await this.authService.register(formData);
     } catch (error) {
-      console.error("Error saving user:", error)
-      return { status: "error", message: error.message }
+      console.error("Error saving user:", error);
+      return { status: "error", message: error.message };
     }
   }
 }

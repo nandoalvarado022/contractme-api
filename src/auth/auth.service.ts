@@ -52,8 +52,8 @@ export class AuthService {
       await this.mailService.sendEmailBrevo(
         user.email,
         user.name,
-        'password_remember',
-        { name: user.name, tempPassword }
+        "password_remember",
+        { name: user.name, tempPassword },
       );
 
       return { message: spanishMessages.auth.TEMP_PASSWORD_SENT };

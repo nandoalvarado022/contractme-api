@@ -3,17 +3,17 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from "@nestjs/common"
-import { Observable } from "rxjs"
-import { map } from "rxjs/operators"
-import { Reflector } from "@nestjs/core"
-import { RESPONSE_MESSAGE } from "../decorators/response-message.decorator"
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { Reflector } from "@nestjs/core";
+import { RESPONSE_MESSAGE } from "../decorators/response-message.decorator";
 
 export interface Response<T> {
-  data: T
-  message?: string
-  status: string
-  path: string
+  data: T;
+  message?: string;
+  status: string;
+  path: string;
 }
 
 @Injectable()
@@ -24,16 +24,16 @@ export class TransformResponseInterceptor<T>
 
   intercept(
     context: ExecutionContext,
-    next: CallHandler
+    next: CallHandler,
   ): Observable<Response<T>> {
-    const ctx = context.switchToHttp()
-    const request = ctx.getRequest()
+    const ctx = context.switchToHttp();
+    const request = ctx.getRequest();
 
     // Obtener mensaje personalizado si existe
     const message = this.reflector.get<string>(
       RESPONSE_MESSAGE,
-      context.getHandler()
-    )
+      context.getHandler(),
+    );
 
     return next.handle().pipe(
       map((data) => {
@@ -44,7 +44,7 @@ export class TransformResponseInterceptor<T>
             message: message || data.message,
             timestamp: new Date().toISOString(),
             path: request.url,
-          }
+          };
         }
 
         return {
@@ -52,8 +52,8 @@ export class TransformResponseInterceptor<T>
           status: "success",
           ...(message && { message }),
           path: request.url,
-        }
-      })
-    )
+        };
+      }),
+    );
   }
 }
