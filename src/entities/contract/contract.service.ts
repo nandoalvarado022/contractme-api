@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Injectable } from "@nestjs/common";
 import { ContractTemplateEntity } from "./contract_templates.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { loginDto } from "src/types/user";
-import * as bcryptjs from "bcryptjs";
 
 @Injectable()
 export class ContractService {
@@ -21,11 +18,9 @@ export class ContractService {
     return contractsFound;
   }
 
-  async getTemplates(id?: number) {
-    const whereCondition = id ? { ct_id: id } : {};
-
+  async getTemplate(id: number) {
     const templates = await this.contractTemplatesRepository.find({
-      where: whereCondition,
+      where: { ct_id: id },
       relations: {
         fields: true,
       },
@@ -36,6 +31,21 @@ export class ContractService {
       },
     });
 
-    return id ? templates[0] : templates;
+    return templates[0];
+  }
+
+  async getTemplates() {
+    const templates = await this.contractTemplatesRepository.find({
+      relations: {
+        fields: true,
+      },
+      order: {
+        fields: {
+          order: "ASC",
+        },
+      },
+    });
+
+    return templates;
   }
 }

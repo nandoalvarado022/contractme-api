@@ -1,22 +1,22 @@
-import { Body, Controller, Get, Headers, Param, Post } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe } from "@nestjs/common";
 import { ContractService } from "./contract.service";
 
 @Controller("contracts")
 export class ContractController {
   constructor(private contractService: ContractService) {}
 
-  // @Get()
-  // getUser(@Param('uid') uid: number) {
-  //   return this.userService.getUser(null);
-  // }
-
-  @Get()
-  getContracts(@Param("uid") uid: number) {
+  @Get(":uid")
+  getContracts(@Param("uid", ParseIntPipe) uid: number) {
     return this.contractService.getContracts(uid);
   }
 
-  @Get("templates/:id?")
-  getContractsTemplates(@Param("id") id?: number) {
-    return this.contractService.getTemplates(id);
+  @Get("templates/:id")
+  getContractsTemplate(@Param("id", ParseIntPipe) id: number) {
+    return this.contractService.getTemplate(id);
+  }
+
+  @Get("templates")
+  getContractsTemplates() {
+    return this.contractService.getTemplates();
   }
 }
