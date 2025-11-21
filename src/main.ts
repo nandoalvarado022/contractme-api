@@ -14,6 +14,7 @@ async function bootstrap() {
       "http://localhost:4321", // landing page
       "https://qa.app.contractme.cloud",
       "https://develop.app.contractme.cloud",
+      "https://studious-zebra-4j499p4jvgvh7p64-8080.app.github.dev",
     ],
   });
 
