@@ -9,7 +9,7 @@
     "clean": "rimraf dist && rimraf .cache && rimraf .tsbuildinfo",
     "build": "nest build",
     "start": "NODE_ENV=prod DD_LOGS_INJECTION=true nest start",
-    "dev": "nest build && nest start --watch NODE_ENV=dev DD_LOGS_INJECTION=true",
+    "dev": "cross-env NODE_ENV=dev DD_LOGS_INJECTION=true nest build && nest start --watch",
     "debug": "nest start --debug --watch",
     "prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
