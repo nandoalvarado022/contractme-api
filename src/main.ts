@@ -8,13 +8,17 @@ async function bootstrap() {
   app.enableCors({
     credentials: true, // Si usas cookies o auth
     methods: ["GET", "POST", "PUT", "DELETE"],
-    origin: [
-      "https://app.contractme.cloud",
-      "http://localhost",
-      "http://localhost:4321", // landing page
-      "https://qa.app.contractme.cloud",
-      "https://develop.app.contractme.cloud",
+    origin: true,
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Accept",
+      "Cookie",
+      "Auth",
+      "Uid",
+      "X-Auth-Token",
     ],
+    exposedHeaders: ["Set-Cookie"],
   });
 
   app.useGlobalPipes(
