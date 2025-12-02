@@ -65,7 +65,7 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
       useFactory: async (configService: ConfigService) => ({
         ...getConnection(configService),
         entities: [__dirname + "/**/*.entity{.ts,.js}"],
-        synchronize: true,
+        synchronize: false,
         logging: false,
         // logger: 'advanced-console',
         // synchronize: configService.get<string>("NODE_ENV") === "development",
