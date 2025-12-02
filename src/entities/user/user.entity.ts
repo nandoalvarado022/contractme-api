@@ -10,8 +10,10 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { BalanceEntity } from "../balance/entities/balance.entity";
 
 @Entity({ name: "users" })
 export class UserEntity {
@@ -68,4 +70,7 @@ export class UserEntity {
 
   @OneToMany(() => AuditLogsEntity, (log) => log.user)
   logs: AuditLogsEntity[];
+
+  @OneToOne(() => BalanceEntity, (balance) => balance.user)
+  balance: BalanceEntity;
 }
