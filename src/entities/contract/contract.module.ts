@@ -5,6 +5,7 @@ import { ContractController } from "./contract.controller";
 import { ContractTemplateEntity } from "./entities/contract_templates.entity";
 import { ContractEntity } from "./entities/contract.entity";
 import { ContractTemplateFieldsEntity } from "./entities/contract_templates_fields.entity";
+import { FilesModule } from "src/files/files.module";
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ContractTemplateFieldsEntity } from "./entities/contract_templates_fiel
       ContractTemplateEntity,
       ContractTemplateFieldsEntity,
     ]),
+    FilesModule,
   ],
   controllers: [ContractController],
   providers: [ContractService],
