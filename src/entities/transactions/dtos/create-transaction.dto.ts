@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
-  IsDecimal,
+  IsEmail,
   IsEnum,
+  isInt,
   IsInt,
   IsNotEmpty,
   IsNumber,
@@ -18,16 +19,30 @@ import {
 
 export class CreateTransactionDto {
   @ApiProperty({
-    description: 'User ID associated with the transaction',
+    description:
+      'User ID associated with the transaction (required if email is not provided)',
     example: 1,
     type: Number,
+    required: false,
   })
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   @IsPositive()
   @IsInt()
   @Type(() => Number)
-  uid: number;
+  uid?: number;
+
+  @ApiProperty({
+    description:
+      'User email associated with the transaction (required if uid is not provided)',
+    example: 'alvaropedrozo07@gmail.com',
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 
   @ApiProperty({
     description: 'Transaction description or concept',
@@ -47,7 +62,7 @@ export class CreateTransactionDto {
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
-  @IsDecimal()
+  @IsInt()
   @Type(() => Number)
   amount: number;
 

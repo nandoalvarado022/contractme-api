@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import {
   IsInt,
   IsNotEmpty,
@@ -7,11 +7,11 @@ import {
   IsOptional,
   IsPositive,
   Min,
-} from 'class-validator';
+} from "class-validator";
 
 export class GetTransactionsDto {
   @ApiProperty({
-    description: 'User ID to retrieve transactions for',
+    description: "User ID to retrieve transactions for",
     example: 1,
     type: Number,
   })
@@ -23,7 +23,7 @@ export class GetTransactionsDto {
   uid: number;
 
   @ApiProperty({
-    description: 'Page number for pagination',
+    description: "Page number for pagination",
     example: 1,
     default: 1,
     minimum: 1,
@@ -38,7 +38,7 @@ export class GetTransactionsDto {
   page?: number = 1;
 
   @ApiProperty({
-    description: 'Number of items per page',
+    description: "Number of items per page",
     example: 10,
     default: 10,
     minimum: 1,
