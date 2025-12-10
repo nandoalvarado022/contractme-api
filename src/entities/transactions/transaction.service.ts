@@ -3,18 +3,18 @@ import {
   NotFoundException,
   BadRequestException,
   InternalServerErrorException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource } from 'typeorm';
-import { TransactionsEntity } from './entities/transactions.entity';
-import { BalanceEntity } from '../balance/entities/balance.entity';
-import { UserEntity } from '../user/user.entity';
-import { CreateTransactionDto } from './dtos/create-transaction.dto';
-import { GetTransactionsDto } from './dtos/get-transactions.dto';
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository, DataSource } from "typeorm";
+import { TransactionsEntity } from "./entities/transactions.entity";
+import { BalanceEntity } from "../balance/entities/balance.entity";
+import { UserEntity } from "../user/user.entity";
+import { CreateTransactionDto } from "./dtos/create-transaction.dto";
+import { GetTransactionsDto } from "./dtos/get-transactions.dto";
 import {
   TRANSACTION_TYPE,
   TRANSACTION_STATUS,
-} from './consts/transactions.const';
+} from "./consts/transactions.const";
 
 @Injectable()
 export class TransactionsService {
@@ -25,11 +25,11 @@ export class TransactionsService {
     private readonly balanceRepository: Repository<BalanceEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
   ) {}
 
   async createTransaction(
-    createTransactionDto: CreateTransactionDto
+    createTransactionDto: CreateTransactionDto,
   ): Promise<TransactionsEntity> {
     const { uid, email, concept, amount, type } = createTransactionDto;
 
@@ -48,7 +48,7 @@ export class TransactionsService {
     }
 
     if (!userUid) {
-      throw new BadRequestException('Either uid or email must be provided');
+      throw new BadRequestException("Either uid or email must be provided");
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -78,11 +78,11 @@ export class TransactionsService {
 
         if (newAmount < 0) {
           throw new BadRequestException(
-            `Insufficient balance. Current balance: ${currentAmount}, Requested: ${amount}`
+            `Insufficient balance. Current balance: ${currentAmount}, Requested: ${amount}`,
           );
         }
       } else {
-        throw new BadRequestException('Invalid transaction type');
+        throw new BadRequestException("Invalid transaction type");
       }
 
       // Create the transaction
@@ -94,7 +94,7 @@ export class TransactionsService {
       });
       const savedTransaction = await queryRunner.manager.save(
         TransactionsEntity,
-        transaction
+        transaction,
       );
 
       // Update balance with new amount and last transaction
@@ -118,7 +118,7 @@ export class TransactionsService {
       }
 
       throw new InternalServerErrorException(
-        'Failed to create transaction: ' + error.message
+        "Failed to create transaction: " + error.message,
       );
     } finally {
       // Release the query runner
@@ -138,7 +138,7 @@ export class TransactionsService {
     // Get balance to verify user has a balance record
     const balance = await this.balanceRepository.findOne({
       where: { uid },
-      relations: ['lastTransactionId'],
+      relations: ["lastTransactionId"],
     });
 
     if (!balance) {
@@ -160,7 +160,7 @@ export class TransactionsService {
           balance: { uid },
         },
         order: {
-          createdAt: 'DESC',
+          createdAt: "DESC",
         },
         skip,
         take: limit,
@@ -203,7 +203,7 @@ export class TransactionsService {
         balance: { uid },
       },
       order: {
-        createdAt: 'DESC',
+        createdAt: "DESC",
       },
     });
   }
@@ -211,7 +211,7 @@ export class TransactionsService {
   async getLastTransaction(uid: number): Promise<TransactionsEntity | null> {
     const balance = await this.balanceRepository.findOne({
       where: { uid },
-      relations: ['lastTransactionId'],
+      relations: ["lastTransactionId"],
     });
 
     if (!balance || !balance.lastTransactionId) {
