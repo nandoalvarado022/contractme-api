@@ -25,7 +25,9 @@ export class BalanceEntity {
     description: 'Last transaction associated with this balance',
     type: () => TransactionsEntity,
   })
-  @OneToOne(() => TransactionsEntity, (transaction) => transaction.balance)
+  @OneToOne(() => TransactionsEntity, (transaction) => transaction.balance, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'last_transaction_id' })
   lastTransactionId: TransactionsEntity;
 
@@ -33,7 +35,7 @@ export class BalanceEntity {
     description: 'ID of the last transaction',
     example: 5,
   })
-  @Column()
+  @Column({ nullable: true })
   last_transaction_id: number;
 
   @ApiProperty({

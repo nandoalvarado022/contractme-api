@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
-  IsDecimal,
   IsEnum,
+  isInt,
   IsInt,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsPositive,
   IsString,
   MaxLength,
@@ -47,7 +46,7 @@ export class CreateTransactionDto {
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
-  @IsDecimal()
+  @IsInt()
   @Type(() => Number)
   amount: number;
 
