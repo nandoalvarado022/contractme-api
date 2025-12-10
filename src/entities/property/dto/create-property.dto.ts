@@ -1,47 +1,47 @@
-import { IsString, IsNumber, IsOptional, IsArray } from "class-validator"
-import { CreatePropertyNoteDto } from "./create-property-note.dto"
-import { CreatePropertyInterestedDto } from "./create-property-interested.dto"
+import { IsString, IsNumber, IsOptional, IsArray } from "class-validator";
+import { CreatePropertyNoteDto } from "./create-property-note.dto";
+import { CreatePropertyInterestedDto } from "./create-property-interested.dto";
 
 export class CreatePropertyDto {
   @IsString()
-  city: string
+  city: string;
 
   @IsString()
-  address: string
+  address: string;
 
   @IsString()
   @IsOptional()
-  image?: string
+  image?: string;
 
   @IsNumber()
-  price: number
+  price: number;
 
   @IsString()
-  type: PROPERTY_TYPE
+  type: PROPERTY_TYPE;
 
   @IsString()
-  operation_type: OPERATION_TYPE
+  operation_type: OPERATION_TYPE;
 
   @IsNumber()
-  bedrooms: number
+  bedrooms: number;
 
   @IsNumber()
-  bathrooms: number
+  bathrooms: number;
 
   @IsNumber()
-  area: number
+  area: number;
 
   @IsString()
-  description: string
+  description: string;
 
   @IsNumber()
-  owner_uid: number
+  owner_uid: number;
 
   @IsArray()
   @IsOptional()
-  notes?: CreatePropertyNoteDto[]
+  notes?: CreatePropertyNoteDto[];
 
   @IsArray()
   @IsOptional()
-  interested?: CreatePropertyInterestedDto[]
+  interested?: CreatePropertyInterestedDto[];
 }

@@ -1,4 +1,4 @@
-import { UserEntity } from "src/entities/user/user.entity"
+import { UserEntity } from "src/entities/user/user.entity";
 import {
   Column,
   CreateDateColumn,
@@ -8,34 +8,34 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm"
+} from "typeorm";
 
 @Entity({ name: "reference" })
 export class ReferenceEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ nullable: false, type: "varchar", length: 100 })
-  name: string
+  name: string;
 
   @Column({ nullable: true, type: "varchar", length: 15 })
-  phone: string
+  phone: string;
 
   @Column({ nullable: false, type: "varchar", length: 100 })
-  relationship: string
+  relationship: string;
 
   @CreateDateColumn()
-  created_at: Date
+  created_at: Date;
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at: Date;
 
   @DeleteDateColumn()
-  deleted_at: Date
+  deleted_at: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.reference, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "uid" })
-  user: UserEntity
+  user: UserEntity;
 }

@@ -1,54 +1,61 @@
-import { IsString, IsNotEmpty, IsOptional, IsEmail, IsEnum, IsNumber, IsDate, IsDateString } from 'class-validator'
-import { Role } from 'src/common/enums/rol.enum'
-import { CreateEducationDto } from 'src/entities/education/dto'
-import { CreateExperienceDto } from 'src/entities/experience/dto'
-import { DocumentType } from 'src/common/enums/document-type'
-import { CreateReferenceDto } from 'src/entities/reference/dto/create-reference.dto'
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsEmail,
+  IsEnum,
+  IsNumber,
+  IsDate,
+  IsDateString,
+} from "class-validator";
+import { Role } from "src/common/enums/rol.enum";
+import { CreateEducationDto } from "src/entities/education/dto";
+import { CreateExperienceDto } from "src/entities/experience/dto";
+import { DocumentType } from "src/common/enums/document-type";
+import { CreateReferenceDto } from "src/entities/reference/dto/create-reference.dto";
 
 export class CreateUserDto {
   @IsString()
   @IsOptional()
-  name: string
+  name: string;
 
   @IsString()
   @IsOptional()
-  last_name?: string
-
   @IsEmail()
   @IsOptional()
-  email: string
+  email: string;
 
   @IsString()
   @IsOptional()
-  password: string
+  password: string;
 
   @IsString()
   @IsOptional()
-  phone: string
+  phone: string;
 
   @IsEnum(DocumentType)
-  document_type: DocumentType
+  document_type: DocumentType;
 
   @IsNumber()
-  document_number: number
+  document_number: number;
 
   @IsString()
   @IsOptional()
-  picture: string
+  picture: string;
 
   @IsOptional()
-  birth_date: string
+  birth_date: string;
 
   @IsEnum(Role)
   @IsOptional()
-  role: Role
+  role: Role;
 
   @IsOptional()
-  education?: CreateEducationDto[]
+  education?: CreateEducationDto[];
 
   @IsOptional()
-  experience?: CreateExperienceDto[]
+  experience?: CreateExperienceDto[];
 
   @IsOptional()
-  reference?: CreateReferenceDto[]
+  reference?: CreateReferenceDto[];
 }

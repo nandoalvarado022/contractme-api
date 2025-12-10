@@ -1,27 +1,30 @@
-import { Module } from "@nestjs/common"
-import { AppController } from "./app.controller"
-import { AppService } from "./app.service"
-import { TypeOrmModule } from "@nestjs/typeorm"
-import { AuthModule } from "./auth/auth.module"
-import { AuditLogsEntity } from "./entities/audit_logs/audit.entity"
-import { ContractModule } from "./entities/contract/contract.module"
-import { PropertyModule } from "./entities/property/property.module"
-import { EducationModule } from "./entities/education/education.module"
-import { ConfigModule, ConfigService } from "@nestjs/config"
-import { TypeOrmModuleOptions } from "@nestjs/typeorm"
-import { ExperienceModule } from "./entities/experience/experience.module"
-import { UserModule } from "./entities/user/user.module"
-import { ReferenceModule } from "./entities/reference/reference.module"
-import { MailService } from "./common/emails/mail.service"
-import { MailerModule, MailerService } from '@nestjs-modules/mailer'
-import { FilesModule } from "./files/files.module"
-import { MailModule } from "./common/emails/mail.module"
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { AuthModule } from "./auth/auth.module";
+import { AuditLogsEntity } from "./entities/audit_logs/audit.entity";
+import { ContractModule } from "./entities/contract/contract.module";
+import { PropertyModule } from "./entities/property/property.module";
+import { EducationModule } from "./entities/education/education.module";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { ExperienceModule } from "./entities/experience/experience.module";
+import { UserModule } from "./entities/user/user.module";
+import { ReferenceModule } from "./entities/reference/reference.module";
+import { MailerModule } from "@nestjs-modules/mailer";
+import { FilesModule } from "./files/files.module";
+import { MailModule } from "./common/emails/mail.module";
+import { ContactModule } from "./entities/contact/contact.module";
+import { BalanceModule } from "./entities/balance/balance.module";
+import { TransactionModule } from "./entities/transactions/transactions.module";
+import { CronModule } from "./cron/cron.module";
 
 const getDBConfig = (
   configService: ConfigService,
-  env: string
+  env: string,
 ): TypeOrmModuleOptions => {
-  const prefix = `DB_${env}`
+  const prefix = `DB_${env}`;
   return {
     type: configService.get("DB_TYPE") as "mysql",
     host: configService.get<string>(`${prefix}_HOST`),
@@ -29,21 +32,21 @@ const getDBConfig = (
     password: configService.get<string>(`${prefix}_PASSWORD`),
     database: configService.get<string>(`${prefix}_DATABASE`),
     port: configService.get<number>(`${prefix}_PORT`),
-  }
-}
+  };
+};
 
 const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
-  const nodeEnv = configService.get<string>("NODE_ENV")
-  const env = nodeEnv === "production" ? "REMOTE" : "LOCAL"
-  return getDBConfig(configService, env)
-}
+  const nodeEnv = configService.get<string>("NODE_ENV");
+  const env = nodeEnv === "production" ? "REMOTE" : "LOCAL";
+  return getDBConfig(configService, env);
+};
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
       useFactory: async () => ({
         transport: {
-          host: 'email-smtp.us-east-1.amazonaws.com',
+          host: "email-smtp.us-east-1.amazonaws.com",
           port: 587,
           secure: false,
           auth: {
@@ -65,7 +68,7 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
         ...getConnection(configService),
         entities: [__dirname + "/**/*.entity{.ts,.js}"],
         synchronize: false,
-        logging: true,
+        logging: false,
         // logger: 'advanced-console',
         // synchronize: configService.get<string>("NODE_ENV") === "development",
       }),
@@ -81,9 +84,12 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     ReferenceModule,
     FilesModule,
     MailModule,
+    ContactModule,
+    BalanceModule,
+    TransactionModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-
-export class AppModule { }
+export class AppModule {}
