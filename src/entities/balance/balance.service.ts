@@ -2,22 +2,22 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-} from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { BalanceEntity } from "./entities/balance.entity";
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { BalanceEntity } from './entities/balance.entity';
 
 @Injectable()
 export class BalanceService {
   constructor(
     @InjectRepository(BalanceEntity)
-    private readonly balanceRepository: Repository<BalanceEntity>,
+    private readonly balanceRepository: Repository<BalanceEntity>
   ) {}
 
   async getBalanceByUserId(uid: number): Promise<BalanceEntity> {
     const balance = await this.balanceRepository.findOne({
       where: { uid },
-      relations: ["lastTransactionId", "user"],
+      relations: ['lastTransactionId'],
     });
 
     if (!balance) {
@@ -35,7 +35,7 @@ export class BalanceService {
 
     if (existingBalance) {
       throw new BadRequestException(
-        `Balance already exists for user with ID ${uid}`,
+        `Balance already exists for user with ID ${uid}`
       );
     }
 
@@ -50,7 +50,7 @@ export class BalanceService {
   async getOrCreateBalance(uid: number): Promise<BalanceEntity> {
     let balance = await this.balanceRepository.findOne({
       where: { uid },
-      relations: ["lastTransactionId"],
+      relations: ['lastTransactionId'],
     });
 
     if (!balance) {
@@ -86,7 +86,7 @@ export class BalanceService {
 
   async getAllBalances(
     page: number = 1,
-    limit: number = 10,
+    limit: number = 10
   ): Promise<{
     balances: BalanceEntity[];
     total: number;
@@ -97,9 +97,9 @@ export class BalanceService {
     const skip = (page - 1) * limit;
 
     const [balances, total] = await this.balanceRepository.findAndCount({
-      relations: ["lastTransactionId", "user"],
+      relations: ['lastTransactionId', 'user'],
       order: {
-        createdAt: "DESC",
+        createdAt: 'DESC',
       },
       skip,
       take: limit,
@@ -118,18 +118,18 @@ export class BalanceService {
 
   async getBalancesWithFunds(): Promise<BalanceEntity[]> {
     return this.balanceRepository
-      .createQueryBuilder("balance")
-      .where("balance.amount > :amount", { amount: 0 })
-      .leftJoinAndSelect("balance.user", "user")
-      .leftJoinAndSelect("balance.lastTransactionId", "transaction")
-      .orderBy("balance.amount", "DESC")
+      .createQueryBuilder('balance')
+      .where('balance.amount > :amount', { amount: 0 })
+      .leftJoinAndSelect('balance.user', 'user')
+      .leftJoinAndSelect('balance.lastTransactionId', 'transaction')
+      .orderBy('balance.amount', 'DESC')
       .getMany();
   }
 
   async getTotalBalance(): Promise<number> {
     const result = await this.balanceRepository
-      .createQueryBuilder("balance")
-      .select("SUM(balance.amount)", "total")
+      .createQueryBuilder('balance')
+      .select('SUM(balance.amount)', 'total')
       .getRawOne();
 
     return Number(result.total) ?? 0;
