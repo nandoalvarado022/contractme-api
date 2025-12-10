@@ -51,6 +51,7 @@ export class BalanceEntity {
   })
   @OneToOne(() => UserEntity, (user) => user.balance)
   @JoinColumn({ name: 'uid' })
+  @JoinColumn({ name: 'uid' })
   user: UserEntity;
 
   @ApiProperty({

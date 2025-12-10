@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
@@ -8,17 +8,17 @@ import {
   IsNumber,
   IsDate,
   IsDateString,
-} from "class-validator";
-import { Role } from "src/common/enums/rol.enum";
-import { CreateEducationDto } from "src/entities/education/dto";
-import { CreateExperienceDto } from "src/entities/experience/dto";
-import { DocumentType } from "src/common/enums/document-type";
-import { CreateReferenceDto } from "src/entities/reference/dto/create-reference.dto";
+} from 'class-validator';
+import { Role } from 'src/common/enums/rol.enum';
+import { CreateEducationDto } from 'src/entities/education/dto';
+import { CreateExperienceDto } from 'src/entities/experience/dto';
+import { DocumentType } from 'src/common/enums/document-type';
+import { CreateReferenceDto } from 'src/entities/reference/dto/create-reference.dto';
 
 export class CreateUserDto {
   @ApiProperty({
-    description: "User full name",
-    example: "John Doe",
+    description: 'User full name',
+    example: 'John Doe',
     required: false,
   })
   @IsString()
@@ -26,8 +26,8 @@ export class CreateUserDto {
   name: string;
 
   @ApiProperty({
-    description: "User email address",
-    example: "john@example.com",
+    description: 'User email address',
+    example: 'john@example.com',
     required: false,
   })
   @IsString()
@@ -38,7 +38,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: "User password (default: 'contractme')",
-    example: "securePassword123",
+    example: 'securePassword123',
     required: false,
   })
   @IsString()
@@ -46,8 +46,8 @@ export class CreateUserDto {
   password: string;
 
   @ApiProperty({
-    description: "User phone number",
-    example: "+1234567890",
+    description: 'User phone number',
+    example: '+1234567890',
     required: false,
   })
   @IsString()
@@ -55,7 +55,7 @@ export class CreateUserDto {
   phone: string;
 
   @ApiProperty({
-    description: "Document type",
+    description: 'Document type',
     enum: DocumentType,
     example: DocumentType.CC,
   })
@@ -63,15 +63,15 @@ export class CreateUserDto {
   document_type: DocumentType;
 
   @ApiProperty({
-    description: "Document number",
+    description: 'Document number',
     example: 123456789,
   })
   @IsNumber()
   document_number: number;
 
   @ApiProperty({
-    description: "Profile picture URL",
-    example: "https://example.com/pic.jpg",
+    description: 'Profile picture URL',
+    example: 'https://example.com/pic.jpg',
     required: false,
   })
   @IsString()
@@ -79,15 +79,15 @@ export class CreateUserDto {
   picture: string;
 
   @ApiProperty({
-    description: "Birth date in ISO format",
-    example: "1990-01-01",
+    description: 'Birth date in ISO format',
+    example: '1990-01-01',
     required: false,
   })
   @IsOptional()
   birth_date: string;
 
   @ApiProperty({
-    description: "User role",
+    description: 'User role',
     enum: Role,
     default: Role.USER,
     example: Role.USER,
@@ -98,7 +98,7 @@ export class CreateUserDto {
   role: Role;
 
   @ApiProperty({
-    description: "User education records",
+    description: 'User education records',
     type: [CreateEducationDto],
     required: false,
   })
@@ -106,7 +106,7 @@ export class CreateUserDto {
   education?: CreateEducationDto[];
 
   @ApiProperty({
-    description: "User work experience records",
+    description: 'User work experience records',
     type: [CreateExperienceDto],
     required: false,
   })
@@ -114,7 +114,7 @@ export class CreateUserDto {
   experience?: CreateExperienceDto[];
 
   @ApiProperty({
-    description: "User references",
+    description: 'User references',
     type: [CreateReferenceDto],
     required: false,
   })
