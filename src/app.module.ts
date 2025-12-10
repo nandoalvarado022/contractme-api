@@ -12,11 +12,13 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { ExperienceModule } from "./entities/experience/experience.module";
 import { UserModule } from "./entities/user/user.module";
 import { ReferenceModule } from "./entities/reference/reference.module";
-import { MailService } from "./common/emails/mail.service";
-import { MailerModule, MailerService } from "@nestjs-modules/mailer";
+import { MailerModule } from "@nestjs-modules/mailer";
 import { FilesModule } from "./files/files.module";
 import { MailModule } from "./common/emails/mail.module";
 import { ContactModule } from "./entities/contact/contact.module";
+import { BalanceModule } from "./entities/balance/balance.module";
+import { TransactionModule } from "./entities/transactions/transactions.module";
+import { CronModule } from "./cron/cron.module";
 
 const getDBConfig = (
   configService: ConfigService,
@@ -83,6 +85,9 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     FilesModule,
     MailModule,
     ContactModule,
+    BalanceModule,
+    TransactionModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [AppService],

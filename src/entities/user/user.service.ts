@@ -13,6 +13,8 @@ import * as bcrypt from "bcrypt";
 import { ReferenceService } from "src/entities/reference/reference.service";
 import { Role } from "src/common/enums/rol.enum";
 import { spanishMessages } from "src/common/constants/messages";
+import { TransactionsService } from "src/entities/transactions/transaction.service";
+import { TRANSACTION_TYPE } from "src/entities/transactions/consts/transactions.const";
 
 @Injectable()
 export class UserService {
@@ -23,6 +25,7 @@ export class UserService {
     private educationService: EducationService,
     private experienceService: ExperienceService,
     private referenceService: ReferenceService,
+    private transactionsService: TransactionsService,
   ) {}
 
   async getUser(params = {}) {
@@ -65,6 +68,20 @@ export class UserService {
 
     const userToCreate = this.userRepository.create(userDataToCreate);
     const savedUser = await this.userRepository.save(userToCreate);
+
+    try {
+      await this.transactionsService.createTransaction({
+        uid: savedUser.uid,
+        concept: "Saldo inicial de bienvenida",
+        amount: 5000,
+        type: TRANSACTION_TYPE.ADD,
+      });
+    } catch (error) {
+      console.error(
+        `Error creating initial balance for user ${savedUser.uid}:`,
+        error,
+      );
+    }
 
     // Saving education
     if (body.education && body.education.length > 0) {
@@ -179,6 +196,22 @@ export class UserService {
     });
 
     const savedUser = await this.userRepository.save(newUser);
+
+    // Create initial balance with 5000
+    try {
+      await this.transactionsService.createTransaction({
+        uid: savedUser.uid,
+        concept: "Saldo inicial de bienvenida",
+        amount: 5000,
+        type: TRANSACTION_TYPE.ADD,
+      });
+    } catch (error) {
+      console.error(
+        `Error creating initial balance for user ${savedUser.uid}:`,
+        error,
+      );
+      // Continue with user registration even if balance creation fails
+    }
 
     return {
       data: savedUser,

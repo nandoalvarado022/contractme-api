@@ -9,6 +9,7 @@ import { EducationModule } from "src/entities/education/education.module";
 import { ExperienceModule } from "src/entities/experience/experience.module";
 import { ReferenceModule } from "src/entities/reference/reference.module";
 import { MailModule } from "src/common/emails/mail.module";
+import { TransactionModule } from "src/entities/transactions/transactions.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MailModule } from "src/common/emails/mail.module";
     ExperienceModule,
     ReferenceModule,
     MailModule,
+    TransactionModule,
   ],
   controllers: [UserController],
   providers: [UserService, AuthService],
