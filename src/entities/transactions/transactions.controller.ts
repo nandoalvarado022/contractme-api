@@ -9,7 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   ValidationPipe,
-} from '@nestjs/common';
+} from "@nestjs/common";
 import {
   ApiTags,
   ApiOperation,
@@ -17,74 +17,74 @@ import {
   ApiParam,
   ApiQuery,
   ApiBody,
-} from '@nestjs/swagger';
-import { TransactionsService } from './transaction.service';
-import { CreateTransactionDto } from './dtos/create-transaction.dto';
-import { GetTransactionsDto } from './dtos/get-transactions.dto';
-import { TransactionsEntity } from './entities/transactions.entity';
+} from "@nestjs/swagger";
+import { TransactionsService } from "./transaction.service";
+import { CreateTransactionDto } from "./dtos/create-transaction.dto";
+import { GetTransactionsDto } from "./dtos/get-transactions.dto";
+import { TransactionsEntity } from "./entities/transactions.entity";
 
-@ApiTags('Transactions')
-@Controller('transactions')
+@ApiTags("Transactions")
+@Controller("transactions")
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
-    summary: 'Create new transaction',
+    summary: "Create new transaction",
     description:
       "Creates a new transaction and automatically updates the user's balance. Supports both ADD and REMOVE transaction types. Uses database transactions to ensure data consistency.",
   })
   @ApiBody({
     type: CreateTransactionDto,
-    description: 'Transaction data',
+    description: "Transaction data",
     examples: {
       addTransaction: {
-        summary: 'Add funds',
+        summary: "Add funds",
         value: {
           uid: 1,
-          concept: 'Payment received',
+          concept: "Payment received",
           amount: 50000,
-          type: 'add',
+          type: "add",
         },
       },
       removeTransaction: {
-        summary: 'Remove funds',
+        summary: "Remove funds",
         value: {
           uid: 1,
-          concept: 'Service payment',
+          concept: "Service payment",
           amount: 10000,
-          type: 'remove',
+          type: "remove",
         },
       },
     },
   })
   @ApiResponse({
     status: 201,
-    description: 'Transaction created successfully and balance updated',
+    description: "Transaction created successfully and balance updated",
     schema: {
       example: {
         success: true,
-        message: 'Transaction created successfully',
+        message: "Transaction created successfully",
         data: {
           id: 1,
-          concept: 'Payment received',
+          concept: "Payment received",
           amount: 50000,
-          type: 'add',
-          status: 'completed',
-          createdAt: '2025-12-09T10:00:00.000Z',
+          type: "add",
+          status: "completed",
+          createdAt: "2025-12-09T10:00:00.000Z",
         },
       },
     },
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request - Invalid data or insufficient balance',
+    description: "Bad request - Invalid data or insufficient balance",
     schema: {
       example: {
         success: false,
         message:
-          'Insufficient balance. Current balance: 10000, Requested: 50000',
+          "Insufficient balance. Current balance: 10000, Requested: 50000",
         statusCode: 400,
       },
     },
@@ -92,51 +92,51 @@ export class TransactionsController {
   @ApiResponse({
     status: 500,
     description:
-      'Internal server error - Transaction failed and was rolled back',
+      "Internal server error - Transaction failed and was rolled back",
   })
   async create(
-    @Body(ValidationPipe) createTransactionDto: CreateTransactionDto
+    @Body(ValidationPipe) createTransactionDto: CreateTransactionDto,
   ) {
     const transaction = await this.transactionsService.createTransaction(
-      createTransactionDto
+      createTransactionDto,
     );
 
     return {
       success: true,
-      message: 'Transaction created successfully',
+      message: "Transaction created successfully",
       data: transaction,
     };
   }
 
-  @Get('user/:uid')
+  @Get("user/:uid")
   @ApiOperation({
-    summary: 'Get transactions by user',
+    summary: "Get transactions by user",
     description:
-      'Retrieves paginated list of transactions for a specific user, ordered by creation date descending',
+      "Retrieves paginated list of transactions for a specific user, ordered by creation date descending",
   })
   @ApiParam({
-    name: 'uid',
+    name: "uid",
     type: Number,
-    description: 'User ID',
+    description: "User ID",
     example: 1,
   })
   @ApiQuery({
-    name: 'page',
+    name: "page",
     type: Number,
     required: false,
-    description: 'Page number (default: 1)',
+    description: "Page number (default: 1)",
     example: 1,
   })
   @ApiQuery({
-    name: 'limit',
+    name: "limit",
     type: Number,
     required: false,
-    description: 'Items per page (default: 10)',
+    description: "Items per page (default: 10)",
     example: 10,
   })
   @ApiResponse({
     status: 200,
-    description: 'Transactions retrieved successfully',
+    description: "Transactions retrieved successfully",
     schema: {
       example: {
         success: true,
@@ -144,11 +144,11 @@ export class TransactionsController {
           transactions: [
             {
               id: 1,
-              concept: 'Payment received',
+              concept: "Payment received",
               amount: 50000,
-              type: 'add',
-              status: 'completed',
-              createdAt: '2025-12-09T10:00:00.000Z',
+              type: "add",
+              status: "completed",
+              createdAt: "2025-12-09T10:00:00.000Z",
             },
           ],
           pagination: {
@@ -163,16 +163,16 @@ export class TransactionsController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Invalid user ID format',
+    description: "Invalid user ID format",
   })
   @ApiResponse({
     status: 404,
-    description: 'User not found',
+    description: "User not found",
   })
   async getByUser(
-    @Param('uid', ParseIntPipe) uid: number,
-    @Query('page') page?: number,
-    @Query('limit') limit?: number
+    @Param("uid", ParseIntPipe) uid: number,
+    @Query("page") page?: number,
+    @Query("limit") limit?: number,
   ): Promise<{
     success: boolean;
     data: {
@@ -192,7 +192,7 @@ export class TransactionsController {
     };
 
     const result = await this.transactionsService.getTransactionsByUser(
-      getTransactionsDto
+      getTransactionsDto,
     );
 
     return {
@@ -209,39 +209,39 @@ export class TransactionsController {
     };
   }
 
-  @Get(':id')
+  @Get(":id")
   @ApiOperation({
-    summary: 'Get transaction by ID',
-    description: 'Retrieves a specific transaction by its unique identifier',
+    summary: "Get transaction by ID",
+    description: "Retrieves a specific transaction by its unique identifier",
   })
   @ApiParam({
-    name: 'id',
+    name: "id",
     type: Number,
-    description: 'Transaction ID',
+    description: "Transaction ID",
     example: 1,
   })
   @ApiResponse({
     status: 200,
-    description: 'Transaction retrieved successfully',
+    description: "Transaction retrieved successfully",
     schema: {
       example: {
         success: true,
         data: {
           id: 1,
-          concept: 'Payment received',
+          concept: "Payment received",
           amount: 50000,
-          type: 'add',
-          status: 'completed',
-          createdAt: '2025-12-09T10:00:00.000Z',
+          type: "add",
+          status: "completed",
+          createdAt: "2025-12-09T10:00:00.000Z",
         },
       },
     },
   })
   @ApiResponse({
     status: 404,
-    description: 'Transaction not found',
+    description: "Transaction not found",
   })
-  async getById(@Param('id', ParseIntPipe) id: number): Promise<{
+  async getById(@Param("id", ParseIntPipe) id: number): Promise<{
     success: boolean;
     data: TransactionsEntity;
   }> {

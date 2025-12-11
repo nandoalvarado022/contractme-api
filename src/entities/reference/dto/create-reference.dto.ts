@@ -1,10 +1,10 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateReferenceDto {
   @ApiProperty({
     description: "Reference person's full name",
-    example: 'María García',
+    example: "María García",
     maxLength: 100,
   })
   @IsString()
@@ -13,7 +13,7 @@ export class CreateReferenceDto {
 
   @ApiPropertyOptional({
     description: "Reference person's phone number",
-    example: '+1234567890',
+    example: "+1234567890",
     maxLength: 15,
   })
   @IsString()
@@ -21,8 +21,8 @@ export class CreateReferenceDto {
   phone?: string;
 
   @ApiProperty({
-    description: 'Relationship with the reference person',
-    example: 'Former supervisor',
+    description: "Relationship with the reference person",
+    example: "Former supervisor",
     maxLength: 100,
   })
   @IsString()
@@ -30,7 +30,7 @@ export class CreateReferenceDto {
   relationship: string;
 
   @ApiPropertyOptional({
-    description: 'User ID associated with this reference',
+    description: "User ID associated with this reference",
     example: 1,
   })
   @IsNumber()

@@ -1,17 +1,17 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
-} from 'class-validator';
-import { TypeContact } from '../contact.model';
+} from "class-validator";
+import { TypeContact } from "../contact.model";
 
 export class CreateContactDto {
   @ApiProperty({
     description: "Contact person's full name",
-    example: 'María González',
+    example: "María González",
     maxLength: 100,
   })
   @IsString()
@@ -21,8 +21,8 @@ export class CreateContactDto {
 
   @ApiProperty({
     description: "Contact person's email address",
-    example: 'maria.gonzalez@example.com',
-    format: 'email',
+    example: "maria.gonzalez@example.com",
+    format: "email",
     maxLength: 100,
   })
   @IsEmail()
@@ -32,7 +32,7 @@ export class CreateContactDto {
 
   @ApiPropertyOptional({
     description: "Contact person's phone number",
-    example: '+1234567890',
+    example: "+1234567890",
     maxLength: 20,
   })
   @IsString()
@@ -41,16 +41,16 @@ export class CreateContactDto {
   phone: string;
 
   @ApiProperty({
-    description: 'Reason for contact',
-    enum: ['information', 'pricing', 'support', 'real-state', 'other'],
-    example: 'information',
+    description: "Reason for contact",
+    enum: ["information", "pricing", "support", "real-state", "other"],
+    example: "information",
   })
   @IsNotEmpty()
   reason: TypeContact;
 
   @ApiProperty({
-    description: 'Message or inquiry from the contact',
-    example: 'I would like to know more about your services',
+    description: "Message or inquiry from the contact",
+    example: "I would like to know more about your services",
   })
   @IsString()
   @IsNotEmpty()

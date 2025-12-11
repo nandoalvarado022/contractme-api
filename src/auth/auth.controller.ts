@@ -1,58 +1,58 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { LoginDto } from './dto/login.dto';
-import { PasswordForgottenDto } from './dto/password-forgotten.dto';
-import { AuditLogService } from 'src/entities/audit_logs/audit.service';
-import { UserEntity } from 'src/entities/user/user.entity';
+import { Body, Controller, Post, HttpCode, HttpStatus } from "@nestjs/common";
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from "@nestjs/swagger";
+import { AuthService } from "./auth.service";
+import { RegisterDto } from "./dto/register.dto";
+import { ChangePasswordDto } from "./dto/change-password.dto";
+import { LoginDto } from "./dto/login.dto";
+import { PasswordForgottenDto } from "./dto/password-forgotten.dto";
+import { AuditLogService } from "src/entities/audit_logs/audit.service";
+import { UserEntity } from "src/entities/user/user.entity";
 
-@ApiTags('Auth')
-@Controller('auth')
+@ApiTags("Auth")
+@Controller("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly auditLogService: AuditLogService
+    private readonly auditLogService: AuditLogService,
   ) {}
 
-  @Post('register')
+  @Post("register")
   @ApiOperation({
-    summary: 'Register new user',
+    summary: "Register new user",
     description:
-      'Creates a new user account with encrypted password and sends welcome email',
+      "Creates a new user account with encrypted password and sends welcome email",
   })
   @ApiBody({ type: RegisterDto })
   @ApiResponse({
     status: 201,
-    description: 'User registered successfully',
+    description: "User registered successfully",
     schema: {
       example: {
         uid: 1,
-        name: 'Juan Pérez',
-        email: 'juan.perez@example.com',
-        role: 'user',
-        createdAt: '2025-12-09T10:00:00.000Z',
+        name: "Juan Pérez",
+        email: "juan.perez@example.com",
+        role: "user",
+        createdAt: "2025-12-09T10:00:00.000Z",
       },
     },
   })
   @ApiResponse({
     status: 400,
-    description: 'User already exists',
+    description: "User already exists",
     schema: {
       example: {
-        message: 'El usuario ya existe',
+        message: "El usuario ya existe",
         statusCode: 400,
       },
     },
   })
   register(
     @Body()
-    registerDto: RegisterDto
+    registerDto: RegisterDto,
   ) {
     this.auditLogService.createAuditLog({
-      description: 'Usuario creado',
-      table: 'users',
+      description: "Usuario creado",
+      table: "users",
       data: JSON.stringify(registerDto),
       id: 0,
       user: null as unknown as UserEntity,
@@ -63,44 +63,44 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
-  @Post('login')
+  @Post("login")
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'User login',
-    description: 'Authenticates user and returns JWT token',
+    summary: "User login",
+    description: "Authenticates user and returns JWT token",
   })
   @ApiBody({ type: LoginDto })
   @ApiResponse({
     status: 200,
-    description: 'Login successful',
+    description: "Login successful",
     schema: {
       example: {
-        email: 'juan.perez@example.com',
-        message: 'Bienvenido Juan Pérez',
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        email: "juan.perez@example.com",
+        message: "Bienvenido Juan Pérez",
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
         uid: 1,
-        status: 'success',
+        status: "success",
         statusCode: 200,
       },
     },
   })
   @ApiResponse({
     status: 401,
-    description: 'Invalid credentials',
+    description: "Invalid credentials",
     schema: {
       example: {
-        message: 'Email incorrecto',
+        message: "Email incorrecto",
         statusCode: 401,
       },
     },
   })
   async login(
     @Body()
-    loginDto: LoginDto
+    loginDto: LoginDto,
   ) {
     await this.auditLogService.createAuditLog({
       description: `<span class="email">${loginDto.email}</span> inició sesión`,
-      table: 'users',
+      table: "users",
       data: JSON.stringify(loginDto),
       id: 0,
       user: null as unknown as UserEntity,
@@ -111,42 +111,42 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Post('password_forgotten')
+  @Post("password_forgotten")
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Request password reset',
+    summary: "Request password reset",
     description: "Sends a temporary password to user's email",
   })
   @ApiBody({ type: PasswordForgottenDto })
   @ApiResponse({
     status: 200,
-    description: 'Temporary password sent successfully',
+    description: "Temporary password sent successfully",
     schema: {
       example: {
-        message: 'Contraseña temporal enviada al correo electrónico',
+        message: "Contraseña temporal enviada al correo electrónico",
       },
     },
   })
   @ApiResponse({
     status: 400,
-    description: 'User not found',
+    description: "User not found",
     schema: {
       example: {
-        message: 'Usuario no encontrado',
+        message: "Usuario no encontrado",
         code: 400,
       },
     },
   })
   async passwordForgotten(
     @Body()
-    passwordForgottenDto: PasswordForgottenDto
+    passwordForgottenDto: PasswordForgottenDto,
   ) {
     await this.auditLogService.createAuditLog({
       description:
         'Solicitud de restablecimiento de contraseña para <span class="email">' +
         passwordForgottenDto.email +
-        '</span>',
-      table: 'users',
+        "</span>",
+      table: "users",
       data: JSON.stringify(passwordForgottenDto),
       id: 0,
       user: null as unknown as UserEntity,
@@ -157,55 +157,55 @@ export class AuthController {
     return this.authService.passwordForgotten(passwordForgottenDto);
   }
 
-  @Post('change_password')
+  @Post("change_password")
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Change user password',
+    summary: "Change user password",
     description:
-      'Allows user to change their password by providing current and new password',
+      "Allows user to change their password by providing current and new password",
   })
   @ApiBody({ type: ChangePasswordDto })
   @ApiResponse({
     status: 200,
-    description: 'Password changed successfully',
+    description: "Password changed successfully",
     schema: {
       example: {
-        message: 'Contraseña actualizada correctamente',
-        status: 'success',
+        message: "Contraseña actualizada correctamente",
+        status: "success",
         statusCode: 200,
       },
     },
   })
   @ApiResponse({
     status: 400,
-    description: 'User not found',
+    description: "User not found",
     schema: {
       example: {
-        message: 'Usuario no encontrado',
+        message: "Usuario no encontrado",
         statusCode: 400,
       },
     },
   })
   @ApiResponse({
     status: 401,
-    description: 'Current password is incorrect',
+    description: "Current password is incorrect",
     schema: {
       example: {
-        message: 'La contraseña actual es incorrecta',
+        message: "La contraseña actual es incorrecta",
         statusCode: 401,
       },
     },
   })
   async changePassword(
     @Body()
-    changePasswordDto: ChangePasswordDto
+    changePasswordDto: ChangePasswordDto,
   ) {
     await this.auditLogService.createAuditLog({
       description:
         'Cambio de contraseña para <span class="email">' +
         changePasswordDto.email +
-        '</span>',
-      table: 'users',
+        "</span>",
+      table: "users",
       data: JSON.stringify({ email: changePasswordDto.email }),
       id: 0,
       user: null as unknown as UserEntity,

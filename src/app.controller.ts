@@ -1,14 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AppService } from './app.service';
-import { MailService } from './common/emails/mail.service';
-import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { MailService } from "./common/emails/mail.service";
+import { ApiExcludeEndpoint } from "@nestjs/swagger";
 // import { MailerService } from '@nestjs-modules/mailer';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly mailService: MailService // private readonly mailerService: MailerService,
+    private readonly mailService: MailService, // private readonly mailerService: MailerService,
   ) {}
 
   @ApiExcludeEndpoint()
@@ -25,19 +25,19 @@ export class AppController {
   }
 
   @ApiExcludeEndpoint()
-  @Get('send-brevo')
+  @Get("send-brevo")
   async sendBrevo() {
     await this.mailService.sendEmailBrevo(
-      'nandoalvarado022@gmail.com',
-      'Test User',
-      'welcome',
-      {}
+      "nandoalvarado022@gmail.com",
+      "Test User",
+      "welcome",
+      {},
     );
-    return { message: 'Correo enviado con Brevo y template.' };
+    return { message: "Correo enviado con Brevo y template." };
   }
 
   @ApiExcludeEndpoint()
-  @Get('logs')
+  @Get("logs")
   getLogs() {
     return this.appService.getLogs();
   }
