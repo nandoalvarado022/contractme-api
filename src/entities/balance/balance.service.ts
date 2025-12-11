@@ -27,9 +27,7 @@ export class BalanceService {
 
     return {
       id: balance.id,
-      uid: balance.uid,
       amount: balance.amount,
-      last_transaction_id: balance.last_transaction_id,
       last_transaction: balance.lastTransactionId,
       createdAt: balance.createdAt,
       updatedAt: balance.updatedAt,
