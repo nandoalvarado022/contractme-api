@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsEmail,
   IsEnum,
@@ -11,16 +11,16 @@ import {
   IsPositive,
   IsString,
   MaxLength,
-} from "class-validator";
+} from 'class-validator';
 import {
   TRANSACTION_TYPE,
   TransactionType,
-} from "../consts/transactions.const";
+} from '../consts/transactions.const';
 
 export class CreateTransactionDto {
   @ApiProperty({
     description:
-      "User ID associated with the transaction (required if email is not provided)",
+      'User ID associated with the transaction (required if email is not provided)',
     example: 1,
     type: Number,
     required: false,
@@ -34,8 +34,8 @@ export class CreateTransactionDto {
 
   @ApiProperty({
     description:
-      "User email associated with the transaction (required if uid is not provided)",
-    example: "alvaropedrozo07@gmail.com",
+      'User email associated with the transaction (required if uid is not provided)',
+    example: 'alvaropedrozo07@gmail.com',
     required: false,
     type: String,
   })
@@ -45,8 +45,8 @@ export class CreateTransactionDto {
   email?: string;
 
   @ApiProperty({
-    description: "Transaction description or concept",
-    example: "Payment received from client",
+    description: 'Transaction description or concept',
+    example: 'Payment received from client',
     maxLength: 255,
   })
   @IsString()
@@ -55,9 +55,11 @@ export class CreateTransactionDto {
   concept: string;
 
   @ApiProperty({
-    description: "Transaction amount (must be positive)",
-    example: 500.0,
+    description:
+      'Transaction amount (must be positive, in cents or smallest currency unit)',
+    example: 50000,
     type: Number,
+    minimum: 1,
   })
   @IsNumber()
   @IsNotEmpty()
@@ -70,7 +72,7 @@ export class CreateTransactionDto {
     description:
       "Transaction type: 'add' to add funds, 'remove' to deduct funds",
     enum: Object.values(TRANSACTION_TYPE),
-    example: "add",
+    example: 'add',
   })
   @IsEnum(TRANSACTION_TYPE)
   @IsNotEmpty()

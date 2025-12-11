@@ -102,6 +102,7 @@ export class TransactionsService {
 
     return {
       id: savedTransaction.id,
+      uid: userUid,
       createdAt: savedTransaction.createdAt,
       concept: savedTransaction.concept,
       amount: savedTransaction.amount,

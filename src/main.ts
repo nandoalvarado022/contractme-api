@@ -56,6 +56,8 @@ async function bootstrap() {
     .addTag('Experience', 'Experience management endpoints')
     .addTag('References', 'Reference management endpoints')
     .addTag('Contracts', 'Contract management endpoints')
+    .addTag('Reconciliation', 'Reconciliation management endpoints')
+    .addTag('Landing Page', 'Landing page managment endpoints')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

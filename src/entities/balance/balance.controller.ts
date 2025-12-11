@@ -44,8 +44,13 @@ export class BalanceController {
         data: {
           id: 1,
           uid: 1,
-          amount: 1000.5,
+          amount: 100050,
           last_transaction_id: 5,
+          last_transaction: {
+            id: 5,
+            amount: 50000,
+            type: 'deposit',
+          },
           createdAt: '2025-12-09T10:00:00.000Z',
           updatedAt: '2025-12-09T10:00:00.000Z',
         },
@@ -55,6 +60,17 @@ export class BalanceController {
   @ApiResponse({
     status: 404,
     description: 'Balance not found for the specified user',
+    schema: {
+      example: {
+        success: false,
+        message: 'Balance not found',
+        statusCode: 404,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid user ID format',
   })
   async getBalance(@Param('uid', ParseIntPipe) uid: number) {
     const balance = await this.balanceService.getBalanceByUserId(uid);
@@ -97,7 +113,18 @@ export class BalanceController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Balance already exists for this user',
+    description: 'Balance already exists for this user or invalid user ID',
+    schema: {
+      example: {
+        success: false,
+        message: 'Balance already exists for this user',
+        statusCode: 400,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
   })
   async createBalance(@Param('uid', ParseIntPipe) uid: number): Promise<{
     success: boolean;

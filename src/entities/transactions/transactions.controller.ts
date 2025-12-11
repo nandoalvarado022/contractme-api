@@ -44,7 +44,7 @@ export class TransactionsController {
         value: {
           uid: 1,
           concept: 'Payment received',
-          amount: 500.0,
+          amount: 50000,
           type: 'add',
         },
       },
@@ -53,7 +53,7 @@ export class TransactionsController {
         value: {
           uid: 1,
           concept: 'Service payment',
-          amount: 100.0,
+          amount: 10000,
           type: 'remove',
         },
       },
@@ -69,7 +69,7 @@ export class TransactionsController {
         data: {
           id: 1,
           concept: 'Payment received',
-          amount: 500.0,
+          amount: 50000,
           type: 'add',
           status: 'completed',
           createdAt: '2025-12-09T10:00:00.000Z',
@@ -80,6 +80,14 @@ export class TransactionsController {
   @ApiResponse({
     status: 400,
     description: 'Bad request - Invalid data or insufficient balance',
+    schema: {
+      example: {
+        success: false,
+        message:
+          'Insufficient balance. Current balance: 10000, Requested: 50000',
+        statusCode: 400,
+      },
+    },
   })
   @ApiResponse({
     status: 500,
@@ -137,7 +145,7 @@ export class TransactionsController {
             {
               id: 1,
               concept: 'Payment received',
-              amount: 500.0,
+              amount: 50000,
               type: 'add',
               status: 'completed',
               createdAt: '2025-12-09T10:00:00.000Z',
@@ -152,6 +160,14 @@ export class TransactionsController {
         },
       },
     },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid user ID format',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
   })
   async getByUser(
     @Param('uid', ParseIntPipe) uid: number,
@@ -213,7 +229,7 @@ export class TransactionsController {
         data: {
           id: 1,
           concept: 'Payment received',
-          amount: 500.0,
+          amount: 50000,
           type: 'add',
           status: 'completed',
           createdAt: '2025-12-09T10:00:00.000Z',

@@ -35,9 +35,10 @@ export class TransactionsEntity {
   concept: string;
 
   @ApiProperty({
-    description: 'Transaction amount',
-    example: 500,
+    description: 'Transaction amount (in cents or smallest currency unit)',
+    example: 50000,
     type: Number,
+    minimum: 0,
   })
   @Column({ type: 'int', nullable: false })
   amount: number;

@@ -1,4 +1,4 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { CreateExperienceDto } from "./create-experience.dto";
+import { PartialType } from '@nestjs/swagger';
+import { CreateExperienceDto } from './create-experience.dto';
 
 export class UpdateExperienceDto extends PartialType(CreateExperienceDto) {}
