@@ -2,22 +2,23 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { BalanceEntity } from './entities/balance.entity';
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { BalanceEntity } from "./entities/balance.entity";
+import { last } from "rxjs";
 
 @Injectable()
 export class BalanceService {
   constructor(
     @InjectRepository(BalanceEntity)
-    private readonly balanceRepository: Repository<BalanceEntity>
+    private readonly balanceRepository: Repository<BalanceEntity>,
   ) {}
 
   async getBalanceByUserId(uid: number) {
     const balance = await this.balanceRepository.findOne({
       where: { uid },
-      relations: ['lastTransactionId'],
+      relations: ["lastTransactionId"],
     });
 
     if (!balance) {
@@ -40,7 +41,7 @@ export class BalanceService {
 
     if (existingBalance) {
       throw new BadRequestException(
-        `Balance already exists for user with ID ${uid}`
+        `Balance already exists for user with ID ${uid}`,
       );
     }
 
