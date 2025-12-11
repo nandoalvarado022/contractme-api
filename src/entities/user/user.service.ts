@@ -1,20 +1,20 @@
-import { Injectable } from "@nestjs/common";
-import { UserEntity } from "./user.entity";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
-import { AuditLogService } from "src/entities/audit_logs/audit.service";
-import { AuditLogsEntity } from "src/entities/audit_logs/audit.entity";
-import { EducationService } from "src/entities/education/education.service";
-import { ExperienceService } from "src/entities/experience/experience.service";
-import { CreateUserDto } from "./dtos/create-user.dto";
-import { UpdateUserDto } from "./dtos/update-user.dto";
-import { RegisterDto } from "src/auth/dto/register.dto";
-import * as bcrypt from "bcrypt";
-import { ReferenceService } from "src/entities/reference/reference.service";
-import { Role } from "src/common/enums/rol.enum";
-import { spanishMessages } from "src/common/constants/messages";
-import { TransactionsService } from "src/entities/transactions/transaction.service";
-import { TRANSACTION_TYPE } from "src/entities/transactions/consts/transactions.const";
+import { Injectable } from '@nestjs/common';
+import { UserEntity } from './user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AuditLogService } from 'src/entities/audit_logs/audit.service';
+import { AuditLogsEntity } from 'src/entities/audit_logs/audit.entity';
+import { EducationService } from 'src/entities/education/education.service';
+import { ExperienceService } from 'src/entities/experience/experience.service';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { RegisterDto } from 'src/auth/dto/register.dto';
+import * as bcrypt from 'bcrypt';
+import { ReferenceService } from 'src/entities/reference/reference.service';
+import { Role } from 'src/common/enums/rol.enum';
+import { spanishMessages } from 'src/common/constants/messages';
+import { TransactionsService } from 'src/entities/transactions/transaction.service';
+import { BalanceService } from '../balance/balance.service';
 
 @Injectable()
 export class UserService {
@@ -26,21 +26,22 @@ export class UserService {
     private experienceService: ExperienceService,
     private referenceService: ReferenceService,
     private transactionsService: TransactionsService,
+    private readonly balanceService: BalanceService
   ) {}
 
   async getUser(params = {}) {
     const userFound = await this.userRepository.findOne({
       where: params,
       select: [
-        "name",
-        "birth_date",
-        "email",
-        "phone",
-        "uid",
-        "role",
-        "picture",
-        "document_number",
-        "document_type",
+        'name',
+        'birth_date',
+        'email',
+        'phone',
+        'uid',
+        'role',
+        'picture',
+        'document_number',
+        'document_type',
       ],
     });
 
@@ -57,7 +58,7 @@ export class UserService {
   }
 
   async createUser(body: CreateUserDto) {
-    const defaultPassword = "contractme";
+    const defaultPassword = 'contractme';
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
     const userDataToCreate = {
@@ -69,19 +70,7 @@ export class UserService {
     const userToCreate = this.userRepository.create(userDataToCreate);
     const savedUser = await this.userRepository.save(userToCreate);
 
-    try {
-      await this.transactionsService.createTransaction({
-        uid: savedUser.uid,
-        concept: "Saldo inicial de bienvenida",
-        amount: 5000,
-        type: TRANSACTION_TYPE.ADD,
-      });
-    } catch (error) {
-      console.error(
-        `Error creating initial balance for user ${savedUser.uid}:`,
-        error,
-      );
-    }
+    await this.balanceService.createBalance(savedUser.uid);
 
     // Saving education
     if (body.education && body.education.length > 0) {
@@ -109,8 +98,8 @@ export class UserService {
 
     // Creating the log
     const auditLog = new AuditLogsEntity();
-    auditLog.description = "Usuario creado";
-    auditLog.table = "users";
+    auditLog.description = 'Usuario creado';
+    auditLog.table = 'users';
     const auditData = {
       uid: savedUser.uid,
       name: savedUser.name,
@@ -168,8 +157,8 @@ export class UserService {
 
     // Creating the log
     const auditLog = new AuditLogsEntity();
-    auditLog.description = "Usuario editado";
-    auditLog.table = "users";
+    auditLog.description = 'Usuario editado';
+    auditLog.table = 'users';
     const auditData = {
       uid: userFound.uid,
       name: userFound.name,
@@ -197,21 +186,7 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(newUser);
 
-    // Create initial balance with 5000
-    try {
-      await this.transactionsService.createTransaction({
-        uid: savedUser.uid,
-        concept: "Saldo inicial de bienvenida",
-        amount: 5000,
-        type: TRANSACTION_TYPE.ADD,
-      });
-    } catch (error) {
-      console.error(
-        `Error creating initial balance for user ${savedUser.uid}:`,
-        error,
-      );
-      // Continue with user registration even if balance creation fails
-    }
+    await this.balanceService.createBalance(savedUser.uid);
 
     return {
       data: savedUser,
@@ -227,7 +202,7 @@ export class UserService {
   async findByEmailWithPassword(email: string) {
     return await this.userRepository.findOne({
       where: { email },
-      select: ["uid", "name", "email", "password", "role"],
+      select: ['uid', 'name', 'email', 'password', 'role'],
     });
   }
 
