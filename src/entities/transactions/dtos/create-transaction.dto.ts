@@ -55,9 +55,11 @@ export class CreateTransactionDto {
   concept: string;
 
   @ApiProperty({
-    description: "Transaction amount (must be positive)",
-    example: 500.0,
+    description:
+      "Transaction amount (must be positive, in cents or smallest currency unit)",
+    example: 50000,
     type: Number,
+    minimum: 1,
   })
   @IsNumber()
   @IsNotEmpty()

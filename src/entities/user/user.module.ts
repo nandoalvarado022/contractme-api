@@ -10,6 +10,7 @@ import { ExperienceModule } from "src/entities/experience/experience.module";
 import { ReferenceModule } from "src/entities/reference/reference.module";
 import { MailModule } from "src/common/emails/mail.module";
 import { TransactionModule } from "src/entities/transactions/transactions.module";
+import { BalanceModule } from "../balance/balance.module";
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TransactionModule } from "src/entities/transactions/transactions.module
     ReferenceModule,
     MailModule,
     TransactionModule,
+    BalanceModule,
   ],
   controllers: [UserController],
   providers: [UserService, AuthService],

@@ -6,6 +6,8 @@ import {
   CreateDateColumn,
   OneToOne,
   Column,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import {
   TRANSACTION_STATUS,
@@ -13,6 +15,7 @@ import {
   TransactionType,
 } from "../consts/transactions.const";
 import { TransactionStatus } from "aws-sdk/clients/lakeformation";
+import { UserEntity } from "src/entities/user/user.entity";
 
 @Entity({ name: "transactions" })
 export class TransactionsEntity {
@@ -32,11 +35,12 @@ export class TransactionsEntity {
   concept: string;
 
   @ApiProperty({
-    description: "Transaction amount",
-    example: 500.0,
+    description: "Transaction amount (in cents or smallest currency unit)",
+    example: 50000,
     type: Number,
+    minimum: 0,
   })
-  @Column({ type: "decimal", precision: 10, scale: 2 })
+  @Column({ type: "int", nullable: false })
   amount: number;
 
   @ApiProperty({
@@ -70,6 +74,12 @@ export class TransactionsEntity {
   })
   @OneToOne(() => BalanceEntity, (balance) => balance.lastTransactionId)
   balance: BalanceEntity;
+
+  @ManyToOne(() => UserEntity, (user) => user.uidTransactions, {
+    nullable: false,
+  })
+  @JoinColumn({ name: "uid" })
+  userId: UserEntity;
 
   @ApiProperty({
     description: "Transaction creation timestamp",

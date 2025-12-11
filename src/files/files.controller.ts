@@ -112,7 +112,7 @@ export class FilesController {
     };
   }
 
-  @Delete(":uid/file/*")
+  @Delete(":uid/file/:path")
   @ResponseMessage("Archivo eliminado exitosamente")
   @ApiOperation({
     summary: "Delete file from S3",
@@ -161,7 +161,7 @@ export class FilesController {
   })
   async deleteFile(
     @Param("uid", ParseIntPipe) uid: number,
-    @Param("*") filePath: string,
+    @Param("filePath") filePath: string,
   ) {
     this.logger.log(`File deletion request: ${filePath} for user ${uid}`);
 
@@ -179,7 +179,7 @@ export class FilesController {
     };
   }
 
-  @Get(":uid/file/*")
+  @Get(":uid/file/:path")
   @ResponseMessage("Información del archivo obtenida exitosamente")
   @ApiOperation({
     summary: "Get file information",
@@ -236,7 +236,7 @@ export class FilesController {
   })
   async getFileInfo(
     @Param("uid", ParseIntPipe) uid: number,
-    @Param("*") filePath: string,
+    @Param("filePath") filePath: string,
   ) {
     this.logger.log(`File info request: ${filePath} for user ${uid}`);
 

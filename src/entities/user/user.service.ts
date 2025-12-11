@@ -14,7 +14,7 @@ import { ReferenceService } from "src/entities/reference/reference.service";
 import { Role } from "src/common/enums/rol.enum";
 import { spanishMessages } from "src/common/constants/messages";
 import { TransactionsService } from "src/entities/transactions/transaction.service";
-import { TRANSACTION_TYPE } from "src/entities/transactions/consts/transactions.const";
+import { BalanceService } from "../balance/balance.service";
 
 @Injectable()
 export class UserService {
@@ -26,6 +26,7 @@ export class UserService {
     private experienceService: ExperienceService,
     private referenceService: ReferenceService,
     private transactionsService: TransactionsService,
+    private readonly balanceService: BalanceService,
   ) {}
 
   async getUser(params = {}) {
@@ -69,19 +70,7 @@ export class UserService {
     const userToCreate = this.userRepository.create(userDataToCreate);
     const savedUser = await this.userRepository.save(userToCreate);
 
-    try {
-      await this.transactionsService.createTransaction({
-        uid: savedUser.uid,
-        concept: "Saldo inicial de bienvenida",
-        amount: 5000,
-        type: TRANSACTION_TYPE.ADD,
-      });
-    } catch (error) {
-      console.error(
-        `Error creating initial balance for user ${savedUser.uid}:`,
-        error,
-      );
-    }
+    await this.balanceService.createBalance(savedUser.uid);
 
     // Saving education
     if (body.education && body.education.length > 0) {
@@ -197,21 +186,7 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(newUser);
 
-    // Create initial balance with 5000
-    try {
-      await this.transactionsService.createTransaction({
-        uid: savedUser.uid,
-        concept: "Saldo inicial de bienvenida",
-        amount: 5000,
-        type: TRANSACTION_TYPE.ADD,
-      });
-    } catch (error) {
-      console.error(
-        `Error creating initial balance for user ${savedUser.uid}:`,
-        error,
-      );
-      // Continue with user registration even if balance creation fails
-    }
+    await this.balanceService.createBalance(savedUser.uid);
 
     return {
       data: savedUser,

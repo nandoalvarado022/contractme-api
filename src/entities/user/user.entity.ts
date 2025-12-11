@@ -13,8 +13,10 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  Transaction,
 } from "typeorm";
 import { BalanceEntity } from "../balance/entities/balance.entity";
+import { TransactionsEntity } from "../transactions/entities/transactions.entity";
 
 @Entity({ name: "users" })
 export class UserEntity {
@@ -151,4 +153,7 @@ export class UserEntity {
   })
   @OneToOne(() => BalanceEntity, (balance) => balance.user)
   balance: BalanceEntity;
+
+  @OneToMany(() => TransactionsEntity, (transaction) => transaction.userId)
+  uidTransactions: TransactionsEntity[];
 }

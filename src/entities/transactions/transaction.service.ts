@@ -2,7 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  InternalServerErrorException,
+  Logger,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, DataSource } from "typeorm";
@@ -18,6 +18,8 @@ import {
 
 @Injectable()
 export class TransactionsService {
+  private readonly logger = new Logger(TransactionsService.name);
+
   constructor(
     @InjectRepository(TransactionsEntity)
     private readonly transactionsRepository: Repository<TransactionsEntity>,
@@ -25,14 +27,10 @@ export class TransactionsService {
     private readonly balanceRepository: Repository<BalanceEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly dataSource: DataSource,
   ) {}
 
-  async createTransaction(
-    createTransactionDto: CreateTransactionDto,
-  ): Promise<TransactionsEntity> {
+  async createTransaction(createTransactionDto: CreateTransactionDto) {
     const { uid, email, concept, amount, type } = createTransactionDto;
-
     let userUid = uid;
 
     if (email) {
@@ -51,79 +49,66 @@ export class TransactionsService {
       throw new BadRequestException("Either uid or email must be provided");
     }
 
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const balance = await this.balanceRepository.findOne({
+      where: { uid: userUid },
+    });
 
-    try {
-      let balance = await queryRunner.manager.findOne(BalanceEntity, {
-        where: { uid: userUid },
-      });
-
-      if (!balance) {
-        balance = queryRunner.manager.create(BalanceEntity, {
-          uid: userUid,
-          amount: 0,
-        });
-        balance = await queryRunner.manager.save(BalanceEntity, balance);
-      }
-
-      const currentAmount = Number(balance.amount);
-      let newAmount: number;
-
-      if (type === TRANSACTION_TYPE.ADD) {
-        newAmount = currentAmount + Number(amount);
-      } else if (type === TRANSACTION_TYPE.REMOVE) {
-        newAmount = currentAmount - Number(amount);
-
-        if (newAmount < 0) {
-          throw new BadRequestException(
-            `Insufficient balance. Current balance: ${currentAmount}, Requested: ${amount}`,
-          );
-        }
-      } else {
-        throw new BadRequestException("Invalid transaction type");
-      }
-
-      // Create the transaction
-      const transaction = queryRunner.manager.create(TransactionsEntity, {
-        concept,
-        amount,
-        type,
-        status: TRANSACTION_STATUS.COMPLETED,
-      });
-      const savedTransaction = await queryRunner.manager.save(
-        TransactionsEntity,
-        transaction,
+    if (!balance) {
+      throw new NotFoundException(
+        `Balance not found for user with ID ${userUid}`,
       );
-
-      // Update balance with new amount and last transaction
-      balance.amount = newAmount;
-      balance.last_transaction_id = savedTransaction.id;
-      await queryRunner.manager.save(BalanceEntity, balance);
-
-      // Commit the transaction
-      await queryRunner.commitTransaction();
-
-      return savedTransaction;
-    } catch (error) {
-      // Rollback on error
-      await queryRunner.rollbackTransaction();
-
-      if (
-        error instanceof BadRequestException ||
-        error instanceof NotFoundException
-      ) {
-        throw error;
-      }
-
-      throw new InternalServerErrorException(
-        "Failed to create transaction: " + error.message,
-      );
-    } finally {
-      // Release the query runner
-      await queryRunner.release();
     }
+
+    const currentAmount = Number(balance.amount);
+    let newAmount: number = 0;
+
+    if (type === TRANSACTION_TYPE.ADD) {
+      newAmount = currentAmount + Number(amount);
+    }
+    if (type === TRANSACTION_TYPE.REMOVE) {
+      newAmount = currentAmount - Number(amount);
+    }
+    if (newAmount < 0) {
+      throw new BadRequestException(
+        `Insufficient balance. Current balance: ${currentAmount}, Requested: ${amount}`,
+      );
+    }
+
+    const user = await this.userRepository.findOne({
+      where: { uid: userUid },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userUid} not found`);
+    }
+    const transaction = this.transactionsRepository.create({
+      concept,
+      amount,
+      type,
+      status: TRANSACTION_STATUS.COMPLETED,
+      userId: { uid: userUid },
+    });
+
+    const savedTransaction = await this.transactionsRepository.save(
+      transaction,
+    );
+
+    const newBalance = {
+      ...balance,
+      amount: newAmount,
+      last_transaction_id: savedTransaction.id,
+    };
+    await this.balanceRepository.save(newBalance);
+
+    return {
+      id: savedTransaction.id,
+      uid: userUid,
+      createdAt: savedTransaction.createdAt,
+      concept: savedTransaction.concept,
+      amount: savedTransaction.amount,
+      type: savedTransaction.type,
+      status: savedTransaction.status,
+    };
   }
 
   async getTransactionsByUser(getTransactionsDto: GetTransactionsDto): Promise<{
@@ -135,29 +120,12 @@ export class TransactionsService {
   }> {
     const { uid, page = 1, limit = 10 } = getTransactionsDto;
 
-    // Get balance to verify user has a balance record
-    const balance = await this.balanceRepository.findOne({
-      where: { uid },
-      relations: ["lastTransactionId"],
-    });
-
-    if (!balance) {
-      return {
-        transactions: [],
-        total: 0,
-        page,
-        limit,
-        totalPages: 0,
-      };
-    }
-
-    // Get paginated transactions
     const skip = (page - 1) * limit;
 
     const [transactions, total] =
       await this.transactionsRepository.findAndCount({
         where: {
-          balance: { uid },
+          userId: { uid },
         },
         order: {
           createdAt: "DESC",
@@ -187,37 +155,5 @@ export class TransactionsService {
     }
 
     return transaction;
-  }
-
-  async getUserTransactionHistory(uid: number): Promise<TransactionsEntity[]> {
-    const balance = await this.balanceRepository.findOne({
-      where: { uid },
-    });
-
-    if (!balance) {
-      return [];
-    }
-
-    return this.transactionsRepository.find({
-      where: {
-        balance: { uid },
-      },
-      order: {
-        createdAt: "DESC",
-      },
-    });
-  }
-
-  async getLastTransaction(uid: number): Promise<TransactionsEntity | null> {
-    const balance = await this.balanceRepository.findOne({
-      where: { uid },
-      relations: ["lastTransactionId"],
-    });
-
-    if (!balance || !balance.lastTransactionId) {
-      return null;
-    }
-
-    return balance.lastTransactionId;
   }
 }

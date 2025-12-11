@@ -44,7 +44,7 @@ export class TransactionsController {
         value: {
           uid: 1,
           concept: "Payment received",
-          amount: 500.0,
+          amount: 50000,
           type: "add",
         },
       },
@@ -53,7 +53,7 @@ export class TransactionsController {
         value: {
           uid: 1,
           concept: "Service payment",
-          amount: 100.0,
+          amount: 10000,
           type: "remove",
         },
       },
@@ -69,7 +69,7 @@ export class TransactionsController {
         data: {
           id: 1,
           concept: "Payment received",
-          amount: 500.0,
+          amount: 50000,
           type: "add",
           status: "completed",
           createdAt: "2025-12-09T10:00:00.000Z",
@@ -80,6 +80,14 @@ export class TransactionsController {
   @ApiResponse({
     status: 400,
     description: "Bad request - Invalid data or insufficient balance",
+    schema: {
+      example: {
+        success: false,
+        message:
+          "Insufficient balance. Current balance: 10000, Requested: 50000",
+        statusCode: 400,
+      },
+    },
   })
   @ApiResponse({
     status: 500,
@@ -88,11 +96,7 @@ export class TransactionsController {
   })
   async create(
     @Body(ValidationPipe) createTransactionDto: CreateTransactionDto,
-  ): Promise<{
-    success: boolean;
-    message: string;
-    data: TransactionsEntity;
-  }> {
+  ) {
     const transaction = await this.transactionsService.createTransaction(
       createTransactionDto,
     );
@@ -141,7 +145,7 @@ export class TransactionsController {
             {
               id: 1,
               concept: "Payment received",
-              amount: 500.0,
+              amount: 50000,
               type: "add",
               status: "completed",
               createdAt: "2025-12-09T10:00:00.000Z",
@@ -156,6 +160,14 @@ export class TransactionsController {
         },
       },
     },
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Invalid user ID format",
+  })
+  @ApiResponse({
+    status: 404,
+    description: "User not found",
   })
   async getByUser(
     @Param("uid", ParseIntPipe) uid: number,
@@ -197,109 +209,6 @@ export class TransactionsController {
     };
   }
 
-  @Get("history/:uid")
-  @ApiOperation({
-    summary: "Get full transaction history",
-    description:
-      "Retrieves complete transaction history for a user without pagination, ordered by creation date descending",
-  })
-  @ApiParam({
-    name: "uid",
-    type: Number,
-    description: "User ID",
-    example: 1,
-  })
-  @ApiResponse({
-    status: 200,
-    description: "Transaction history retrieved successfully",
-    schema: {
-      example: {
-        success: true,
-        data: [
-          {
-            id: 2,
-            concept: "Service payment",
-            amount: 100.0,
-            type: "remove",
-            status: "completed",
-            createdAt: "2025-12-09T11:00:00.000Z",
-          },
-          {
-            id: 1,
-            concept: "Payment received",
-            amount: 500.0,
-            type: "add",
-            status: "completed",
-            createdAt: "2025-12-09T10:00:00.000Z",
-          },
-        ],
-      },
-    },
-  })
-  async getHistory(@Param("uid", ParseIntPipe) uid: number): Promise<{
-    success: boolean;
-    data: TransactionsEntity[];
-  }> {
-    const transactions =
-      await this.transactionsService.getUserTransactionHistory(uid);
-
-    return {
-      success: true,
-      data: transactions,
-    };
-  }
-
-  @Get("last/:uid")
-  @ApiOperation({
-    summary: "Get last transaction",
-    description:
-      "Retrieves the most recent transaction for a user from their balance record",
-  })
-  @ApiParam({
-    name: "uid",
-    type: Number,
-    description: "User ID",
-    example: 1,
-  })
-  @ApiResponse({
-    status: 200,
-    description: "Last transaction retrieved successfully",
-    schema: {
-      example: {
-        success: true,
-        data: {
-          id: 5,
-          concept: "Latest payment",
-          amount: 250.0,
-          type: "add",
-          status: "completed",
-          createdAt: "2025-12-09T12:00:00.000Z",
-        },
-      },
-    },
-  })
-  @ApiResponse({
-    status: 200,
-    description: "No transactions found for user",
-    schema: {
-      example: {
-        success: true,
-        data: null,
-      },
-    },
-  })
-  async getLastTransaction(@Param("uid", ParseIntPipe) uid: number): Promise<{
-    success: boolean;
-    data: TransactionsEntity | null;
-  }> {
-    const transaction = await this.transactionsService.getLastTransaction(uid);
-
-    return {
-      success: true,
-      data: transaction,
-    };
-  }
-
   @Get(":id")
   @ApiOperation({
     summary: "Get transaction by ID",
@@ -320,7 +229,7 @@ export class TransactionsController {
         data: {
           id: 1,
           concept: "Payment received",
-          amount: 500.0,
+          amount: 50000,
           type: "add",
           status: "completed",
           createdAt: "2025-12-09T10:00:00.000Z",
