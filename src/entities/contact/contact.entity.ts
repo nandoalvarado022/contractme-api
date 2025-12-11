@@ -1,73 +1,73 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { TYPE_CONTACT, TypeContact } from './contact.model';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { TYPE_CONTACT, TypeContact } from "./contact.model";
 
-@Entity('leads')
+@Entity("leads")
 export class ContactEntity {
-  @ApiProperty({ description: 'Lead unique identifier', example: 1 })
+  @ApiProperty({ description: "Lead unique identifier", example: 1 })
   @PrimaryGeneratedColumn()
   lid: number;
 
   @ApiProperty({
     description: "Contact person's full name",
-    example: 'María González',
+    example: "María González",
     maxLength: 100,
   })
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 100,
-    name: 'full_name',
+    name: "full_name",
     nullable: false,
   })
   fullName: string;
 
   @ApiProperty({
     description: "Contact person's email address",
-    example: 'maria.gonzalez@example.com',
+    example: "maria.gonzalez@example.com",
     maxLength: 100,
   })
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 100,
-    name: 'email',
+    name: "email",
     nullable: false,
   })
   email: string;
 
   @ApiPropertyOptional({
     description: "Contact person's phone number",
-    example: '+1234567890',
+    example: "+1234567890",
     maxLength: 20,
     nullable: true,
   })
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 20,
-    name: 'phone',
+    name: "phone",
     nullable: true,
   })
   phone: string;
 
   @ApiProperty({
-    description: 'Reason for contact',
+    description: "Reason for contact",
     enum: Object.values(TYPE_CONTACT),
-    example: 'information',
+    example: "information",
   })
   @Column({
-    type: 'enum',
+    type: "enum",
     enum: TYPE_CONTACT,
-    name: 'type_contact',
+    name: "type_contact",
     nullable: false,
   })
   reason: TypeContact;
 
   @ApiProperty({
-    description: 'Message or inquiry from the contact',
-    example: 'I would like to know more about your services',
+    description: "Message or inquiry from the contact",
+    example: "I would like to know more about your services",
   })
   @Column({
-    type: 'text',
-    name: 'message',
+    type: "text",
+    name: "message",
     nullable: false,
   })
   message: string;

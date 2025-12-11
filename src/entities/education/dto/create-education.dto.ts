@@ -1,16 +1,16 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
   IsString,
   IsNotEmpty,
   IsOptional,
   IsDateString,
   IsNumber,
-} from 'class-validator';
+} from "class-validator";
 
 export class CreateEducationDto {
   @ApiProperty({
-    description: 'Educational institution name',
-    example: 'Universidad de Miami',
+    description: "Educational institution name",
+    example: "Universidad de Miami",
     maxLength: 100,
   })
   @IsString()
@@ -18,8 +18,8 @@ export class CreateEducationDto {
   place: string;
 
   @ApiProperty({
-    description: 'Degree or certification title',
-    example: 'Bachelor of Computer Science',
+    description: "Degree or certification title",
+    example: "Bachelor of Computer Science",
     maxLength: 100,
   })
   @IsString()
@@ -27,8 +27,8 @@ export class CreateEducationDto {
   title: string;
 
   @ApiProperty({
-    description: 'Start date of the education (ISO 8601 format)',
-    example: '2018-09-01T00:00:00.000Z',
+    description: "Start date of the education (ISO 8601 format)",
+    example: "2018-09-01T00:00:00.000Z",
   })
   @IsDateString()
   @IsNotEmpty()
@@ -36,15 +36,15 @@ export class CreateEducationDto {
 
   @ApiPropertyOptional({
     description:
-      'End date of the education (ISO 8601 format). Leave empty if currently studying',
-    example: '2022-06-15T00:00:00.000Z',
+      "End date of the education (ISO 8601 format). Leave empty if currently studying",
+    example: "2022-06-15T00:00:00.000Z",
   })
   @IsDateString()
   @IsOptional()
   end_date?: string;
 
   @ApiPropertyOptional({
-    description: 'User ID associated with this education record',
+    description: "User ID associated with this education record",
     example: 1,
   })
   @IsNumber()
