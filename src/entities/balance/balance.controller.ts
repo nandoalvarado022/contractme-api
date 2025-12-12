@@ -1,39 +1,19 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Param,
-  ParseIntPipe,
-  Query,
-  HttpCode,
-  HttpStatus,
-} from "@nestjs/common";
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-  ApiQuery,
-} from "@nestjs/swagger";
+import { Controller, Get, Post, HttpCode, HttpStatus } from "@nestjs/common";
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from "@nestjs/swagger";
 import { BalanceService } from "./balance.service";
 import { BalanceEntity } from "./entities/balance.entity";
+import { UserId } from "src/common/decorators/user.decorator";
 
 @ApiTags("Balance")
 @Controller("balance")
 export class BalanceController {
   constructor(private readonly balanceService: BalanceService) {}
 
-  @Get(":uid")
+  @Get()
   @ApiOperation({
     summary: "Get balance by user ID",
     description:
       "Retrieves the balance information for a specific user including related transaction and user details",
-  })
-  @ApiParam({
-    name: "uid",
-    type: Number,
-    description: "User ID",
-    example: 1,
   })
   @ApiResponse({
     status: 200,
@@ -72,7 +52,7 @@ export class BalanceController {
     status: 400,
     description: "Invalid user ID format",
   })
-  async getBalance(@Param("uid", ParseIntPipe) uid: number) {
+  async getBalance(@UserId() uid: number) {
     const balance = await this.balanceService.getBalanceByUserId(uid);
 
     return {
@@ -81,18 +61,12 @@ export class BalanceController {
     };
   }
 
-  @Post(":uid")
+  @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: "Create new balance",
     description:
       "Creates a new balance account for a user with initial amount of 0",
-  })
-  @ApiParam({
-    name: "uid",
-    type: Number,
-    description: "User ID",
-    example: 1,
   })
   @ApiResponse({
     status: 201,
@@ -126,7 +100,7 @@ export class BalanceController {
     status: 404,
     description: "User not found",
   })
-  async createBalance(@Param("uid", ParseIntPipe) uid: number): Promise<{
+  async createBalance(@UserId() uid: number): Promise<{
     success: boolean;
     message: string;
     data: BalanceEntity;
