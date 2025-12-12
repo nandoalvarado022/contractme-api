@@ -22,6 +22,7 @@ import { TransactionsService } from "./transaction.service";
 import { CreateTransactionDto } from "./dtos/create-transaction.dto";
 import { GetTransactionsDto } from "./dtos/get-transactions.dto";
 import { TransactionsEntity } from "./entities/transactions.entity";
+import { UserId } from "src/common/decorators/user.decorator";
 
 @ApiTags("Transactions")
 @Controller("transactions")
@@ -108,17 +109,11 @@ export class TransactionsController {
     };
   }
 
-  @Get("user/:uid")
+  @Get("user")
   @ApiOperation({
     summary: "Get transactions by user",
     description:
       "Retrieves paginated list of transactions for a specific user, ordered by creation date descending",
-  })
-  @ApiParam({
-    name: "uid",
-    type: Number,
-    description: "User ID",
-    example: 1,
   })
   @ApiQuery({
     name: "page",
@@ -170,7 +165,7 @@ export class TransactionsController {
     description: "User not found",
   })
   async getByUser(
-    @Param("uid", ParseIntPipe) uid: number,
+    @UserId() uid: number,
     @Query("page") page?: number,
     @Query("limit") limit?: number,
   ): Promise<{
