@@ -3,18 +3,18 @@ import {
   NotFoundException,
   BadRequestException,
   Logger,
-} from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, DataSource } from "typeorm";
-import { TransactionsEntity } from "./entities/transactions.entity";
-import { BalanceEntity } from "../balance/entities/balance.entity";
-import { UserEntity } from "../user/user.entity";
-import { CreateTransactionDto } from "./dtos/create-transaction.dto";
-import { GetTransactionsDto } from "./dtos/get-transactions.dto";
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, DataSource } from 'typeorm';
+import { TransactionsEntity } from './entities/transactions.entity';
+import { BalanceEntity } from '../balance/entities/balance.entity';
+import { UserEntity } from '../user/user.entity';
+import { CreateTransactionDto } from './dtos/create-transaction.dto';
+import { GetTransactionsDto } from './dtos/get-transactions.dto';
 import {
   TRANSACTION_TYPE,
   TRANSACTION_STATUS,
-} from "./consts/transactions.const";
+} from './consts/transactions.const';
 
 @Injectable()
 export class TransactionsService {
@@ -26,7 +26,7 @@ export class TransactionsService {
     @InjectRepository(BalanceEntity)
     private readonly balanceRepository: Repository<BalanceEntity>,
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>
   ) {}
 
   async createTransaction(createTransactionDto: CreateTransactionDto) {
@@ -46,7 +46,7 @@ export class TransactionsService {
     }
 
     if (!userUid) {
-      throw new BadRequestException("Either uid or email must be provided");
+      throw new BadRequestException('Either uid or email must be provided');
     }
 
     const balance = await this.balanceRepository.findOne({
@@ -55,7 +55,7 @@ export class TransactionsService {
 
     if (!balance) {
       throw new NotFoundException(
-        `Balance not found for user with ID ${userUid}`,
+        `Balance not found for user with ID ${userUid}`
       );
     }
 
@@ -70,7 +70,7 @@ export class TransactionsService {
     }
     if (newAmount < 0) {
       throw new BadRequestException(
-        `Insufficient balance. Current balance: ${currentAmount}, Requested: ${amount}`,
+        `Insufficient balance. Current balance: ${currentAmount}, Requested: ${amount}`
       );
     }
 
@@ -90,7 +90,7 @@ export class TransactionsService {
     });
 
     const savedTransaction = await this.transactionsRepository.save(
-      transaction,
+      transaction
     );
 
     const newBalance = {
@@ -136,7 +136,7 @@ export class TransactionsService {
           userId: { uid },
         },
         order: {
-          createdAt: "DESC",
+          createdAt: 'DESC',
         },
         skip,
         take: limit,
