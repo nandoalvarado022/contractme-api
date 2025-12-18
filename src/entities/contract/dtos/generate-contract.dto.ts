@@ -1,78 +1,78 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsEmail,
   IsInt,
-  IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
-} from "class-validator";
+} from 'class-validator';
 
 export class GenerateContractDto {
   @ApiProperty({
-    description: "Tenant full name",
-    example: "John Doe",
+    description: 'Tenant full name',
+    example: 'John Doe',
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   tennatName: string;
 
   @ApiProperty({
-    description: "Tenant email address",
-    example: "tenant@example.com",
+    description: 'Tenant email address',
+    example: 'tenant@example.com',
   })
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   tennatEmail: string;
 
   @ApiProperty({
-    description: "Tenant phone number",
-    example: "+1234567890",
+    description: 'Tenant phone number',
+    example: '+1234567890',
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   tennatPhone: string;
 
   @ApiProperty({
-    description: "Lessor (owner) full name",
-    example: "Jane Smith",
+    description: 'Lessor (owner) full name',
+    example: 'Jane Smith',
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   lessorName: string;
 
   @ApiProperty({
-    description: "Lessor email address",
-    example: "lessor@example.com",
+    description: 'Lessor email address',
+    example: 'lessor@example.com',
   })
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   lessorEmail: string;
 
   @ApiProperty({
-    description: "Lessor phone number",
-    example: "+0987654321",
+    description: 'Lessor phone number',
+    example: '+0987654321',
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   lessorPhone: string;
 
   @ApiProperty({
-    description: "Whether the contract has been signed",
+    description: 'Whether the contract has been signed',
     example: false,
   })
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   hasSignature: boolean;
 
   @ApiProperty({
-    description: "Contract template ID to use",
+    description: 'Contract template ID to use',
     example: 1,
     type: Number,
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @IsPositive()
   @IsInt()
@@ -80,11 +80,11 @@ export class GenerateContractDto {
   templateId: number;
 
   @ApiProperty({
-    description: "User ID generating the contract",
+    description: 'User ID generating the contract',
     example: 1,
     type: Number,
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @IsPositive()
   @IsInt()
