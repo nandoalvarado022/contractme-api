@@ -50,8 +50,8 @@ export class AuthService {
 
       await this.userService.updatePassword(user.email, hashedPassword);
 
-      const fullName = user.last_name 
-        ? `${user.name} ${user.last_name}` 
+      const fullName = user.last_name
+        ? `${user.name} ${user.last_name}`
         : user.name;
 
       await this.mailService.sendEmailBrevo(
@@ -84,8 +84,8 @@ export class AuthService {
     const payload = { email: userBd.email, role: userBd.role };
     const token = await this.jwtService.signAsync(payload);
 
-    const fullName = userBd.last_name 
-      ? `${userBd.name} ${userBd.last_name}` 
+    const fullName = userBd.last_name
+      ? `${userBd.name} ${userBd.last_name}`
       : userBd.name;
 
     return {

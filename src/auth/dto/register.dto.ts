@@ -11,7 +11,7 @@ export class RegisterDto {
   @IsString()
   @MinLength(1)
   name: string;
-  
+
   @ApiProperty({
     description: "User last name",
     example: "Perez",
