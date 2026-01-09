@@ -8,7 +8,10 @@ import {
 } from "typeorm";
 import { ContractTemplateFieldsEntity } from "./contract_templates_fields.entity";
 import { ContractEntity } from "./contract.entity";
-import { STATUS_CONTRACT, type StatusContract } from "../consts/contract.consts";
+import {
+  STATUS_CONTRACT,
+  type StatusContract,
+} from "../consts/contract.consts";
 
 @Entity({ name: "contracts_templates" })
 export class ContractTemplateEntity {
@@ -61,7 +64,12 @@ export class ContractTemplateEntity {
   @Column({ nullable: false })
   created_at: string;
 
-  @Column({ nullable: false, type: "enum", enum: STATUS_CONTRACT, default: STATUS_CONTRACT.ACTIVE })
+  @Column({
+    nullable: false,
+    type: "enum",
+    enum: STATUS_CONTRACT,
+    default: STATUS_CONTRACT.ACTIVE,
+  })
   status: StatusContract;
 
   @ApiProperty({

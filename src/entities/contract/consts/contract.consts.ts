@@ -3,4 +3,5 @@ export const STATUS_CONTRACT = {
   INACTIVE: "inactive",
 } as const;
 
-export type StatusContract = typeof STATUS_CONTRACT[keyof typeof STATUS_CONTRACT];
+export type StatusContract =
+  (typeof STATUS_CONTRACT)[keyof typeof STATUS_CONTRACT];
