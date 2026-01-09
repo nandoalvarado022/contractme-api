@@ -69,9 +69,7 @@ export class DatabaseBackupService {
       await this.cleanupLocalFile(backupFilePath);
 
       const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-      this.logger.log(
-        `Database backup completed successfully in ${duration}s`,
-      );
+      this.logger.log(`Database backup completed successfully in ${duration}s`);
     } catch (error) {
       this.logger.error("Error during database backup:", error.stack);
 
@@ -147,9 +145,14 @@ export class DatabaseBackupService {
         Metadata: {
           "backup-date": new Date().toISOString(),
           "backup-type": "daily",
-          "database-name": this.configService.get<string>(
-            `DB_${this.configService.get<string>("NODE_ENV") === "production" ? "REMOTE" : "LOCAL"}_DATABASE`,
-          ) || "unknown",
+          "database-name":
+            this.configService.get<string>(
+              `DB_${
+                this.configService.get<string>("NODE_ENV") === "production"
+                  ? "REMOTE"
+                  : "LOCAL"
+              }_DATABASE`,
+            ) || "unknown",
         },
       };
 
@@ -192,9 +195,7 @@ export class DatabaseBackupService {
       if (sortedBackups.length > this.MAX_BACKUPS) {
         const backupsToDelete = sortedBackups.slice(this.MAX_BACKUPS);
 
-        this.logger.log(
-          `Deleting ${backupsToDelete.length} old backup(s)...`,
-        );
+        this.logger.log(`Deleting ${backupsToDelete.length} old backup(s)...`);
 
         for (const backup of backupsToDelete) {
           if (backup.Key) {
@@ -231,7 +232,10 @@ export class DatabaseBackupService {
         this.logger.log(`Local backup file deleted: ${filePath}`);
       }
     } catch (error) {
-      this.logger.warn(`Failed to delete local file ${filePath}:`, error.message);
+      this.logger.warn(
+        `Failed to delete local file ${filePath}:`,
+        error.message,
+      );
     }
   }
 
