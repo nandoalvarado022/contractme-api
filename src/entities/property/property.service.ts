@@ -24,8 +24,8 @@ export class PropertyService {
 
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>, // @InjectRepository(AuditLogsEntity)
-    // private readonly logsRepository: Repository<AuditLogsEntity>
-  ) {}
+  ) // private readonly logsRepository: Repository<AuditLogsEntity>
+  {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<PropertyEntity> {
     const owner = await this.userRepository.findOne({
