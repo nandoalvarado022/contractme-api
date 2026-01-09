@@ -131,12 +131,12 @@ export class UserService {
         status: spanishMessages.common.ERROR,
       };
     }
-    
+
     const updateData = {
       ...body,
       ...(body.lastName !== undefined && { last_name: body.lastName }),
     };
-    
+
     const updatedUser = this.userRepository.merge(userFound, updateData);
     await this.userRepository.save(updatedUser);
 
