@@ -19,7 +19,7 @@ export class AuthService {
     private readonly mailService: MailService,
   ) {}
 
-  async register({ email, name, password }: RegisterDto) {
+  async register({ email, name, lastName, password }: RegisterDto) {
     const user = await this.userService.findOneByEmail(email);
 
     if (user) {
@@ -33,6 +33,7 @@ export class AuthService {
       email,
       name,
       password: hashedPassword,
+      lastName,
     });
   }
 
@@ -49,11 +50,15 @@ export class AuthService {
 
       await this.userService.updatePassword(user.email, hashedPassword);
 
+      const fullName = user.last_name 
+        ? `${user.name} ${user.last_name}` 
+        : user.name;
+
       await this.mailService.sendEmailBrevo(
         user.email,
-        user.name,
+        fullName,
         "password_remember",
-        { name: user.name, tempPassword },
+        { name: fullName, tempPassword },
       );
 
       return { message: spanishMessages.auth.TEMP_PASSWORD_SENT };
@@ -79,9 +84,13 @@ export class AuthService {
     const payload = { email: userBd.email, role: userBd.role };
     const token = await this.jwtService.signAsync(payload);
 
+    const fullName = userBd.last_name 
+      ? `${userBd.name} ${userBd.last_name}` 
+      : userBd.name;
+
     return {
       email,
-      message: `${spanishMessages.auth.WELCOME} ${userBd.name}`,
+      message: `${spanishMessages.auth.WELCOME} ${fullName}`,
       token,
       uid: userBd.uid,
       status: spanishMessages.common.SUCCESS,

@@ -34,6 +34,7 @@ export class UserService {
       where: params,
       select: [
         "name",
+        "last_name",
         "birth_date",
         "email",
         "phone",
@@ -63,6 +64,7 @@ export class UserService {
 
     const userDataToCreate = {
       ...body,
+      last_name: body.lastName,
       password: hashedPassword,
       role: Role.USER,
     };
@@ -103,6 +105,7 @@ export class UserService {
     const auditData = {
       uid: savedUser.uid,
       name: savedUser.name,
+      lastName: savedUser.last_name,
       email: savedUser.email,
       created_at: savedUser.created_at,
     };
@@ -128,7 +131,13 @@ export class UserService {
         status: spanishMessages.common.ERROR,
       };
     }
-    const updatedUser = this.userRepository.merge(userFound, body);
+    
+    const updateData = {
+      ...body,
+      ...(body.lastName !== undefined && { last_name: body.lastName }),
+    };
+    
+    const updatedUser = this.userRepository.merge(userFound, updateData);
     await this.userRepository.save(updatedUser);
 
     // Updating education
@@ -162,6 +171,7 @@ export class UserService {
     const auditData = {
       uid: userFound.uid,
       name: userFound.name,
+      lastName: userFound.last_name,
       email: userFound.email,
       updated_at: new Date().toISOString(),
     };
@@ -176,12 +186,13 @@ export class UserService {
   }
 
   async registerUser(user: RegisterDto) {
-    const { email, name, password } = user;
+    const { email, name, password, lastName } = user;
 
     const newUser = this.userRepository.create({
       email,
       name,
       password,
+      last_name: lastName,
     });
 
     const savedUser = await this.userRepository.save(newUser);
@@ -202,7 +213,7 @@ export class UserService {
   async findByEmailWithPassword(email: string) {
     return await this.userRepository.findOne({
       where: { email },
-      select: ["uid", "name", "email", "password", "role"],
+      select: ["uid", "name", "last_name", "email", "password", "role"],
     });
   }
 

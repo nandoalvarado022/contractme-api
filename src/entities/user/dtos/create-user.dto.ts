@@ -17,13 +17,22 @@ import { CreateReferenceDto } from "src/entities/reference/dto/create-reference.
 
 export class CreateUserDto {
   @ApiProperty({
-    description: "User full name",
-    example: "John Doe",
+    description: "User name",
+    example: "John",
     required: false,
   })
   @IsString()
   @IsOptional()
   name: string;
+
+  @ApiProperty({
+    description: "User last name",
+    example: "Doe",
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  lastName: string;
 
   @ApiProperty({
     description: "User email address",

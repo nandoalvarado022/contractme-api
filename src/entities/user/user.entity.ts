@@ -28,11 +28,18 @@ export class UserEntity {
   uid: number;
 
   @ApiProperty({
-    description: "User full name",
-    example: "John Doe",
+    description: "User name",
+    example: "John",
   })
   @Column()
   name: string;
+  
+  @ApiProperty({
+    description: "User last name",
+    example: "Doe",
+  })
+  @Column({ type: "varchar", length: 50, nullable: true })
+  last_name: string;
 
   @ApiProperty({
     description: "User email address",

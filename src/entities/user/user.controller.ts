@@ -47,7 +47,8 @@ export class UserController {
         data: [
           {
             uid: 1,
-            name: "John Doe",
+            name: "John",
+            last_name: "Doe",
             email: "john@example.com",
             phone: "+1234567890",
             document_type: "cc",
@@ -85,7 +86,8 @@ export class UserController {
     schema: {
       example: {
         uid: 1,
-        name: "John Doe",
+        name: "John",
+        last_name: "Doe",
         email: "john@example.com",
         phone: "+1234567890",
         document_type: "cc",
@@ -120,7 +122,8 @@ export class UserController {
       basicUser: {
         summary: "Basic user",
         value: {
-          name: "John Doe",
+          name: "John",
+          lastName: "Doe",
           email: "john@example.com",
           phone: "+1234567890",
           document_type: "cc",
@@ -133,7 +136,8 @@ export class UserController {
       completeUser: {
         summary: "User with education and references",
         value: {
-          name: "John Doe",
+          name: "John",
+          lastName: "Doe",
           email: "john@example.com",
           phone: "+1234567890",
           document_type: "cc",
@@ -168,7 +172,8 @@ export class UserController {
       example: {
         data: {
           uid: 1,
-          name: "John Doe",
+          name: "John",
+          last_name: "Doe",
           email: "john@example.com",
           created_at: "2025-12-09T10:00:00.000Z",
         },
@@ -210,7 +215,8 @@ export class UserController {
       updateBasicInfo: {
         summary: "Update basic information",
         value: {
-          name: "John Smith",
+          name: "John",
+          lastName: "Smith",
           phone: "+1234567890",
           picture: "https://example.com/new-pic.jpg",
         },
@@ -218,7 +224,8 @@ export class UserController {
       updateWithEducation: {
         summary: "Update with education",
         value: {
-          name: "John Smith",
+          name: "John",
+          lastName: "Smith",
           education: [
             {
               institution: "New University",
@@ -239,7 +246,8 @@ export class UserController {
       example: {
         data: {
           uid: 1,
-          name: "John Smith",
+          name: "John",
+          last_name: "Smith",
           email: "john@example.com",
           updated_at: "2025-12-09T10:00:00.000Z",
         },
@@ -283,7 +291,8 @@ export class UserController {
       register: {
         summary: "Register new user",
         value: {
-          name: "John Doe",
+          name: "John",
+          lastName: "Doe",
           email: "john@example.com",
           password: "securePassword123",
         },
@@ -297,7 +306,8 @@ export class UserController {
       example: {
         data: {
           uid: 1,
-          name: "John Doe",
+          name: "John",
+          last_name: "Doe",
           email: "john@example.com",
         },
         message: "Usuario registrado con éxito",
