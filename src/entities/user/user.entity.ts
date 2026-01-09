@@ -75,8 +75,8 @@ export class UserEntity {
     description: "Document number",
     example: 123456789,
   })
-  @Column({ type: "int" })
-  document_number: number;
+  @Column({ type: "varchar", length: 20 })
+  document_number: string;
 
   @ApiProperty({
     description: "User profile picture URL",

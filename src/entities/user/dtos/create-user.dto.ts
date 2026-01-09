@@ -73,10 +73,10 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: "Document number",
-    example: 123456789,
+    example: "123456789",
   })
-  @IsNumber()
-  document_number: number;
+  @IsString()
+  document_number: string;
 
   @ApiProperty({
     description: "Profile picture URL",
