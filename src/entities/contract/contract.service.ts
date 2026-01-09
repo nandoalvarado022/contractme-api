@@ -7,6 +7,7 @@ import { GenerateContractDto } from "./dtos/generate-contract.dto";
 import { TransactionsService } from "../transactions/transaction.service";
 import { TRANSACTION_TYPE } from "../transactions/consts/transactions.const";
 import { GlobalVariablesService } from "../global-variables/global-variables.service";
+import { STATUS_CONTRACT } from "./consts/contract.consts";
 
 @Injectable()
 export class ContractService {
@@ -45,7 +46,7 @@ export class ContractService {
 
   async getOneTemplate(id: number) {
     const template = await this.contractTemplatesRepository.findOne({
-      where: { ct_id: id },
+      where: { ct_id: id, status: STATUS_CONTRACT.ACTIVE },
       relations: {
         fields: true,
       },
@@ -61,6 +62,7 @@ export class ContractService {
 
   async getAllTemplates() {
     const templates = await this.contractTemplatesRepository.find({
+      where: { status: STATUS_CONTRACT.ACTIVE },
       relations: {
         fields: true,
       },
