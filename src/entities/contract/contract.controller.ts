@@ -40,7 +40,7 @@ export class ContractController {
   })
   @ApiConsumes("multipart/form-data")
   @ApiBody({
-    description: "Contract generation data with file upload",
+    description: "Contract generation data with optional file upload",
     schema: {
       type: "object",
       required: [
@@ -53,7 +53,6 @@ export class ContractController {
         "hasSignature",
         "templateId",
         "uid",
-        "file",
       ],
       properties: {
         tennatName: {
@@ -106,7 +105,7 @@ export class ContractController {
         file: {
           type: "string",
           format: "binary",
-          description: "Contract PDF file",
+          description: "Contract PDF file (optional)",
         },
       },
     },
@@ -138,13 +137,17 @@ export class ContractController {
   })
   async generateContract(
     @Body() generateContractDto: GenerateContractDto,
-    @UploadedFiles() file: Express.Multer.File,
+    @UploadedFiles() file: Express.Multer.File | undefined,
     @UserId() uid: number,
   ) {
-    const { url } = await this.filesService.uploadFile(
-      file,
-      generateContractDto.uid,
-    );
+    let url: string | null = null;
+    if (file) {
+      const uploadResult = await this.filesService.uploadFile(
+        file,
+        generateContractDto.uid,
+      );
+      url = uploadResult.url;
+    }
     return this.contractService.generateOne(generateContractDto, url, uid);
   }
 

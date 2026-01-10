@@ -75,10 +75,11 @@ export class ContractEntity {
   hasSignature: boolean;
 
   @ApiProperty({
-    description: "URL to the contract PDF file",
+    description: "URL to the contract PDF file (optional)",
     example: "https://cdn.example.com/contracts/contract_1.pdf",
+    required: false,
   })
-  @Column({ nullable: false, type: "text" })
+  @Column({ nullable: true, type: "text" })
   url: string;
 
   @ApiProperty({
