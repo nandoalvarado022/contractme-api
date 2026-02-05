@@ -58,7 +58,6 @@ export class UserService {
     let usersFound: UserEntity[];
     if (!isAdmin) {
       usersFound = await this.userRepository.findBy({ created_by: { uid } });
-      throw new NotFoundException('User not found');
     }
     usersFound = await this.userRepository.find();
 
