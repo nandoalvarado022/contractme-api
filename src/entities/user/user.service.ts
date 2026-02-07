@@ -1,20 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserEntity } from './user.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AuditLogService } from 'src/entities/audit_logs/audit.service';
-import { AuditLogsEntity } from 'src/entities/audit_logs/audit.entity';
-import { EducationService } from 'src/entities/education/education.service';
-import { ExperienceService } from 'src/entities/experience/experience.service';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { UpdateUserDto } from './dtos/update-user.dto';
-import { RegisterDto } from 'src/auth/dto/register.dto';
-import * as bcrypt from 'bcrypt';
-import { ReferenceService } from 'src/entities/reference/reference.service';
-import { Role } from 'src/common/enums/rol.enum';
-import { spanishMessages } from 'src/common/constants/messages';
-import { TransactionsService } from 'src/entities/transactions/transaction.service';
-import { BalanceService } from '../balance/balance.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { UserEntity } from "./user.entity";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { AuditLogService } from "src/entities/audit_logs/audit.service";
+import { AuditLogsEntity } from "src/entities/audit_logs/audit.entity";
+import { EducationService } from "src/entities/education/education.service";
+import { ExperienceService } from "src/entities/experience/experience.service";
+import { CreateUserDto } from "./dtos/create-user.dto";
+import { UpdateUserDto } from "./dtos/update-user.dto";
+import { RegisterDto } from "src/auth/dto/register.dto";
+import * as bcrypt from "bcrypt";
+import { ReferenceService } from "src/entities/reference/reference.service";
+import { Role } from "src/common/enums/rol.enum";
+import { spanishMessages } from "src/common/constants/messages";
+import { TransactionsService } from "src/entities/transactions/transaction.service";
+import { BalanceService } from "../balance/balance.service";
 
 @Injectable()
 export class UserService {
@@ -33,16 +33,16 @@ export class UserService {
     const userFound = await this.userRepository.findOne({
       where: params,
       select: [
-        'name',
-        'last_name',
-        'birth_date',
-        'email',
-        'phone',
-        'uid',
-        'role',
-        'picture',
-        'document_number',
-        'document_type',
+        "name",
+        "last_name",
+        "birth_date",
+        "email",
+        "phone",
+        "uid",
+        "role",
+        "picture",
+        "document_number",
+        "document_type",
       ],
     });
 
@@ -52,7 +52,7 @@ export class UserService {
   async getUsers(uid: number) {
     const user = await this.userRepository.findOneBy({ uid });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     const isAdmin = user.role === Role.ADMIN;
     let usersFound: UserEntity[];
@@ -68,7 +68,7 @@ export class UserService {
   }
 
   async createUser(body: CreateUserDto) {
-    const defaultPassword = 'contractme';
+    const defaultPassword = "contractme";
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
     const userDataToCreate = {
@@ -109,8 +109,8 @@ export class UserService {
 
     // Creating the log
     const auditLog = new AuditLogsEntity();
-    auditLog.description = 'Usuario creado';
-    auditLog.table = 'users';
+    auditLog.description = "Usuario creado";
+    auditLog.table = "users";
     const auditData = {
       uid: savedUser.uid,
       name: savedUser.name,
@@ -175,8 +175,8 @@ export class UserService {
 
     // Creating the log
     const auditLog = new AuditLogsEntity();
-    auditLog.description = 'Usuario editado';
-    auditLog.table = 'users';
+    auditLog.description = "Usuario editado";
+    auditLog.table = "users";
     const auditData = {
       uid: userFound.uid,
       name: userFound.name,
@@ -222,7 +222,7 @@ export class UserService {
   async findByEmailWithPassword(email: string) {
     return await this.userRepository.findOne({
       where: { email },
-      select: ['uid', 'name', 'last_name', 'email', 'password', 'role'],
+      select: ["uid", "name", "last_name", "email", "password", "role"],
     });
   }
 

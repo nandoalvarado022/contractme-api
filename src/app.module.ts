@@ -1,26 +1,26 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { AuditLogsEntity } from './entities/audit_logs/audit.entity';
-import { ContractModule } from './entities/contract/contract.module';
-import { PropertyModule } from './entities/property/property.module';
-import { EducationModule } from './entities/education/education.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ExperienceModule } from './entities/experience/experience.module';
-import { UserModule } from './entities/user/user.module';
-import { ReferenceModule } from './entities/reference/reference.module';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { FilesModule } from './files/files.module';
-import { MailModule } from './common/emails/mail.module';
-import { ContactModule } from './entities/contact/contact.module';
-import { BalanceModule } from './entities/balance/balance.module';
-import { TransactionModule } from './entities/transactions/transactions.module';
-import { CronModule } from './cron/cron.module';
-import { UserMiddleware } from './common/middlewares/user.middleware';
-import { GlobalVariablesModule } from './entities/global-variables/global-variables.module';
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { AuthModule } from "./auth/auth.module";
+import { AuditLogsEntity } from "./entities/audit_logs/audit.entity";
+import { ContractModule } from "./entities/contract/contract.module";
+import { PropertyModule } from "./entities/property/property.module";
+import { EducationModule } from "./entities/education/education.module";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { ExperienceModule } from "./entities/experience/experience.module";
+import { UserModule } from "./entities/user/user.module";
+import { ReferenceModule } from "./entities/reference/reference.module";
+import { MailerModule } from "@nestjs-modules/mailer";
+import { FilesModule } from "./files/files.module";
+import { MailModule } from "./common/emails/mail.module";
+import { ContactModule } from "./entities/contact/contact.module";
+import { BalanceModule } from "./entities/balance/balance.module";
+import { TransactionModule } from "./entities/transactions/transactions.module";
+import { CronModule } from "./cron/cron.module";
+import { UserMiddleware } from "./common/middlewares/user.middleware";
+import { GlobalVariablesModule } from "./entities/global-variables/global-variables.module";
 
 const getDBConfig = (
   configService: ConfigService,
@@ -28,7 +28,7 @@ const getDBConfig = (
 ): TypeOrmModuleOptions => {
   const prefix = `DB_${env}`;
   return {
-    type: configService.get('DB_TYPE') as 'mysql',
+    type: configService.get("DB_TYPE") as "mysql",
     host: configService.get<string>(`${prefix}_HOST`),
     username: configService.get<string>(`${prefix}_USERNAME`),
     password: configService.get<string>(`${prefix}_PASSWORD`),
@@ -38,8 +38,8 @@ const getDBConfig = (
 };
 
 const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
-  const nodeEnv = configService.get<string>('NODE_ENV');
-  const env = nodeEnv === 'production' ? 'REMOTE' : 'LOCAL';
+  const nodeEnv = configService.get<string>("NODE_ENV");
+  const env = nodeEnv === "production" ? "REMOTE" : "LOCAL";
   return getDBConfig(configService, env);
 };
 
@@ -48,7 +48,7 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     MailerModule.forRootAsync({
       useFactory: async () => ({
         transport: {
-          host: 'email-smtp.us-east-1.amazonaws.com',
+          host: "email-smtp.us-east-1.amazonaws.com",
           port: 587,
           secure: false,
           auth: {
@@ -68,7 +68,7 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         ...getConnection(configService),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [__dirname + "/**/*.entity{.ts,.js}"],
         synchronize: false,
         logging: false,
         // logger: 'advanced-console',
@@ -97,6 +97,6 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(UserMiddleware).forRoutes('*');
+    consumer.apply(UserMiddleware).forRoutes("*");
   }
 }
