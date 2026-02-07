@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, MaxLength } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
 
 export class CreateGlobalVariableDto {
   @ApiProperty({
-    description: "Variable key/name",
-    example: "MAINTENANCE_MODE",
+    description: 'Variable key/name',
+    example: 'MAINTENANCE_MODE',
     maxLength: 100,
   })
   @IsString()
@@ -13,8 +13,8 @@ export class CreateGlobalVariableDto {
   key: string;
 
   @ApiProperty({
-    description: "Variable value",
-    example: "false",
+    description: 'Variable value',
+    example: 'false',
   })
   @IsString()
   @IsNotEmpty()

@@ -2,11 +2,11 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
-} from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { GlobalVariablesEntity } from "./global-variables.entity";
-import { CreateGlobalVariableDto, UpdateGlobalVariableDto } from "./dto";
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { GlobalVariablesEntity } from './global-variables.entity';
+import { CreateGlobalVariableDto, UpdateGlobalVariableDto } from './dto';
 
 @Injectable()
 export class GlobalVariablesService {
@@ -17,7 +17,7 @@ export class GlobalVariablesService {
 
   async findAll(): Promise<GlobalVariablesEntity[]> {
     return this.globalVariablesRepository.find({
-      order: { key: "ASC" },
+      order: { key: 'ASC' },
     });
   }
 
