@@ -4,8 +4,8 @@ import {
   IsBoolean,
   IsEmail,
   IsInt,
-  IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
 } from "class-validator";
@@ -16,7 +16,7 @@ export class GenerateContractDto {
     example: "John Doe",
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   tennatName: string;
 
   @ApiProperty({
@@ -24,7 +24,7 @@ export class GenerateContractDto {
     example: "tenant@example.com",
   })
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   tennatEmail: string;
 
   @ApiProperty({
@@ -32,7 +32,7 @@ export class GenerateContractDto {
     example: "+1234567890",
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   tennatPhone: string;
 
   @ApiProperty({
@@ -40,7 +40,7 @@ export class GenerateContractDto {
     example: "Jane Smith",
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   lessorName: string;
 
   @ApiProperty({
@@ -48,7 +48,7 @@ export class GenerateContractDto {
     example: "lessor@example.com",
   })
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   lessorEmail: string;
 
   @ApiProperty({
@@ -56,7 +56,7 @@ export class GenerateContractDto {
     example: "+0987654321",
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   lessorPhone: string;
 
   @ApiProperty({
@@ -64,7 +64,7 @@ export class GenerateContractDto {
     example: false,
   })
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   hasSignature: boolean;
 
   @ApiProperty({
@@ -72,7 +72,7 @@ export class GenerateContractDto {
     example: 1,
     type: Number,
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @IsPositive()
   @IsInt()
@@ -84,7 +84,7 @@ export class GenerateContractDto {
     example: 1,
     type: Number,
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @IsPositive()
   @IsInt()

@@ -29,7 +29,8 @@ export class AuthController {
     schema: {
       example: {
         uid: 1,
-        name: "Juan Pérez",
+        name: "Juan",
+        last_name: "Pérez",
         email: "juan.perez@example.com",
         role: "user",
         createdAt: "2025-12-09T10:00:00.000Z",

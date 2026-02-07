@@ -24,7 +24,7 @@ import { GlobalVariablesModule } from './entities/global-variables/global-variab
 
 const getDBConfig = (
   configService: ConfigService,
-  env: string
+  env: string,
 ): TypeOrmModuleOptions => {
   const prefix = `DB_${env}`;
   return {

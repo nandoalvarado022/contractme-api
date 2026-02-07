@@ -12,7 +12,7 @@ import { CreateGlobalVariableDto, UpdateGlobalVariableDto } from './dto';
 export class GlobalVariablesService {
   constructor(
     @InjectRepository(GlobalVariablesEntity)
-    private readonly globalVariablesRepository: Repository<GlobalVariablesEntity>
+    private readonly globalVariablesRepository: Repository<GlobalVariablesEntity>,
   ) {}
 
   async findAll(): Promise<GlobalVariablesEntity[]> {
@@ -40,7 +40,7 @@ export class GlobalVariablesService {
 
     if (!variable) {
       throw new NotFoundException(
-        `Global variable with key "${key}" not found`
+        `Global variable with key "${key}" not found`,
       );
     }
 
@@ -48,7 +48,7 @@ export class GlobalVariablesService {
   }
 
   async create(
-    createGlobalVariableDto: CreateGlobalVariableDto
+    createGlobalVariableDto: CreateGlobalVariableDto,
   ): Promise<GlobalVariablesEntity> {
     const existingVariable = await this.globalVariablesRepository.findOne({
       where: { key: createGlobalVariableDto.key },
@@ -56,19 +56,19 @@ export class GlobalVariablesService {
 
     if (existingVariable) {
       throw new ConflictException(
-        `Global variable with key "${createGlobalVariableDto.key}" already exists`
+        `Global variable with key "${createGlobalVariableDto.key}" already exists`,
       );
     }
 
     const variable = this.globalVariablesRepository.create(
-      createGlobalVariableDto
+      createGlobalVariableDto,
     );
     return this.globalVariablesRepository.save(variable);
   }
 
   async update(
     id: number,
-    updateGlobalVariableDto: UpdateGlobalVariableDto
+    updateGlobalVariableDto: UpdateGlobalVariableDto,
   ): Promise<GlobalVariablesEntity> {
     const variable = await this.findOne(id);
 
@@ -82,7 +82,7 @@ export class GlobalVariablesService {
 
       if (existingVariable) {
         throw new ConflictException(
-          `Global variable with key "${updateGlobalVariableDto.key}" already exists`
+          `Global variable with key "${updateGlobalVariableDto.key}" already exists`,
         );
       }
     }
