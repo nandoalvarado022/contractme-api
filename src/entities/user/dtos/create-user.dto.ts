@@ -30,24 +30,6 @@ export class CreateUserDto {
   lastname: string;
 
   @ApiProperty({
-    description: "User last name",
-    example: "Doe",
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  lastName: string;
-
-  @ApiProperty({
-    description: "User last name",
-    example: "Doe",
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  lastName: string;
-
-  @ApiProperty({
     description: "User email address",
     example: "john@example.com",
     required: false,
