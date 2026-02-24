@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { AuditLogsEntity } from "src/entities/audit_logs/audit.entity";
-import { DocumentType } from "src/common/enums/document-type";
-import { Role } from "src/common/enums/rol.enum";
-import { EducationEntity } from "src/entities/education/education.entity";
-import { ExperienceEntity } from "src/entities/experience/experience.entity";
-import { ReferenceEntity } from "src/entities/reference/reference.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { AuditLogsEntity } from 'src/entities/audit_logs/audit.entity';
+import { DocumentType } from 'src/common/enums/document-type';
+import { Role } from 'src/common/enums/rol.enum';
+import { EducationEntity } from 'src/entities/education/education.entity';
+import { ExperienceEntity } from 'src/entities/experience/experience.entity';
+import { ReferenceEntity } from 'src/entities/reference/reference.entity';
 import {
   Column,
   CreateDateColumn,
@@ -14,14 +14,14 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   Transaction,
-} from "typeorm";
-import { BalanceEntity } from "../balance/entities/balance.entity";
-import { TransactionsEntity } from "../transactions/entities/transactions.entity";
+} from 'typeorm';
+import { BalanceEntity } from '../balance/entities/balance.entity';
+import { TransactionsEntity } from '../transactions/entities/transactions.entity';
 
-@Entity({ name: "users" })
+@Entity({ name: 'users' })
 export class UserEntity {
   @ApiProperty({
-    description: "Unique user identifier",
+    description: 'Unique user identifier',
     example: 1,
   })
   @PrimaryGeneratedColumn()
@@ -49,67 +49,67 @@ export class UserEntity {
   email: string;
 
   @ApiProperty({
-    description: "User hashed password",
-    example: "$2b$10$...",
+    description: 'User hashed password',
+    example: '$2b$10$...',
     writeOnly: true,
   })
   @Column({ nullable: false })
   password: string;
 
   @ApiProperty({
-    description: "User phone number",
-    example: "+1234567890",
+    description: 'User phone number',
+    example: '+1234567890',
   })
   @Column()
   phone: string;
 
   @ApiProperty({
-    description: "Document type",
+    description: 'Document type',
     enum: DocumentType,
     example: DocumentType.CC,
   })
-  @Column({ type: "enum", enum: DocumentType })
+  @Column({ type: 'enum', enum: DocumentType })
   document_type: DocumentType;
 
   @ApiProperty({
-    description: "Document number",
+    description: 'Document number',
     example: 123456789,
   })
   @Column({ type: "varchar", length: 20 })
   document_number: string;
 
   @ApiProperty({
-    description: "User profile picture URL",
-    example: "https://example.com/pictures/user.jpg",
+    description: 'User profile picture URL',
+    example: 'https://example.com/pictures/user.jpg',
   })
   @Column()
   picture: string;
 
   @ApiProperty({
-    description: "User birth date",
-    example: "1990-01-01",
+    description: 'User birth date',
+    example: '1990-01-01',
   })
   @Column()
   birth_date: string;
 
   @ApiProperty({
-    description: "User role",
+    description: 'User role',
     enum: Role,
     default: Role.USER,
     example: Role.USER,
   })
-  @Column({ type: "enum", default: Role.USER, enum: Role })
+  @Column({ type: 'enum', default: Role.USER, enum: Role })
   role: Role;
 
   @ApiProperty({
-    description: "Account creation timestamp",
-    example: "2025-12-09T10:00:00.000Z",
+    description: 'Account creation timestamp',
+    example: '2025-12-09T10:00:00.000Z',
   })
   @CreateDateColumn()
   created_at: Date;
 
   @ApiProperty({
-    description: "Soft deletion timestamp",
+    description: 'Soft deletion timestamp',
     example: null,
     required: false,
   })
@@ -117,7 +117,7 @@ export class UserEntity {
   deleted_at: Date;
 
   @ApiProperty({
-    description: "User education records",
+    description: 'User education records',
     type: () => [EducationEntity],
     required: false,
   })
@@ -127,7 +127,7 @@ export class UserEntity {
   education: EducationEntity[];
 
   @ApiProperty({
-    description: "User work experience records",
+    description: 'User work experience records',
     type: () => [ExperienceEntity],
     required: false,
   })
@@ -137,7 +137,7 @@ export class UserEntity {
   experience: ExperienceEntity[];
 
   @ApiProperty({
-    description: "User references",
+    description: 'User references',
     type: () => [ReferenceEntity],
     required: false,
   })
@@ -147,14 +147,14 @@ export class UserEntity {
   reference: ReferenceEntity[];
 
   @ApiProperty({
-    description: "Audit logs for this user",
+    description: 'Audit logs for this user',
     type: () => [AuditLogsEntity],
   })
   @OneToMany(() => AuditLogsEntity, (log) => log.user)
   logs: AuditLogsEntity[];
 
   @ApiProperty({
-    description: "User balance information",
+    description: 'User balance information',
     type: () => BalanceEntity,
     required: false,
   })

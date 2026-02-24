@@ -40,7 +40,7 @@ export class ContractController {
   })
   @ApiConsumes("multipart/form-data")
   @ApiBody({
-    description: "Contract generation data with optional file upload",
+    description: 'Contract generation data with optional file upload',
     schema: {
       type: "object",
       required: [

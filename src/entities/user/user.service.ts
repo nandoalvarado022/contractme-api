@@ -68,7 +68,7 @@ export class UserService {
   }
 
   async createUser(body: CreateUserDto) {
-    const defaultPassword = "contractme";
+    const defaultPassword = 'contractme';
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
     const userDataToCreate = {
@@ -109,8 +109,8 @@ export class UserService {
 
     // Creating the log
     const auditLog = new AuditLogsEntity();
-    auditLog.description = "Usuario creado";
-    auditLog.table = "users";
+    auditLog.description = 'Usuario creado';
+    auditLog.table = 'users';
     const auditData = {
       uid: savedUser.uid,
       name: savedUser.name,
@@ -175,8 +175,8 @@ export class UserService {
 
     // Creating the log
     const auditLog = new AuditLogsEntity();
-    auditLog.description = "Usuario editado";
-    auditLog.table = "users";
+    auditLog.description = 'Usuario editado';
+    auditLog.table = 'users';
     const auditData = {
       uid: userFound.uid,
       name: userFound.name,
