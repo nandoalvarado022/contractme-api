@@ -25,6 +25,10 @@ export class CreateUserDto {
   @IsOptional()
   name: string;
 
+  @IsString()
+  @IsOptional()
+  lastname: string;
+
   @ApiProperty({
     description: "User last name",
     example: "Doe",

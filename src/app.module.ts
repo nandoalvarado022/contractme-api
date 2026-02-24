@@ -27,6 +27,7 @@ const getDBConfig = (
   env: string,
 ): TypeOrmModuleOptions => {
   const prefix = `DB_${env}`;
+
   return {
     type: configService.get("DB_TYPE") as "mysql",
     host: configService.get<string>(`${prefix}_HOST`),
