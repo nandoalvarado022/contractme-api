@@ -13,13 +13,13 @@ export class RegisterDto {
   name: string;
 
   @ApiProperty({
-    description: "User last name",
+    description: "User lastname",
     example: "Perez",
     minLength: 1,
   })
   @IsString()
   @MinLength(1)
-  lastName: string;
+  lastname: string;
 
   @ApiProperty({
     description: "User's email address",

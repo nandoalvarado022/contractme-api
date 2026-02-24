@@ -19,7 +19,7 @@ export class AuthService {
     private readonly mailService: MailService,
   ) {}
 
-  async register({ email, name, lastName, password }: RegisterDto) {
+  async register({ email, name, lastname, password }: RegisterDto) {
     const user = await this.userService.findOneByEmail(email);
 
     if (user) {
@@ -33,7 +33,7 @@ export class AuthService {
       email,
       name,
       password: hashedPassword,
-      lastName,
+      lastname,
     });
   }
 

@@ -73,7 +73,7 @@ export class UserService {
 
     const userDataToCreate = {
       ...body,
-      last_name: body.lastName,
+      last_name: body.lastname,
       password: hashedPassword,
       role: Role.USER,
     };
@@ -114,7 +114,7 @@ export class UserService {
     const auditData = {
       uid: savedUser.uid,
       name: savedUser.name,
-      lastName: savedUser.last_name,
+      lastname: savedUser.last_name,
       email: savedUser.email,
       created_at: savedUser.created_at,
     };
@@ -143,7 +143,7 @@ export class UserService {
 
     const updateData = {
       ...body,
-      ...(body.lastName !== undefined && { last_name: body.lastName }),
+      ...(body.lastname !== undefined && { last_name: body.lastname }),
     };
 
     const updatedUser = this.userRepository.merge(userFound, updateData);
@@ -180,7 +180,7 @@ export class UserService {
     const auditData = {
       uid: userFound.uid,
       name: userFound.name,
-      lastName: userFound.last_name,
+      lastname: userFound.last_name,
       email: userFound.email,
       updated_at: new Date().toISOString(),
     };
@@ -195,13 +195,13 @@ export class UserService {
   }
 
   async registerUser(user: RegisterDto) {
-    const { email, name, password, lastName } = user;
+    const { email, name, password, lastname } = user;
 
     const newUser = this.userRepository.create({
       email,
       name,
       password,
-      last_name: lastName,
+      last_name: lastname,
     });
 
     const savedUser = await this.userRepository.save(newUser);

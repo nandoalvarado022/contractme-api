@@ -124,7 +124,7 @@ export class UserController {
         summary: 'Basic user',
         value: {
           name: "John",
-          lastName: "Doe",
+          lastname: "Doe",
           email: "john@example.com",
           phone: "+1234567890",
           document_type: "cc",
@@ -138,7 +138,7 @@ export class UserController {
         summary: 'User with education and references',
         value: {
           name: "John",
-          lastName: "Doe",
+          lastname: "Doe",
           email: "john@example.com",
           phone: "+1234567890",
           document_type: "cc",
@@ -217,7 +217,7 @@ export class UserController {
         summary: 'Update basic information',
         value: {
           name: "John",
-          lastName: "Smith",
+          lastname: "Smith",
           phone: "+1234567890",
           picture: "https://example.com/new-pic.jpg",
         },
@@ -226,7 +226,7 @@ export class UserController {
         summary: 'Update with education',
         value: {
           name: "John",
-          lastName: "Smith",
+          lastname: "Smith",
           education: [
             {
               institution: 'New University',
@@ -293,7 +293,7 @@ export class UserController {
         summary: 'Register new user',
         value: {
           name: "John",
-          lastName: "Doe",
+          lastname: "Doe",
           email: "john@example.com",
           password: "securePassword123",
         },

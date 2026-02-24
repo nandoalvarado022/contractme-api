@@ -65,7 +65,7 @@ Todas las respuestas de la API siguen el siguiente formato:
   "email": "usuario@email.com",
   "password": "password123",
   "firstName": "Juan",
-  "lastName": "Pérez"
+  "lastname": "Pérez"
 }
 ```
 - **Respuesta**:
@@ -76,7 +76,7 @@ Todas las respuestas de la API siguen el siguiente formato:
       "id": 1,
       "email": "usuario@email.com",
       "firstName": "Juan",
-      "lastName": "Pérez"
+      "lastname": "Pérez"
     },
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   },
@@ -103,7 +103,7 @@ Todas las respuestas de la API siguen el siguiente formato:
       "id": 1,
       "email": "usuario@email.com",
       "firstName": "Juan",
-      "lastName": "Pérez"
+      "lastname": "Pérez"
     },
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   },
@@ -127,7 +127,7 @@ Todas las respuestas de la API siguen el siguiente formato:
       "id": 1,
       "email": "usuario@email.com",
       "firstName": "Juan",
-      "lastName": "Pérez",
+      "lastname": "Pérez",
       "createdAt": "2024-01-15T10:30:00Z"
     }
   ],
@@ -148,7 +148,7 @@ Todas las respuestas de la API siguen el siguiente formato:
     "id": 1,
     "email": "usuario@email.com",
     "firstName": "Juan",
-    "lastName": "Pérez",
+    "lastname": "Pérez",
     "createdAt": "2024-01-15T10:30:00Z",
     "education": [...],
     "experience": [...]
@@ -166,7 +166,7 @@ Todas las respuestas de la API siguen el siguiente formato:
 {
   "email": "nuevo@email.com",
   "firstName": "Ana",
-  "lastName": "García",
+  "lastname": "García",
   "password": "password123"
 }
 ```
@@ -177,7 +177,7 @@ Todas las respuestas de la API siguen el siguiente formato:
     "id": 2,
     "email": "nuevo@email.com",
     "firstName": "Ana",
-    "lastName": "García",
+    "lastname": "García",
     "createdAt": "2024-01-15T11:00:00Z"
   },
   "message": "User created successfully",
@@ -194,7 +194,7 @@ Todas las respuestas de la API siguen el siguiente formato:
 ```json
 {
   "firstName": "Ana María",
-  "lastName": "García López"
+  "lastname": "García López"
 }
 ```
 - **Respuesta**:
@@ -204,7 +204,7 @@ Todas las respuestas de la API siguen el siguiente formato:
     "id": 2,
     "email": "nuevo@email.com",
     "firstName": "Ana María",
-    "lastName": "García López",
+    "lastname": "García López",
     "updatedAt": "2024-01-15T11:30:00Z"
   },
   "message": "User updated successfully",
