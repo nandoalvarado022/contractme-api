@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -21,6 +22,7 @@ import { TransactionModule } from "./entities/transactions/transactions.module";
 import { CronModule } from "./cron/cron.module";
 import { UserMiddleware } from "./common/middlewares/user.middleware";
 import { GlobalVariablesModule } from "./entities/global-variables/global-variables.module";
+import { CamelToSnakeCaseInterceptor } from "./common/interceptors/camel-to-snake-case.interceptor";
 
 const getDBConfig = (
   configService: ConfigService,
@@ -94,7 +96,13 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     GlobalVariablesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CamelToSnakeCaseInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
