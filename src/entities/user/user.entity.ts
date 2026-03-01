@@ -10,6 +10,8 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -17,6 +19,7 @@ import {
 } from 'typeorm';
 import { BalanceEntity } from '../balance/entities/balance.entity';
 import { TransactionsEntity } from '../transactions/entities/transactions.entity';
+import { IsOptional } from 'class-validator';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -101,6 +104,10 @@ export class UserEntity {
   @Column({ type: 'enum', default: Role.USER, enum: Role })
   role: Role;
 
+  @ManyToOne(() => UserEntity, { nullable: true })
+  @JoinColumn({ name: 'created_by' })
+  created_by?: UserEntity;
+
   @ApiProperty({
     description: 'Account creation timestamp',
     example: '2025-12-09T10:00:00.000Z',
@@ -163,7 +170,4 @@ export class UserEntity {
 
   @OneToMany(() => TransactionsEntity, (transaction) => transaction.userId)
   uidTransactions: TransactionsEntity[];
-
-  @OneToOne(() => UserEntity, (user) => user.uid)
-  created_by: UserEntity;
 }

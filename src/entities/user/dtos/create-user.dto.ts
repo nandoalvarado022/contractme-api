@@ -23,11 +23,11 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  name: string;
+  name?: string;
 
   @IsString()
   @IsOptional()
-  lastname: string;
+  lastname?: string;
 
   @ApiProperty({
     description: "User email address",
@@ -37,8 +37,7 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   @IsEmail()
-  @IsOptional()
-  email: string;
+  email?: string;
 
   @ApiProperty({
     description: "User password (default: 'contractme')",
@@ -47,7 +46,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  password: string;
+  password?: string;
 
   @ApiProperty({
     description: "User phone number",
@@ -56,7 +55,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  phone: string;
+  phone?: string;
 
   @ApiProperty({
     description: "Document type",
@@ -64,14 +63,14 @@ export class CreateUserDto {
     example: DocumentType.CC,
   })
   @IsEnum(DocumentType)
-  document_type: DocumentType;
+  document_type!: DocumentType;
 
   @ApiProperty({
     description: "Document number",
     example: "123456789",
   })
   @IsString()
-  document_number: string;
+  document_number!: string;
 
   @ApiProperty({
     description: "Profile picture URL",
@@ -80,7 +79,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  picture: string;
+  picture?: string;
 
   @ApiProperty({
     description: "Birth date in ISO format",
@@ -88,7 +87,7 @@ export class CreateUserDto {
     required: false,
   })
   @IsOptional()
-  birth_date: string;
+  birth_date?: string;
 
   @ApiProperty({
     description: "User role",
@@ -99,7 +98,7 @@ export class CreateUserDto {
   })
   @IsEnum(Role)
   @IsOptional()
-  role: Role;
+  role?: Role;
 
   @ApiProperty({
     description: "User education records",

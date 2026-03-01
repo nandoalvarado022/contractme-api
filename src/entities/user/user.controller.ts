@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -14,6 +15,7 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiHeader,
 } from "@nestjs/swagger";
 import { UserService } from "./user.service";
 import { AuthService } from "src/auth/auth.service";
@@ -187,11 +189,20 @@ export class UserController {
     status: 400,
     description: 'Bad request - Invalid data',
   })
-  async createUser(@Body() formData /*: CreateUserDto*/) {
-    // TODO: Hacer DTO
+  @ApiHeader({
+    name: 'uid',
+    required: true,
+    description: 'User ID from request headers',
+    schema: { type: 'number', example: 1 },
+  })
+  async createUser(
+    @Body() formData/*: CreateUserDto*/,
+    @Headers('uid') uidHeader: string,
+  ) {
+    const uid = Number(uidHeader);
     try {
-      return await this.userService.createUser(formData);
-    } catch (error) {
+      return await this.userService.createUser(formData, uid);
+    } catch (error: any) {
       console.error('Error creating user:', error);
       return { status: 'error', message: error.message };
     }
@@ -273,7 +284,7 @@ export class UserController {
   ) {
     try {
       return await this.userService.updateUser(id, user);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error editing user:', error);
       return { status: 'error', message: error.message };
     }
@@ -323,7 +334,7 @@ export class UserController {
   async saveUser(@Body() formData: RegisterDto) {
     try {
       return await this.authService.register(formData);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving user:', error);
       return { status: 'error', message: error.message };
     }

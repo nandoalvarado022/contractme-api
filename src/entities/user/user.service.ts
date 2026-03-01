@@ -67,15 +67,16 @@ export class UserService {
     };
   }
 
-  async createUser(body: CreateUserDto) {
+  async createUser(body, creatorUid) {
     const defaultPassword = 'contractme';
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
-    const userDataToCreate = {
+    const userDataToCreate: Partial<UserEntity> = {
       ...body,
       last_name: body.lastname,
       password: hashedPassword,
       role: Role.USER,
+      created_by: creatorUid ? ({ uid: creatorUid } as UserEntity) : undefined,
     };
 
     const userToCreate = this.userRepository.create(userDataToCreate);
@@ -113,6 +114,7 @@ export class UserService {
     auditLog.table = 'users';
     const auditData = {
       uid: savedUser.uid,
+      created_by_uid: creatorUid ?? null,
       name: savedUser.name,
       lastname: savedUser.last_name,
       email: savedUser.email,
