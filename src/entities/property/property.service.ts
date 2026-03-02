@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PropertyEntity } from './property.entity';
-import { CreatePropertyDto } from './dto/create-property.dto';
-import { UpdatePropertyDto } from './dto/update-property.dto';
-import { PropertyNote } from './property-note.entity';
-import { PropertyInterested } from './property-interested.entity';
-import { UserEntity } from 'src/entities/user/user.entity';
-import { CreatePropertyNoteDto } from './dto/create-property-note.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { PropertyEntity } from "./property.entity";
+import { CreatePropertyDto } from "./dto/create-property.dto";
+import { UpdatePropertyDto } from "./dto/update-property.dto";
+import { PropertyNote } from "./property-note.entity";
+import { PropertyInterested } from "./property-interested.entity";
+import { UserEntity } from "src/entities/user/user.entity";
+import { CreatePropertyNoteDto } from "./dto/create-property-note.dto";
 // import { AuditLogsEntity } from "src/audit_logs/audit.entity"
 
 @Injectable()
@@ -24,8 +24,8 @@ export class PropertyService {
 
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>, // @InjectRepository(AuditLogsEntity)
-  ) // private readonly logsRepository: Repository<AuditLogsEntity>
-  {}
+    // private readonly logsRepository: Repository<AuditLogsEntity>
+  ) {}
 
   async create(
     createPropertyDto: CreatePropertyDto,
