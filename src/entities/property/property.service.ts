@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { PropertyEntity } from "./property.entity";
-import { CreatePropertyDto } from "./dto/create-property.dto";
-import { UpdatePropertyDto } from "./dto/update-property.dto";
-import { PropertyNote } from "./property-note.entity";
-import { PropertyInterested } from "./property-interested.entity";
-import { UserEntity } from "src/entities/user/user.entity";
-import { CreatePropertyNoteDto } from "./dto/create-property-note.dto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PropertyEntity } from './property.entity';
+import { CreatePropertyDto } from './dto/create-property.dto';
+import { UpdatePropertyDto } from './dto/update-property.dto';
+import { PropertyNote } from './property-note.entity';
+import { PropertyInterested } from './property-interested.entity';
+import { UserEntity } from 'src/entities/user/user.entity';
+import { CreatePropertyNoteDto } from './dto/create-property-note.dto';
 // import { AuditLogsEntity } from "src/audit_logs/audit.entity"
 
 @Injectable()
@@ -24,22 +24,26 @@ export class PropertyService {
 
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>, // @InjectRepository(AuditLogsEntity)
-    // private readonly logsRepository: Repository<AuditLogsEntity>
-  ) {}
+  ) // private readonly logsRepository: Repository<AuditLogsEntity>
+  {}
 
-  async create(createPropertyDto: CreatePropertyDto): Promise<PropertyEntity> {
+  async create(
+    createPropertyDto: CreatePropertyDto,
+    ownerUid: number,
+  ): Promise<PropertyEntity> {
     const owner = await this.userRepository.findOne({
-      where: { uid: createPropertyDto.owner_uid },
+      where: { uid: ownerUid },
     });
 
     if (!owner) {
-      throw new NotFoundException(
-        `Owner with ID ${createPropertyDto.owner_uid} not found`,
-      );
+      throw new NotFoundException(`Owner with ID ${ownerUid} not found`);
     }
 
     const { notes, interested, ...propertyData } = createPropertyDto;
-    const newProperty = this.propertyRepository.create(propertyData);
+    const newProperty = this.propertyRepository.create({
+      ...propertyData,
+      owner_uid: ownerUid,
+    });
     const savedProperty = await this.propertyRepository.save(newProperty);
 
     // if (notes && notes.length > 0) {
@@ -151,12 +155,25 @@ export class PropertyService {
 
   async remove(id: number): Promise<void> {
     const property = await this.findOne(id);
+    await this.propertyRepository.softRemove(property);
+  }
 
-    await this.noteRepository.delete({ property_id: id });
+  async restore(id: number): Promise<PropertyEntity> {
+    const property = await this.propertyRepository.findOne({
+      where: { id },
+      withDeleted: true,
+    });
 
-    await this.interestedRepository.delete({ property_id: id });
+    if (!property) {
+      throw new NotFoundException(`Property with ID ${id} not found`);
+    }
 
-    await this.propertyRepository.remove(property);
+    if (!property.deleted_at) {
+      throw new NotFoundException(`Property with ID ${id} is not deleted`);
+    }
+
+    await this.propertyRepository.recover(property);
+    return this.findOne(id);
   }
 
   findByOwner(ownerId: number): Promise<PropertyEntity[]> {
