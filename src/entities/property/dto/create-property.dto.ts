@@ -4,6 +4,8 @@ import {
   IsNumber,
   IsOptional,
   IsArray,
+  Min,
+  Max,
   MaxLength,
 } from 'class-validator';
 import { CreatePropertyNoteDto } from './create-property-note.dto';
@@ -37,7 +39,9 @@ export class CreatePropertyDto {
     example: 250000,
     type: Number,
   })
-  @IsNumber()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  @Max(9999999999999999.99)
   price: number;
 
   @ApiProperty({

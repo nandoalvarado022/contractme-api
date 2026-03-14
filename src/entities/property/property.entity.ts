@@ -34,7 +34,7 @@ export class PropertyEntity {
   image: string;
 
   @ApiProperty({ description: 'Price', example: 250000, type: Number })
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal', { precision: 15, scale: 2 })
   price: number;
 
   @ApiProperty({ description: 'Property type', example: 'apartment' })
