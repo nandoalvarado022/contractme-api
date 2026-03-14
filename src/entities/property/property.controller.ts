@@ -49,8 +49,7 @@ export class PropertyController {
     status: 200,
     description: 'Properties retrieved successfully',
   })
-  findByOwner(@Req() req: Request) {
-    const uid = Number(req.headers['uid']);
+  findByOwner(@Req() req: Request, @UserId() uid: number) {
     return this.propertyService.findByOwner(uid);
   }
 

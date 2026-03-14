@@ -3,8 +3,8 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
 
 /**
  * Convierte una cadena de camelCase a snake_case
@@ -29,7 +29,7 @@ function transformKeysToSnakeCase(obj: any): any {
     return obj.map((item) => transformKeysToSnakeCase(item));
   }
 
-  if (typeof obj !== 'object') {
+  if (typeof obj !== "object") {
     return obj;
   }
 
@@ -41,7 +41,7 @@ function transformKeysToSnakeCase(obj: any): any {
       const value = obj[key];
 
       // Recursivamente transformar valores que sean objetos
-      if (typeof value === 'object' && value !== null) {
+      if (typeof value === "object" && value !== null) {
         newObj[snakeKey] = transformKeysToSnakeCase(value);
       } else {
         newObj[snakeKey] = value;
@@ -63,7 +63,7 @@ export class CamelToSnakeCaseInterceptor implements NestInterceptor {
     const request = ctx.getRequest();
 
     // Transformar el body si existe
-    if (request.body && typeof request.body === 'object') {
+    if (request.body && typeof request.body === "object") {
       request.body = transformKeysToSnakeCase(request.body);
     }
 

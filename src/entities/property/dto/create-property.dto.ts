@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsArray,
+  MaxLength,
+} from 'class-validator';
 import { CreatePropertyNoteDto } from './create-property-note.dto';
 import { CreatePropertyInterestedDto } from './create-property-interested.dto';
 
@@ -107,4 +113,13 @@ export class CreatePropertyDto {
   @IsArray()
   @IsOptional()
   interested?: CreatePropertyInterestedDto[];
+
+  @ApiPropertyOptional({
+    description: 'Real estate registration number (matrícula inmobiliaria)',
+    example: '050-12345',
+  })
+  @IsString()
+  @MaxLength(100)
+  @IsOptional()
+  registration_number?: string;
 }

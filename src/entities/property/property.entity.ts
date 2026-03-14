@@ -61,7 +61,7 @@ export class PropertyEntity {
   description: string;
 
   @ApiProperty({ description: 'Owner user' })
-  @ManyToOne(() => UserEntity, { eager: true })
+  @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'owner_uid' })
   owner: UserEntity;
 
@@ -70,7 +70,7 @@ export class PropertyEntity {
   owner_uid: number;
 
   @ApiPropertyOptional({ description: 'Tenant user' })
-  @ManyToOne(() => UserEntity, { nullable: true, eager: true })
+  @ManyToOne(() => UserEntity, { nullable: true })
   @JoinColumn({ name: 'tenant_id' })
   tenant: UserEntity;
 
@@ -111,6 +111,13 @@ export class PropertyEntity {
     nullable: false,
   })
   updated_at: Date;
+
+  @ApiPropertyOptional({
+    description: 'Real estate registration number (matrícula inmobiliaria)',
+    example: '050-12345',
+  })
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  registration_number: string;
 
   @ApiPropertyOptional({
     description: 'Soft deletion timestamp',

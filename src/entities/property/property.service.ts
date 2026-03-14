@@ -77,12 +77,39 @@ export class PropertyService {
     return this.findOne(savedProperty.id);
   }
 
+  private buildPropertyQuery() {
+    return this.propertyRepository
+      .createQueryBuilder('property')
+      .leftJoin('property.owner', 'owner')
+      .addSelect([
+        'owner.uid',
+        'owner.name',
+        'owner.last_name',
+        'owner.email',
+        'owner.phone',
+        'owner.picture',
+      ])
+      .leftJoin('property.tenant', 'tenant')
+      .addSelect([
+        'tenant.uid',
+        'tenant.name',
+        'tenant.last_name',
+        'tenant.email',
+        'tenant.phone',
+        'tenant.picture',
+      ])
+      .leftJoinAndSelect('property.notes', 'notes')
+      .leftJoinAndSelect('property.interested', 'interested');
+  }
+
   async findAll(): Promise<PropertyEntity[]> {
-    return this.propertyRepository.find();
+    return this.buildPropertyQuery().getMany();
   }
 
   async findOne(id: number): Promise<PropertyEntity> {
-    const property = await this.propertyRepository.findOne({ where: { id } });
+    const property = await this.buildPropertyQuery()
+      .where('property.id = :id', { id })
+      .getOne();
     if (!property) {
       throw new NotFoundException(`Property with ID ${id} not found`);
     }
@@ -177,15 +204,15 @@ export class PropertyService {
   }
 
   findByOwner(ownerId: number): Promise<PropertyEntity[]> {
-    return this.propertyRepository.find({
-      where: { owner_uid: ownerId },
-    });
+    return this.buildPropertyQuery()
+      .where('property.owner_uid = :ownerId', { ownerId })
+      .getMany();
   }
 
   async findByTenant(tenantId: number): Promise<PropertyEntity[]> {
-    return this.propertyRepository.find({
-      where: { tenant_id: tenantId },
-    });
+    return this.buildPropertyQuery()
+      .where('property.tenant_id = :tenantId', { tenantId })
+      .getMany();
   }
 
   async addNote(
