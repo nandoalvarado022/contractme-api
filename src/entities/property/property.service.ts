@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { PropertyEntity } from "./property.entity";
-import { CreatePropertyDto } from "./dto/create-property.dto";
-import { UpdatePropertyDto } from "./dto/update-property.dto";
-import { PropertyNote } from "./property-note.entity";
-import { PropertyInterested } from "./property-interested.entity";
-import { UserEntity } from "src/entities/user/user.entity";
-import { CreatePropertyNoteDto } from "./dto/create-property-note.dto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PropertyEntity } from './property.entity';
+import { CreatePropertyDto } from './dto/create-property.dto';
+import { UpdatePropertyDto } from './dto/update-property.dto';
+import { PropertyNote } from './property-note.entity';
+import { PropertyInterested } from './property-interested.entity';
+import { UserEntity } from 'src/entities/user/user.entity';
+import { CreatePropertyNoteDto } from './dto/create-property-note.dto';
 // import { AuditLogsEntity } from "src/audit_logs/audit.entity"
 
 @Injectable()
@@ -24,8 +24,8 @@ export class PropertyService {
 
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>, // @InjectRepository(AuditLogsEntity)
-    // private readonly logsRepository: Repository<AuditLogsEntity>
-  ) {}
+  ) // private readonly logsRepository: Repository<AuditLogsEntity>
+  {}
 
   async create(
     createPropertyDto: CreatePropertyDto,
@@ -77,12 +77,39 @@ export class PropertyService {
     return this.findOne(savedProperty.id);
   }
 
+  private buildPropertyQuery() {
+    return this.propertyRepository
+      .createQueryBuilder('property')
+      .leftJoin('property.owner', 'owner')
+      .addSelect([
+        'owner.uid',
+        'owner.name',
+        'owner.last_name',
+        'owner.email',
+        'owner.phone',
+        'owner.picture',
+      ])
+      .leftJoin('property.tenant', 'tenant')
+      .addSelect([
+        'tenant.uid',
+        'tenant.name',
+        'tenant.last_name',
+        'tenant.email',
+        'tenant.phone',
+        'tenant.picture',
+      ])
+      .leftJoinAndSelect('property.notes', 'notes')
+      .leftJoinAndSelect('property.interested', 'interested');
+  }
+
   async findAll(): Promise<PropertyEntity[]> {
-    return this.propertyRepository.find();
+    return this.buildPropertyQuery().getMany();
   }
 
   async findOne(id: number): Promise<PropertyEntity> {
-    const property = await this.propertyRepository.findOne({ where: { id } });
+    const property = await this.buildPropertyQuery()
+      .where('property.id = :id', { id })
+      .getOne();
     if (!property) {
       throw new NotFoundException(`Property with ID ${id} not found`);
     }
@@ -177,15 +204,15 @@ export class PropertyService {
   }
 
   findByOwner(ownerId: number): Promise<PropertyEntity[]> {
-    return this.propertyRepository.find({
-      where: { owner_uid: ownerId },
-    });
+    return this.buildPropertyQuery()
+      .where('property.owner_uid = :ownerId', { ownerId })
+      .getMany();
   }
 
   async findByTenant(tenantId: number): Promise<PropertyEntity[]> {
-    return this.propertyRepository.find({
-      where: { tenant_id: tenantId },
-    });
+    return this.buildPropertyQuery()
+      .where('property.tenant_id = :tenantId', { tenantId })
+      .getMany();
   }
 
   async addNote(
