@@ -15,4 +15,8 @@ export const emailTemplates = {
     subject: "Nuevo Lead - Formulario de Contacto",
     template: "new_lead_notification.html",
   },
+  new_generation_contract_with_signature: {
+    subject: "Nuevo Contrato Generado con Firma",
+    template: "new_generation_contract_with_signature.html",
+  },
 };

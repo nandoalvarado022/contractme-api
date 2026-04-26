@@ -9,7 +9,7 @@ import { ExperienceService } from 'src/entities/experience/experience.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { RegisterDto } from 'src/auth/dto/register.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { ReferenceService } from 'src/entities/reference/reference.service';
 import { Role } from 'src/common/enums/rol.enum';
 import { spanishMessages } from 'src/common/constants/messages';

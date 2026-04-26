@@ -8,9 +8,12 @@ import { TransactionsService } from "../transactions/transaction.service";
 import { TRANSACTION_TYPE } from "../transactions/consts/transactions.const";
 import { GlobalVariablesService } from "../global-variables/global-variables.service";
 import { STATUS_CONTRACT } from "./consts/contract.consts";
+import { MailService } from "src/common/emails/mail.service";
 
 @Injectable()
 export class ContractService {
+  private readonly EMAIL_NOTIFCATION_SIGNATURE = 'gabrielacharrisr@gmail.com';
+
   constructor(
     @InjectRepository(ContractTemplateEntity)
     private contractTemplatesRepository: Repository<ContractTemplateEntity>,
@@ -18,6 +21,7 @@ export class ContractService {
     private contractsRepository: Repository<ContractEntity>,
     private readonly transactionsService: TransactionsService,
     private readonly globalVariablesService: GlobalVariablesService,
+    private readonly emailService: MailService,
   ) {}
 
   async generateOne(
@@ -36,6 +40,28 @@ export class ContractService {
       amount,
       type: TRANSACTION_TYPE.REMOVE,
     });
+
+    if (generateContractDto.hasSignature) {
+      this.emailService.sendEmailBrevo(
+        this.EMAIL_NOTIFCATION_SIGNATURE,
+        'Admin',
+        'new_generation_contract_with_signature',
+        {
+          tennatName: generateContractDto.tennatName ?? 'No especificado',
+          tennatEmail: generateContractDto.tennatEmail ?? 'No especificado',
+          tennatPhone: generateContractDto.tennatPhone ?? 'No especificado',
+          lessorName: generateContractDto.lessorName ?? 'No especificado',
+          lessorEmail: generateContractDto.lessorEmail ?? 'No especificado',
+          lessorPhone: generateContractDto.lessorPhone ?? 'No especificado',
+          templateId: String(generateContractDto.templateId ?? 'N/A'),
+          date: new Date().toLocaleDateString('es-CO', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+          }),
+        },
+      ).catch((err) => console.error('Error sending contract signature email:', err));
+    }
 
     const contract = this.contractsRepository.create({
       url: url ?? undefined,

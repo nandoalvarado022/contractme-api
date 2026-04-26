@@ -8,17 +8,19 @@ import { ContractTemplateFieldsEntity } from "./entities/contract_templates_fiel
 import { FilesModule } from "src/files/files.module";
 import { TransactionModule } from "../transactions/transactions.module";
 import { GlobalVariablesModule } from "../global-variables/global-variables.module";
+import { MailModule } from "src/common/emails/mail.module";
 
 @Module({
   imports: [
+    FilesModule,
+    TransactionModule,
+    GlobalVariablesModule,
+    MailModule,
     TypeOrmModule.forFeature([
       ContractEntity,
       ContractTemplateEntity,
       ContractTemplateFieldsEntity,
     ]),
-    FilesModule,
-    TransactionModule,
-    GlobalVariablesModule,
   ],
   controllers: [ContractController],
   providers: [ContractService],
