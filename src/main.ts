@@ -1,6 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { ConsoleLogger, ValidationPipe, Logger } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
@@ -17,8 +17,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      // whitelist: true,
-      // forbidNonWhitelisted: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
     }),
   );
 
@@ -47,7 +49,6 @@ async function bootstrap() {
     .addTag("Experience", "Experience management endpoints")
     .addTag("References", "Reference management endpoints")
     .addTag("Contracts", "Contract management endpoints")
-    .addTag("Reconciliation", "Reconciliation management endpoints")
     .addTag("Landing Page", "Landing page managment endpoints")
     .build();
 

@@ -12,7 +12,8 @@ import { MailService } from "src/common/emails/mail.service";
 
 @Injectable()
 export class ContractService {
-  private readonly EMAIL_NOTIFCATION_SIGNATURE = 'gabrielacharrisr@gmail.com';
+  // private readonly EMAIL_NOTIFICATION_SIGNATURE = 'gabrielacharrisr@gmail.com';
+  private readonly EMAIL_NOTIFICATION_SIGNATURE = "alvaropedrozo07@gmail.com";
 
   constructor(
     @InjectRepository(ContractTemplateEntity)
@@ -42,25 +43,29 @@ export class ContractService {
     });
 
     if (generateContractDto.hasSignature) {
-      this.emailService.sendEmailBrevo(
-        this.EMAIL_NOTIFCATION_SIGNATURE,
-        'Admin',
-        'new_generation_contract_with_signature',
-        {
-          tennatName: generateContractDto.tennatName ?? 'No especificado',
-          tennatEmail: generateContractDto.tennatEmail ?? 'No especificado',
-          tennatPhone: generateContractDto.tennatPhone ?? 'No especificado',
-          lessorName: generateContractDto.lessorName ?? 'No especificado',
-          lessorEmail: generateContractDto.lessorEmail ?? 'No especificado',
-          lessorPhone: generateContractDto.lessorPhone ?? 'No especificado',
-          templateId: String(generateContractDto.templateId ?? 'N/A'),
-          date: new Date().toLocaleDateString('es-CO', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-          }),
-        },
-      ).catch((err) => console.error('Error sending contract signature email:', err));
+      this.emailService
+        .sendEmailBrevo(
+          this.EMAIL_NOTIFICATION_SIGNATURE,
+          "Admin",
+          "new_generation_contract_with_signature",
+          {
+            tennatName: generateContractDto.tennatName ?? "No especificado",
+            tennatEmail: generateContractDto.tennatEmail ?? "No especificado",
+            tennatPhone: generateContractDto.tennatPhone ?? "No especificado",
+            lessorName: generateContractDto.lessorName ?? "No especificado",
+            lessorEmail: generateContractDto.lessorEmail ?? "No especificado",
+            lessorPhone: generateContractDto.lessorPhone ?? "No especificado",
+            templateId: String(generateContractDto.templateId ?? "N/A"),
+            date: new Date().toLocaleDateString("es-CO", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            }),
+          },
+        )
+        .catch((err) =>
+          console.error("Error sending contract signature email:", err),
+        );
     }
 
     const contract = this.contractsRepository.create({

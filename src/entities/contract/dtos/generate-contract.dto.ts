@@ -1,9 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Expose, Transform, Type } from "class-transformer";
 import {
   IsBoolean,
   IsEmail,
   IsInt,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -15,56 +16,64 @@ export class GenerateContractDto {
     description: "Tenant full name",
     example: "John Doe",
   })
+  @Expose({ name: "tennat_name" })
+  @IsNotEmpty()
   @IsString()
-  @IsOptional()
   tennatName: string;
 
   @ApiProperty({
     description: "Tenant email address",
     example: "tenant@example.com",
   })
+  @Expose({ name: "tennat_email" })
   @IsEmail()
-  @IsOptional()
+  @IsNotEmpty()
   tennatEmail: string;
 
   @ApiProperty({
     description: "Tenant phone number",
     example: "+1234567890",
   })
+  @Expose({ name: "tennat_phone" })
+  @IsNotEmpty()
   @IsString()
-  @IsOptional()
   tennatPhone: string;
 
   @ApiProperty({
     description: "Lessor (owner) full name",
     example: "Jane Smith",
   })
+  @Expose({ name: "lessor_name" })
+  @IsNotEmpty()
   @IsString()
-  @IsOptional()
   lessorName: string;
 
   @ApiProperty({
     description: "Lessor email address",
     example: "lessor@example.com",
   })
+  @Expose({ name: "lessor_email" })
+  @IsNotEmpty()
   @IsEmail()
-  @IsOptional()
   lessorEmail: string;
 
   @ApiProperty({
     description: "Lessor phone number",
     example: "+0987654321",
   })
+  @Expose({ name: "lessor_phone" })
+  @IsNotEmpty()
   @IsString()
-  @IsOptional()
   lessorPhone: string;
 
   @ApiProperty({
     description: "Whether the contract has been signed",
     example: false,
   })
+  @Expose({ name: "has_signature" })
+  @Transform(({ value }) => value === true || value === "true")
+  @IsNotEmpty()
   @IsBoolean()
-  @IsOptional()
   hasSignature: boolean;
 
   @ApiProperty({
@@ -72,7 +81,8 @@ export class GenerateContractDto {
     example: 1,
     type: Number,
   })
-  @IsOptional()
+  @Expose({ name: "template_id" })
+  @IsNotEmpty()
   @IsNumber()
   @IsPositive()
   @IsInt()
@@ -90,4 +100,12 @@ export class GenerateContractDto {
   @IsInt()
   @Type(() => Number)
   uid: number;
+
+  @ApiPropertyOptional({
+    description: "Contract PDF file (optional)",
+    type: "string",
+    format: "binary",
+  })
+  @IsOptional()
+  file?: Express.Multer.File;
 }

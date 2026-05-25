@@ -1,7 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthModule } from "./auth/auth.module";
 import { AuditLogsEntity } from "./entities/audit_logs/audit.entity";
@@ -95,9 +93,8 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     CronModule,
     GlobalVariablesModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_INTERCEPTOR,
       useClass: CamelToSnakeCaseInterceptor,

@@ -52,7 +52,6 @@ export class ContractController {
         "lessorPhone",
         "hasSignature",
         "templateId",
-        "uid",
       ],
       properties: {
         tennatName: {
@@ -96,11 +95,6 @@ export class ContractController {
           type: "number",
           example: 1,
           description: "ID of the contract template to use",
-        },
-        uid: {
-          type: "number",
-          example: 1,
-          description: "User ID generating the contract",
         },
         file: {
           type: "string",
