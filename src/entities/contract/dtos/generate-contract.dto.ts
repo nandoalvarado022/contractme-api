@@ -17,7 +17,7 @@ export class GenerateContractDto {
     example: "John Doe",
   })
   @Expose({ name: "tennat_name" })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   tennatName: string;
 
@@ -27,7 +27,7 @@ export class GenerateContractDto {
   })
   @Expose({ name: "tennat_email" })
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   tennatEmail: string;
 
   @ApiProperty({
@@ -35,7 +35,7 @@ export class GenerateContractDto {
     example: "+1234567890",
   })
   @Expose({ name: "tennat_phone" })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   tennatPhone: string;
 
@@ -44,7 +44,7 @@ export class GenerateContractDto {
     example: "Jane Smith",
   })
   @Expose({ name: "lessor_name" })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   lessorName: string;
 
@@ -53,7 +53,7 @@ export class GenerateContractDto {
     example: "lessor@example.com",
   })
   @Expose({ name: "lessor_email" })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
   lessorEmail: string;
 
@@ -62,7 +62,7 @@ export class GenerateContractDto {
     example: "+0987654321",
   })
   @Expose({ name: "lessor_phone" })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   lessorPhone: string;
 
@@ -72,7 +72,7 @@ export class GenerateContractDto {
   })
   @Expose({ name: "has_signature" })
   @Transform(({ value }) => value === true || value === "true")
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
   hasSignature: boolean;
 
@@ -88,18 +88,6 @@ export class GenerateContractDto {
   @IsInt()
   @Type(() => Number)
   templateId: number;
-
-  @ApiProperty({
-    description: "User ID generating the contract",
-    example: 1,
-    type: Number,
-  })
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  @IsInt()
-  @Type(() => Number)
-  uid: number;
 
   @ApiPropertyOptional({
     description: "Contract PDF file (optional)",

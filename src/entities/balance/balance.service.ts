@@ -52,4 +52,24 @@ export class BalanceService {
 
     return this.balanceRepository.save(balance);
   }
+
+  async deductBalance(uid: number, amount: number): Promise<BalanceEntity> {
+    const balance = await this.balanceRepository.findOne({ where: { uid } });
+
+    if (!balance) {
+      throw new NotFoundException(`Balance not found for user with ID ${uid}`);
+    }
+
+    const currentAmount = Number(balance.amount);
+    const newAmount = currentAmount - Number(amount);
+
+    if (newAmount < 0) {
+      throw new BadRequestException(
+        `Insufficient balance. Current balance: ${currentAmount}, Required: ${amount}`,
+      );
+    }
+
+    balance.amount = newAmount;
+    return this.balanceRepository.save(balance);
+  }
 }

@@ -14,6 +14,7 @@ import { GetTransactionsDto } from "./dtos/get-transactions.dto";
 import {
   TRANSACTION_TYPE,
   TRANSACTION_STATUS,
+  TransactionType,
 } from "./consts/transactions.const";
 
 @Injectable()
@@ -109,6 +110,27 @@ export class TransactionsService {
       type: savedTransaction.type,
       status: savedTransaction.status,
     };
+  }
+
+  async createTransactionRecord({
+    uid,
+    concept,
+    amount,
+    type,
+  }: {
+    uid: number;
+    concept: string;
+    amount: number;
+    type: TransactionType;
+  }) {
+    const transaction = this.transactionsRepository.create({
+      concept,
+      amount,
+      type,
+      status: TRANSACTION_STATUS.COMPLETED,
+      userId: { uid },
+    });
+    return this.transactionsRepository.save(transaction);
   }
 
   async getTransactionsByUser(getTransactionsDto: GetTransactionsDto): Promise<{
