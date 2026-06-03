@@ -138,11 +138,11 @@ export class TransactionsService {
         order: {
           createdAt: "DESC",
         },
-        skip,
-        take: limit,
+        // skip,
+        // take: limit,
       });
 
-    const totalPages = Math.ceil(total / limit);
+    const totalPages = 1; // Math.ceil(total / limit);
 
     return {
       transactions,
