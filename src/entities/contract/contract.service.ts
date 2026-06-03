@@ -1,20 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ContractTemplateEntity } from './entities/contract_templates.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { ContractEntity } from './entities/contract.entity';
-import { GenerateContractDto } from './dtos/generate-contract.dto';
-import { TransactionsService } from '../transactions/transaction.service';
-import { TRANSACTION_TYPE } from '../transactions/consts/transactions.const';
-import { GlobalVariablesService } from '../global-variables/global-variables.service';
-import { STATUS_CONTRACT } from './consts/contract.consts';
-import { MailService } from 'src/common/emails/mail.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { ContractTemplateEntity } from "./entities/contract_templates.entity";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { ContractEntity } from "./entities/contract.entity";
+import { GenerateContractDto } from "./dtos/generate-contract.dto";
+import { TransactionsService } from "../transactions/transaction.service";
+import { TRANSACTION_TYPE } from "../transactions/consts/transactions.const";
+import { GlobalVariablesService } from "../global-variables/global-variables.service";
+import { STATUS_CONTRACT } from "./consts/contract.consts";
+import { MailService } from "src/common/emails/mail.service";
 
 @Injectable()
 export class ContractService {
-  private readonly EMAIL_NOTIFICATION_SIGNATURE = 'gabrielacharrisr@gmail.com';
+  private readonly EMAIL_NOTIFICATION_SIGNATURE = "gabrielacharrisr@gmail.com";
   private readonly EMAIL_NOTIFICATION_SIGNATURE_2 = "alvaropedrozo07@gmail.com";
-  private readonly EMAIL_NOTIFICATION_SIGNATURE_3 = "nandoalvarado022@gmail.com";
+  private readonly EMAIL_NOTIFICATION_SIGNATURE_3 =
+    "nandoalvarado022@gmail.com";
 
   constructor(
     @InjectRepository(ContractTemplateEntity)
@@ -32,13 +33,13 @@ export class ContractService {
     uid: number,
   ) {
     const costVariable = await this.globalVariablesService.findByKey(
-      'contract_generation_cost',
+      "contract_generation_cost",
     );
     const amount = parseInt(costVariable.value, 10);
 
     await this.transactionsService.createTransaction({
       uid,
-      concept: 'Generación de contrato',
+      concept: "Generación de contrato",
       amount,
       type: TRANSACTION_TYPE.REMOVE,
     });
@@ -51,17 +52,17 @@ export class ContractService {
       ];
 
       const emailPayload = {
-        tennatName: generateContractDto.tennatName ?? 'No especificado',
-        tennatEmail: generateContractDto.tennatEmail ?? 'No especificado',
-        tennatPhone: generateContractDto.tennatPhone ?? 'No especificado',
-        lessorName: generateContractDto.lessorName ?? 'No especificado',
-        lessorEmail: generateContractDto.lessorEmail ?? 'No especificado',
-        lessorPhone: generateContractDto.lessorPhone ?? 'No especificado',
-        templateId: String(generateContractDto.templateId ?? 'N/A'),
-        date: new Date().toLocaleDateString('es-CO', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
+        tennatName: generateContractDto.tennatName ?? "No especificado",
+        tennatEmail: generateContractDto.tennatEmail ?? "No especificado",
+        tennatPhone: generateContractDto.tennatPhone ?? "No especificado",
+        lessorName: generateContractDto.lessorName ?? "No especificado",
+        lessorEmail: generateContractDto.lessorEmail ?? "No especificado",
+        lessorPhone: generateContractDto.lessorPhone ?? "No especificado",
+        templateId: String(generateContractDto.templateId ?? "N/A"),
+        date: new Date().toLocaleDateString("es-CO", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
         }),
       };
 
@@ -69,14 +70,14 @@ export class ContractService {
         recipients.map((recipient) =>
           this.emailService.sendEmailBrevo(
             recipient,
-            'Admin',
-            'new_generation_contract_with_signature',
+            "Admin",
+            "new_generation_contract_with_signature",
             emailPayload,
           ),
         ),
       ).then((results) => {
         results.forEach((result, index) => {
-          if (result.status === 'rejected') {
+          if (result.status === "rejected") {
             console.error(
               `Error sending contract signature email to ${recipients[index]}:`,
               result.reason,
@@ -101,11 +102,11 @@ export class ContractService {
       },
       order: {
         fields: {
-          order: 'ASC',
+          order: "ASC",
         },
       },
     });
-    if (!template) throw new NotFoundException('Contract template not found');
+    if (!template) throw new NotFoundException("Contract template not found");
     return template;
   }
 
@@ -117,13 +118,13 @@ export class ContractService {
       },
       order: {
         fields: {
-          order: 'ASC',
+          order: "ASC",
         },
       },
     });
 
     if (templates.length === 0)
-      throw new NotFoundException('No contract templates found');
+      throw new NotFoundException("No contract templates found");
 
     return templates;
   }
