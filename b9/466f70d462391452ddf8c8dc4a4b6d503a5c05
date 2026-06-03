@@ -1,0 +1,28 @@
+src/entities/balance/balance.service.ts
+  s_7debb535fd7c31::t_e4c6eb47767cb9 18,24-34
+src/entities/contract/contract.service.ts
+  h_15f0de19236f1a 16-17,47-53,66-79,81-86
+src/entities/transactions/transaction.service.ts
+  h_15f0de19236f1a 141-142,145
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b9466f70d462391452ddf8c8dc4a4b6d503a5c05",
+  "prompts": {},
+  "humans": {
+    "h_15f0de19236f1a": {
+      "author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_7debb535fd7c31": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "75bb705a-043b-431b-8fcf-c61fc55de248",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  }
+}
