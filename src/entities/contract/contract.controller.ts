@@ -138,7 +138,7 @@ export class ContractController {
     if (file) {
       const uploadResult = await this.filesService.uploadFile(
         file,
-        generateContractDto.uid,
+        uid,
       );
       url = uploadResult.url;
     }
