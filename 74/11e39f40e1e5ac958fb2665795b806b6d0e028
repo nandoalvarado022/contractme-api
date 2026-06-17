@@ -1,0 +1,28 @@
+src/entities/contract/dtos/generate-contract.dto.ts
+  s_27cfb97e871eab::t_72925e0bde3da0 148
+  h_15f0de19236f1a 149,183,258
+  s_27cfb97e871eab::t_1c9331374bffb9 18,27,35,41-85,110-145,151-157,159,161-182,184-257
+  s_27cfb97e871eab::t_f8bea27766a357 21,29,38
+  s_27cfb97e871eab::t_e862ccbc5c2b78 1,14,19,23,28,31,36,40,90,92,94,99-100,102,107-109,147,150,259,265,267,269,280
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "7411e39f40e1e5ac958fb2665795b806b6d0e028",
+  "prompts": {},
+  "humans": {
+    "h_15f0de19236f1a": {
+      "author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_27cfb97e871eab": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "8ec0598f-cbe3-4366-b33a-4ce8f03eff1d",
+        "model": "gpt-5-mini"
+      },
+      "human_author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  }
+}
