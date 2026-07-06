@@ -82,7 +82,7 @@ export class MailService {
 
     try {
       await transporter.sendMail({
-        from: "Gaby de ContractMe <comunicaciones@contractme.cloud>",
+        from: "Lex de ContractMe <comunicaciones@contractme.cloud>",
         to: [to],
         subject,
         html,
