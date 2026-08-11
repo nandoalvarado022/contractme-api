@@ -3,24 +3,24 @@ import {
   Controller,
   Get,
   Param,
-  UploadedFiles,
-  UseInterceptors,
   ParseIntPipe,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-  ApiConsumes,
   ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
 } from "@nestjs/swagger";
+import { ResponseMessage, UserId } from "src/common/decorators";
+import { FilesService } from "src/files/files.service";
 import { ContractService } from "./contract.service";
 import { GenerateContractDto } from "./dtos/generate-contract.dto";
-import { ResponseMessage, UserId } from "src/common/decorators";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { FilesService } from "src/files/files.service";
 
 @ApiTags("Contracts")
 @Controller("contracts")
@@ -131,18 +131,18 @@ export class ContractController {
   })
   async generateContract(
     @Body() generateContractDto: GenerateContractDto,
-    @UploadedFiles() file: Express.Multer.File | undefined,
+    @UploadedFile() file: Express.Multer.File | undefined,
     @UserId() uid: number,
   ) {
     let url: string | null = null;
     if (file) {
-      const uploadResult = await this.filesService.uploadFile(
-        file,
-        uid,
-      );
-      url = uploadResult.url;
+      url = (await this.filesService.uploadFile(file, uid)).url;
     }
-    return this.contractService.generateOne(generateContractDto, url, uid);
+    return await this.contractService.generateOne(
+      generateContractDto,
+      url,
+      uid,
+    );
   }
 
   @Get("templates/:id")

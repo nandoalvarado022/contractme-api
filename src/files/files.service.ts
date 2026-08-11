@@ -1,20 +1,20 @@
 import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  Logger,
-  InternalServerErrorException,
-} from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import {
+  DeleteObjectCommand,
+  GetObjectCommand,
   PutObjectCommand,
   S3Client,
-  GetObjectCommand,
-  DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "src/entities/user/user.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class FilesService {
@@ -85,7 +85,7 @@ export class FilesService {
     this.logger.log(`Starting file upload for user uid: ${uid}`);
 
     try {
-      const user = await this.validateUser(uid);
+      await this.validateUser(uid);
 
       this.validateFile(file);
 

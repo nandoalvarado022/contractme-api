@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { ContractTemplateEntity } from "./entities/contract_templates.entity";
-import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ContractEntity } from "./entities/contract.entity";
-import { GenerateContractDto } from "./dtos/generate-contract.dto";
-import { TransactionsService } from "../transactions/transaction.service";
-import { TRANSACTION_TYPE } from "../transactions/consts/transactions.const";
-import { GlobalVariablesService } from "../global-variables/global-variables.service";
-import { STATUS_CONTRACT } from "./consts/contract.consts";
 import { MailService } from "src/common/emails/mail.service";
+import { Repository } from "typeorm";
+import { GlobalVariablesService } from "../global-variables/global-variables.service";
+import { TRANSACTION_TYPE } from "../transactions/consts/transactions.const";
+import { TransactionsService } from "../transactions/transaction.service";
+import { STATUS_CONTRACT } from "./consts/contract.consts";
+import { GenerateContractDto } from "./dtos/generate-contract.dto";
+import { ContractEntity } from "./entities/contract.entity";
+import { ContractTemplateEntity } from "./entities/contract_templates.entity";
 
 @Injectable()
 export class ContractService {
@@ -59,6 +59,7 @@ export class ContractService {
         lessorEmail: generateContractDto.lessorEmail ?? "No especificado",
         lessorPhone: generateContractDto.lessorPhone ?? "No especificado",
         templateId: String(generateContractDto.templateId ?? "N/A"),
+        url: url ?? "No especificado",
         date: new Date().toLocaleDateString("es-CO", {
           day: "2-digit",
           month: "long",

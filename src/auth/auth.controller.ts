@@ -1,12 +1,12 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from "@nestjs/swagger";
+import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { AuditLogService } from "src/entities/audit_logs/audit.service";
+import { UserEntity } from "src/entities/user/user.entity";
 import { AuthService } from "./auth.service";
-import { RegisterDto } from "./dto/register.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
 import { LoginDto } from "./dto/login.dto";
 import { PasswordForgottenDto } from "./dto/password-forgotten.dto";
-import { AuditLogService } from "src/entities/audit_logs/audit.service";
-import { UserEntity } from "src/entities/user/user.entity";
+import { RegisterDto } from "./dto/register.dto";
 
 @ApiTags("Auth")
 @Controller("auth")

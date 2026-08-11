@@ -3,13 +3,13 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { RegisterDto } from "./dto/register.dto";
-import { ChangePasswordDto } from "./dto/change-password.dto";
-import { UserService } from "src/entities/user/user.service";
-import * as bcryptjs from "bcryptjs";
 import { JwtService } from "@nestjs/jwt";
-import { MailService } from "../common/emails/mail.service";
+import * as bcryptjs from "bcryptjs";
 import { spanishMessages } from "src/common/constants/messages";
+import { UserService } from "src/entities/user/user.service";
+import { MailService } from "../common/emails/mail.service";
+import { ChangePasswordDto } from "./dto/change-password.dto";
+import { RegisterDto } from "./dto/register.dto";
 
 @Injectable()
 export class AuthService {
