@@ -11,6 +11,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:?set MYSQL_DATABASE in .env}
       MYSQL_USER: ${MYSQL_USER:?set MYSQL_USER in .env}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${MYSQL_HOST_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
