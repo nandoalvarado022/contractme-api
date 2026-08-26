@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { MailModule } from "src/common/emails/mail.module";
@@ -7,7 +8,7 @@ import { AuditModule } from "src/entities/audit_logs/audit.module";
 import { UserModule } from "src/entities/user/user.module";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { jwtConstants } from "./constants/jwt.constant";
+import { getJwtSecret } from "./constants/jwt.constant";
 
 @Module({
   imports: [
@@ -15,10 +16,14 @@ import { jwtConstants } from "./constants/jwt.constant";
     UserModule,
     MailerModule,
     MailModule,
-    JwtModule.register({
+    JwtModule.registerAsync({
       global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: "1d" },
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: getJwtSecret(configService),
+        signOptions: { expiresIn: "1d" },
+      }),
     }),
   ],
   controllers: [AuthController],

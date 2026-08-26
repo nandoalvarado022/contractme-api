@@ -20,7 +20,17 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:restart": "docker compose restart api",
+    "docker:logs": "docker compose logs -f api",
+    "docker:ps": "docker compose ps",
+    "docker:sh": "docker compose exec api sh",
+    "docker:db": "docker compose exec mysql mysql -u root -p",
+    "docker:config": "docker compose config",
+    "docker:reset": "docker compose down -v"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.883.0",
