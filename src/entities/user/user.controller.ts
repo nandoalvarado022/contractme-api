@@ -196,7 +196,7 @@ export class UserController {
     schema: { type: "number", example: 1 },
   })
   async createUser(
-    @Body() formData /*: CreateUserDto*/,
+    @Body() formData: CreateUserDto,
     @Headers("uid") uidHeader: string,
   ) {
     const uid = Number(uidHeader);
