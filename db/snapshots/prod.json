@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T07:30:14.665Z",
+  "generatedAt": "2026-09-08T07:37:32.978Z",
   "schema": "contract_me",
   "tables": [
     {
@@ -1736,7 +1736,7 @@
         {
           "name": "email",
           "type": "varchar(255)",
-          "nullable": true,
+          "nullable": false,
           "default": null,
           "extra": "",
           "comment": "",

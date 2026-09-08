@@ -50,7 +50,7 @@ export class UserEntity {
     description: "User email address",
     example: "john@example.com",
   })
-  @Column({ nullable: true })
+  @Column()
   email: string;
 
   @ApiProperty({
