@@ -91,6 +91,8 @@ export class ContractService {
     const contract = this.contractsRepository.create({
       url: url ?? undefined,
       ...generateContractDto,
+      tenant_uid: generateContractDto.tenantUid ?? undefined,
+      lessor_uid: uid ?? undefined,
     });
     return await this.contractsRepository.save(contract);
   }

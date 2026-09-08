@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserEntity } from "./user.entity";
+import { ContractEntity } from "src/entities/contract/entities/contract.entity";
 import { UserController } from "./user.controller";
 import { AuthService } from "src/auth/auth.service";
 import { AuditModule } from "src/entities/audit_logs/audit.module";
@@ -14,7 +15,7 @@ import { BalanceModule } from "../balance/balance.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, ContractEntity]),
     AuditModule,
     EducationModule,
     ExperienceModule,

@@ -12,6 +12,17 @@ import {
 
 export class GenerateContractDto {
   @ApiPropertyOptional({
+    description: "Tenant user id (if the tenant is an existing registered user)",
+    example: 5,
+    type: Number,
+  })
+  @Expose({ name: "tenant_uid" })
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  tenantUid?: number;
+
+  @ApiPropertyOptional({
     description: "Tenant full name",
     example: "John Doe",
   })

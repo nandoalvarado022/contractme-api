@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { ContractEntity } from "src/entities/contract/entities/contract.entity";
 import { AuditLogService } from "src/entities/audit_logs/audit.service";
 import { AuditLogsEntity } from "src/entities/audit_logs/audit.entity";
 import { EducationService } from "src/entities/education/education.service";
@@ -21,6 +22,8 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(ContractEntity)
+    private contractRepository: Repository<ContractEntity>,
     private auditLogService: AuditLogService,
     private educationService: EducationService,
     private experienceService: ExperienceService,
@@ -62,9 +65,29 @@ export class UserService {
       usersFound = await this.userRepository.findBy({ created_by: { uid } });
     }
 
+    const uids = usersFound.map((u) => u.uid);
+    let contractCounts: { uid: number; total: string }[] = [];
+    if (uids.length > 0) {
+      contractCounts = await this.contractRepository.query(
+        `SELECT uid, COUNT(*) as total FROM (
+           SELECT tenant_uid as uid FROM contracts WHERE tenant_uid IN (?)
+           UNION ALL
+           SELECT lessor_uid as uid FROM contracts WHERE lessor_uid IN (?)
+         ) t GROUP BY uid`,
+        [uids, uids],
+      );
+    }
+    const countMap = new Map(
+      contractCounts.map((c) => [Number(c.uid), Number(c.total)]),
+    );
+    const usersWithContracts = usersFound.map((u) => ({
+      ...u,
+      total_contracts: countMap.get(u.uid) ?? 0,
+    }));
+
     return {
-      data: usersFound,
-      total: usersFound.length,
+      data: usersWithContracts,
+      total: usersWithContracts.length,
     };
   }
 
