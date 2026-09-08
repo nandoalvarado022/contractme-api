@@ -19,11 +19,25 @@ export class ContractEntity {
   cid: number;
 
   @ApiProperty({
+    description: "Tenant user id (FK to users)",
+    required: false,
+  })
+  @Column({ nullable: true, type: "int" })
+  tenant_uid?: number;
+
+  @ApiProperty({
+    description: "Lessor user id (FK to users)",
+    required: false,
+  })
+  @Column({ nullable: true, type: "int" })
+  lessor_uid?: number;
+
+  @ApiProperty({
     description: "Tenant full name",
     example: "John Doe",
     maxLength: 30,
   })
-  @Column({ nullable: false, type: "varchar", length: 30 })
+  @Column({ nullable: true, type: "varchar", length: 30 })
   tenant_name: string;
 
   @ApiProperty({
@@ -31,7 +45,7 @@ export class ContractEntity {
     example: "tenant@example.com",
     maxLength: 100,
   })
-  @Column({ nullable: false, type: "varchar", length: 100 })
+  @Column({ nullable: true, type: "varchar", length: 100 })
   tenant_email: string;
 
   @ApiProperty({
@@ -39,7 +53,7 @@ export class ContractEntity {
     example: "+1234567890",
     maxLength: 15,
   })
-  @Column({ nullable: false, type: "varchar", length: 15 })
+  @Column({ nullable: true, type: "varchar", length: 15 })
   tennat_phone: string;
 
   @ApiProperty({
@@ -47,7 +61,7 @@ export class ContractEntity {
     example: "Jane Smith",
     maxLength: 30,
   })
-  @Column({ nullable: false, type: "varchar", length: 30 })
+  @Column({ nullable: true, type: "varchar", length: 30 })
   lessor_name: string;
 
   @ApiProperty({
@@ -55,7 +69,7 @@ export class ContractEntity {
     example: "lessor@example.com",
     maxLength: 100,
   })
-  @Column({ nullable: false, type: "varchar", length: 100 })
+  @Column({ nullable: true, type: "varchar", length: 100 })
   lessor_email: string;
 
   @ApiProperty({
@@ -63,7 +77,7 @@ export class ContractEntity {
     example: "+0987654321",
     maxLength: 15,
   })
-  @Column({ nullable: false, type: "varchar", length: 15 })
+  @Column({ nullable: true, type: "varchar", length: 15 })
   lessor_phone: string;
 
   @ApiProperty({
@@ -71,7 +85,7 @@ export class ContractEntity {
     example: false,
     default: false,
   })
-  @Column({ default: false, type: "boolean" })
+  @Column({ default: false, type: "boolean", nullable: true })
   hasSignature: boolean;
 
   @ApiProperty({

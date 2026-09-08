@@ -3,11 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 @Entity({ name: "global_variables" })
+@Index("key", ["key"], { unique: true })
 export class GlobalVariablesEntity {
   @ApiProperty({
     description: "Unique identifier",
@@ -24,7 +26,6 @@ export class GlobalVariablesEntity {
   @Column({
     type: "varchar",
     length: 100,
-    unique: true,
     nullable: false,
   })
   key: string;
@@ -43,13 +44,13 @@ export class GlobalVariablesEntity {
     description: "Creation timestamp",
     example: "2025-12-16T10:00:00.000Z",
   })
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp", precision: 6 })
   created_at: Date;
 
   @ApiProperty({
     description: "Last update timestamp",
     example: "2025-12-16T10:00:00.000Z",
   })
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp", precision: 6 })
   updated_at: Date;
 }

@@ -26,9 +26,9 @@ export class ContractTemplateFieldsEntity {
 
   @ApiProperty({
     description: "Display order of the field",
-    example: 1,
+    example: 1.1,
   })
-  @Column()
+  @Column({ type: "float" })
   order: number;
 
   @ApiProperty({

@@ -10,6 +10,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -22,6 +23,7 @@ import { TransactionsEntity } from "../transactions/entities/transactions.entity
 import { IsOptional } from "class-validator";
 
 @Entity({ name: "users" })
+@Index("users_unique_email", ["email"], { unique: true })
 export class UserEntity {
   @ApiProperty({
     description: "Unique user identifier",
@@ -34,7 +36,7 @@ export class UserEntity {
     description: "User name",
     example: "John",
   })
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
   @ApiProperty({
@@ -48,7 +50,7 @@ export class UserEntity {
     description: "User email address",
     example: "john@example.com",
   })
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
   @ApiProperty({
@@ -63,7 +65,7 @@ export class UserEntity {
     description: "User phone number",
     example: "+1234567890",
   })
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
   @ApiProperty({
@@ -85,14 +87,14 @@ export class UserEntity {
     description: "User profile picture URL",
     example: "https://example.com/pictures/user.jpg",
   })
-  @Column()
+  @Column({ nullable: true })
   picture: string;
 
   @ApiProperty({
     description: "User birth date",
     example: "1990-01-01",
   })
-  @Column()
+  @Column({ nullable: true })
   birth_date: string;
 
   @ApiProperty({
