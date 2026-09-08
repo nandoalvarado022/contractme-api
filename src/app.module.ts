@@ -21,33 +21,15 @@ import { CronModule } from "./cron/cron.module";
 import { UserMiddleware } from "./common/middlewares/user.middleware";
 import { GlobalVariablesModule } from "./entities/global-variables/global-variables.module";
 import { CamelToSnakeCaseInterceptor } from "./common/interceptors/camel-to-snake-case.interceptor";
+import { buildDataSourceOptions } from "./database/data-source";
 
-const getDBConfig = (
-  configService: ConfigService,
-  env: string,
-): TypeOrmModuleOptions => {
-  const prefix = `DB_${env}`;
-
-  return {
-    type: configService.get("DB_TYPE") as "mysql",
-    host: configService.get<string>(`${prefix}_HOST`),
-    username: configService.get<string>(`${prefix}_USERNAME`),
-    password: configService.get<string>(`${prefix}_PASSWORD`),
-    database: configService.get<string>(`${prefix}_DATABASE`),
-    port: configService.get<number>(`${prefix}_PORT`),
-  };
-};
-
-const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
-  const nodeEnv = configService.get<string>("NODE_ENV");
-  const env = nodeEnv === "production" ? "REMOTE" : "LOCAL";
-  return getDBConfig(configService, env);
-};
+const getConnection = (configService: ConfigService): TypeOrmModuleOptions =>
+  buildDataSourceOptions((key) => configService.get<string>(key));
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
-      useFactory: async () => ({
+      useFactory: () => ({
         transport: {
           host: "email-smtp.us-east-1.amazonaws.com",
           port: 587,
@@ -67,14 +49,8 @@ const getConnection = (configService: ConfigService): TypeOrmModuleOptions => {
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        ...getConnection(configService),
-        entities: [__dirname + "/**/*.entity{.ts,.js}"],
-        synchronize: false,
-        logging: false,
-        // logger: 'advanced-console',
-        // synchronize: configService.get<string>("NODE_ENV") === "development",
-      }),
+      useFactory: (configService: ConfigService) =>
+        getConnection(configService),
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([AuditLogsEntity]),

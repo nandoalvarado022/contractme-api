@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf .cache && rimraf .tsbuildinfo",
     "build": "nest build",
-    "start": "NODE_ENV=prod DD_LOGS_INJECTION=true nest start",
+    "start": "NODE_ENV=production DD_LOGS_INJECTION=true nest start",
     "dev": "cross-env NODE_ENV=dev DD_LOGS_INJECTION=true nest build && nest start --watch",
     "debug": "nest start --debug --watch",
     "prod": "node dist/main",
@@ -20,7 +20,19 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/database/data-source.ts",
+    "migration:create": "node -r ts-node/register/transpile-only ./node_modules/typeorm/cli.js migration:create",
+    "migration:generate": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/database/data-source.ts",
+    "migration:run": "npm run db:target --silent && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/database/data-source.ts",
+    "migration:revert": "npm run db:target --silent && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/database/data-source.ts",
+    "migration:show": "npm run db:target --silent && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d ./src/database/data-source.ts",
+    "migration:run:prod": "typeorm migration:run -d ./dist/database/data-source.js",
+    "migration:revert:prod": "typeorm migration:revert -d ./dist/database/data-source.js",
+    "migration:show:prod": "typeorm migration:show -d ./dist/database/data-source.js",
+    "schema:log": "npm run db:target --silent && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:log -d ./src/database/data-source.ts",
+    "schema:snapshot": "npm run db:target --silent && node -r ts-node/register/transpile-only -r tsconfig-paths/register scripts/schema-snapshot.ts",
+    "db:target": "node -r ts-node/register/transpile-only -r tsconfig-paths/register scripts/print-db-target.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.883.0",

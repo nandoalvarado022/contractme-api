@@ -1,0 +1,1839 @@
+{
+  "generatedAt": "2026-09-08T07:30:14.665Z",
+  "schema": "contract_me",
+  "tables": [
+    {
+      "name": "audit_logs",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 387,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "uid",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "uid_compromised",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "description",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "table",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "data",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "created_at",
+          "type": "varchar(255)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_8b1acdf57041546450997efe108",
+          "unique": false,
+          "columns": [
+            "uid"
+          ]
+        },
+        {
+          "name": "FK_a4564910d5d86d8b6c8d32d1190",
+          "unique": false,
+          "columns": [
+            "uid_compromised"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_8b1acdf57041546450997efe108",
+          "columns": [
+            "uid"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        },
+        {
+          "name": "FK_a4564910d5d86d8b6c8d32d1190",
+          "columns": [
+            "uid_compromised"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        }
+      ]
+    },
+    {
+      "name": "balance",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 16,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "last_transaction_id",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "uid",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "amount",
+          "type": "int",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "updatedAt",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(6)",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "deletedAt",
+          "type": "datetime(6)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "REL_1289fec0db3cebff496c6bccc1",
+          "unique": true,
+          "columns": [
+            "uid"
+          ]
+        },
+        {
+          "name": "REL_8389f1e87ab9de3a3f69f759fb",
+          "unique": true,
+          "columns": [
+            "last_transaction_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_1289fec0db3cebff496c6bccc16",
+          "columns": [
+            "uid"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        },
+        {
+          "name": "FK_8389f1e87ab9de3a3f69f759fb9",
+          "columns": [
+            "last_transaction_id"
+          ],
+          "referencedTable": "transactions",
+          "referencedColumns": [
+            "id"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        }
+      ]
+    },
+    {
+      "name": "contracts",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 99,
+      "columns": [
+        {
+          "name": "cid",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "tenant_name",
+          "type": "varchar(30)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "tenant_email",
+          "type": "varchar(100)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "tennat_phone",
+          "type": "varchar(15)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "lessor_name",
+          "type": "varchar(30)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "lessor_email",
+          "type": "varchar(100)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "lessor_phone",
+          "type": "varchar(15)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "hasSignature",
+          "type": "tinyint",
+          "nullable": true,
+          "default": "0",
+          "extra": "",
+          "comment": "",
+          "position": 8
+        },
+        {
+          "name": "ct_id",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 9
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 10
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 11
+        },
+        {
+          "name": "tenant_uid",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 12
+        },
+        {
+          "name": "lessor_uid",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 13
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "cid"
+          ]
+        },
+        {
+          "name": "REL_8362c9fc60db89ab7ee3b6b28f",
+          "unique": true,
+          "columns": [
+            "ct_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_8362c9fc60db89ab7ee3b6b28fd",
+          "columns": [
+            "ct_id"
+          ],
+          "referencedTable": "contracts_templates",
+          "referencedColumns": [
+            "ct_id"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        }
+      ]
+    },
+    {
+      "name": "contracts_templates",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 3,
+      "columns": [
+        {
+          "name": "ct_id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "description",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "category",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "type",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "status",
+          "type": "enum('active','inactive')",
+          "nullable": false,
+          "default": "active",
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "url",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "created_at",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 8
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "ct_id"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "contracts_templates_fields",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 28,
+      "columns": [
+        {
+          "name": "ctf_id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "ct_id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "label",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "placeholder",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "type",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "page",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "order",
+          "type": "float",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 8
+        },
+        {
+          "name": "x",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 9
+        },
+        {
+          "name": "y",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 10
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_c17ef44a9c1693976e448ce163f",
+          "unique": false,
+          "columns": [
+            "ct_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "ctf_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_c17ef44a9c1693976e448ce163f",
+          "columns": [
+            "ct_id"
+          ],
+          "referencedTable": "contracts_templates",
+          "referencedColumns": [
+            "ct_id"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        }
+      ]
+    },
+    {
+      "name": "education",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "place",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "title",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(6)",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "deleted_at",
+          "type": "datetime(6)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "uid",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "start_date",
+          "type": "datetime",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 8
+        },
+        {
+          "name": "end_date",
+          "type": "datetime",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 9
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_e616b0297c4ef18322f4b7dd9fa",
+          "unique": false,
+          "columns": [
+            "uid"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_e616b0297c4ef18322f4b7dd9fa",
+          "columns": [
+            "uid"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "CASCADE"
+        }
+      ]
+    },
+    {
+      "name": "experience",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "company",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "position",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(6)",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "deleted_at",
+          "type": "datetime(6)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "uid",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "start_date",
+          "type": "datetime",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 8
+        },
+        {
+          "name": "end_date",
+          "type": "datetime",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 9
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_4c0c83abae99aeafc1a3df0f966",
+          "unique": false,
+          "columns": [
+            "uid"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_4c0c83abae99aeafc1a3df0f966",
+          "columns": [
+            "uid"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "CASCADE"
+        }
+      ]
+    },
+    {
+      "name": "global_variables",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "rows": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "key",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "value",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(6)",
+          "comment": "",
+          "position": 5
+        }
+      ],
+      "indexes": [
+        {
+          "name": "key",
+          "unique": true,
+          "columns": [
+            "key"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "leads",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 15,
+      "columns": [
+        {
+          "name": "lid",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "full_name",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "email",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "phone",
+          "type": "varchar(20)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "type_contact",
+          "type": "enum('information','pricing','real-state','support','other')",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "message",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "lid"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "migrations",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_unicode_ci",
+      "rows": 2,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "timestamp",
+          "type": "bigint",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    {
+      "name": "properties",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 13,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "owner_uid",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "city",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "address",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "image",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "price",
+          "type": "decimal(15,2)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "type",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "bedrooms",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 8
+        },
+        {
+          "name": "bathrooms",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 9
+        },
+        {
+          "name": "area",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 10
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 11
+        },
+        {
+          "name": "registration_number",
+          "type": "varchar(100)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 12
+        },
+        {
+          "name": "tenant_id",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 13
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 14
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+          "comment": "",
+          "position": 15
+        },
+        {
+          "name": "deleted_at",
+          "type": "datetime(6)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 16
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_6bcd5c3d46689610c9bbf14e0eb",
+          "unique": false,
+          "columns": [
+            "tenant_id"
+          ]
+        },
+        {
+          "name": "FK_9ff815bcb722486897629c74ef2",
+          "unique": false,
+          "columns": [
+            "owner_uid"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_6bcd5c3d46689610c9bbf14e0eb",
+          "columns": [
+            "tenant_id"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        },
+        {
+          "name": "FK_9ff815bcb722486897629c74ef2",
+          "columns": [
+            "owner_uid"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        }
+      ]
+    },
+    {
+      "name": "property_interested",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "phone",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "email",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "property_id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "user_id",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+          "comment": "",
+          "position": 8
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_93fde83a12bccf2b1d2646139c7",
+          "unique": false,
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "FK_ae34b61cd07176db98d3a16cc01",
+          "unique": false,
+          "columns": [
+            "property_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_93fde83a12bccf2b1d2646139c7",
+          "columns": [
+            "user_id"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        },
+        {
+          "name": "FK_ae34b61cd07176db98d3a16cc01",
+          "columns": [
+            "property_id"
+          ],
+          "referencedTable": "properties",
+          "referencedColumns": [
+            "id"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "CASCADE"
+        }
+      ]
+    },
+    {
+      "name": "property_notes",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 5,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "text",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "property_id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+          "comment": "",
+          "position": 5
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_1aca189349feec8837033322857",
+          "unique": false,
+          "columns": [
+            "property_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_1aca189349feec8837033322857",
+          "columns": [
+            "property_id"
+          ],
+          "referencedTable": "properties",
+          "referencedColumns": [
+            "id"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "CASCADE"
+        }
+      ]
+    },
+    {
+      "name": "reference",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "name",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "phone",
+          "type": "varchar(15)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "relationship",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(6)",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "deleted_at",
+          "type": "datetime(6)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "uid",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 8
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_5073bfa69d63953da9c1d31b599",
+          "unique": false,
+          "columns": [
+            "uid"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_5073bfa69d63953da9c1d31b599",
+          "columns": [
+            "uid"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "CASCADE"
+        }
+      ]
+    },
+    {
+      "name": "transactions",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 69,
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "concept",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "status",
+          "type": "enum('pending','blocked','rejected','completed','failed')",
+          "nullable": false,
+          "default": "completed",
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "type",
+          "type": "enum('add','remove')",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "uid",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "amount",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_c3dcba0b0a4c2ed3442124475bf",
+          "unique": false,
+          "columns": [
+            "uid"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_c3dcba0b0a4c2ed3442124475bf",
+          "columns": [
+            "uid"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "engine": "InnoDB",
+      "collation": "utf8mb4_0900_ai_ci",
+      "rows": 25,
+      "columns": [
+        {
+          "name": "uid",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "extra": "auto_increment",
+          "comment": "",
+          "position": 1
+        },
+        {
+          "name": "created_by",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 2
+        },
+        {
+          "name": "document_type",
+          "type": "enum('CC','NIT','TI','CE')",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 3
+        },
+        {
+          "name": "document_number",
+          "type": "varchar(20)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 4
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 5
+        },
+        {
+          "name": "last_name",
+          "type": "varchar(50)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 6
+        },
+        {
+          "name": "phone",
+          "type": "varchar(255)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 7
+        },
+        {
+          "name": "email",
+          "type": "varchar(255)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 8
+        },
+        {
+          "name": "password",
+          "type": "varchar(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 9
+        },
+        {
+          "name": "picture",
+          "type": "varchar(255)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 10
+        },
+        {
+          "name": "birth_date",
+          "type": "varchar(255)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 11
+        },
+        {
+          "name": "role",
+          "type": "enum('user','admin')",
+          "nullable": false,
+          "default": "user",
+          "extra": "",
+          "comment": "",
+          "position": 12
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(6)",
+          "extra": "DEFAULT_GENERATED",
+          "comment": "",
+          "position": 13
+        },
+        {
+          "name": "deleted_at",
+          "type": "datetime(6)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "comment": "",
+          "position": 14
+        }
+      ],
+      "indexes": [
+        {
+          "name": "FK_f32b1cb14a9920477bcfd63df2c",
+          "unique": false,
+          "columns": [
+            "created_by"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "unique": true,
+          "columns": [
+            "uid"
+          ]
+        },
+        {
+          "name": "users_unique_email",
+          "unique": true,
+          "columns": [
+            "email"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "name": "FK_f32b1cb14a9920477bcfd63df2c",
+          "columns": [
+            "created_by"
+          ],
+          "referencedTable": "users",
+          "referencedColumns": [
+            "uid"
+          ],
+          "onUpdate": "NO ACTION",
+          "onDelete": "NO ACTION"
+        }
+      ]
+    }
+  ]
+}
