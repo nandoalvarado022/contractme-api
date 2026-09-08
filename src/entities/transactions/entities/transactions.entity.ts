@@ -12,9 +12,9 @@ import {
 import {
   TRANSACTION_STATUS,
   TRANSACTION_TYPE,
+  TransactionStatus,
   TransactionType,
 } from "../consts/transactions.const";
-import { TransactionStatus } from "aws-sdk/clients/lakeformation";
 import { UserEntity } from "src/entities/user/user.entity";
 
 @Entity({ name: "transactions" })
