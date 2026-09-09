@@ -2,8 +2,10 @@
 
 FROM node:20-bookworm-slim AS build
 WORKDIR /app
+ENV NODE_ENV=development
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --include=dev
+RUN test -x node_modules/.bin/nest || (echo "devDependencies missing after npm ci" && exit 1)
 COPY . .
 RUN npm run build && npm prune --omit=dev
 
