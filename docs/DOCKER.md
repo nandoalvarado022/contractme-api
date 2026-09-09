@@ -150,6 +150,22 @@ points the API at an empty database.
 
 `docker compose down -v` destroys that volume. Use `docker compose down`.
 
+## Health probing
+
+The mysql healthcheck talks to the server over its unix socket, not over
+`-h 127.0.0.1`. A TCP probe makes the server resolve the connecting client's
+address, and on a container host that round trip is slow enough to blow past a
+5s healthcheck timeout while the probe itself succeeds — the failure looks like
+a dead database but the output reads `mysqld is alive`.
+
+`--skip-name-resolve` removes that resolution for every client, including the
+api container. It restricts grants to address patterns rather than hostnames,
+which is what `MYSQL_USER` already gets from the entrypoint.
+
+The probe verifies that the server answers, not that credentials are valid;
+`mysqladmin ping` reports a live server even when authentication is refused.
+Wrong credentials surface in the api container's logs instead.
+
 ## Collation
 
 The server is started with `utf8mb4` / `utf8mb4_0900_ai_ci` to match
