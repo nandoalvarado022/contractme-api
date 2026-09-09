@@ -1,3 +1,5 @@
+name: contractme
+
 services:
   mysql:
     image: mysql:8.0
@@ -6,16 +8,16 @@ services:
 
     command:
       - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
+      - --collation-server=utf8mb4_0900_ai_ci
 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:?set MYSQL_DATABASE in .env}
-      MYSQL_USER: ${MYSQL_USER:?set MYSQL_USER in .env}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+      MYSQL_DATABASE: ${DB_REMOTE_DATABASE:?set DB_REMOTE_DATABASE in .env}
+      MYSQL_USER: ${DB_REMOTE_USERNAME:?set DB_REMOTE_USERNAME in .env}
+      MYSQL_PASSWORD: ${DB_REMOTE_PASSWORD:?set DB_REMOTE_PASSWORD in .env}
 
     ports:
-      - "127.0.0.1:${MYSQL_HOST_PORT:-3306}:3306"
+      - "127.0.0.1:${DB_REMOTE_PORT:-3310}:3306"
 
     volumes:
       - mysql_data:/var/lib/mysql
@@ -23,15 +25,21 @@ services:
 
     healthcheck:
       test:
-        [
-          "CMD-SHELL",
-          'mysqladmin ping -h 127.0.0.1 -uroot -p"$${MYSQL_ROOT_PASSWORD}" --silent'
-        ]
-      interval: 5s
+        - CMD-SHELL
+        - mysqladmin ping -h 127.0.0.1 -uroot -p"$${MYSQL_ROOT_PASSWORD}" --silent
+      interval: 10s
       timeout: 5s
-      retries: 20
-      start_period: 20s
+      retries: 12
+      start_period: 30s
 
+    networks:
+      - contractme
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   api:
     build:
@@ -39,8 +47,10 @@ services:
       dockerfile: Dockerfile
       target: production
 
+    image: contractme-api:local
     container_name: contractme-api
     restart: unless-stopped
+    init: true
 
     env_file:
       - .env
@@ -48,21 +58,28 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-
       DB_TYPE: mysql
       DB_REMOTE_HOST: mysql
       DB_REMOTE_PORT: 3306
-      DB_REMOTE_DATABASE: ${MYSQL_DATABASE}
-      DB_REMOTE_USERNAME: ${MYSQL_USER}
-      DB_REMOTE_PASSWORD: ${MYSQL_PASSWORD}
 
     ports:
-      - "${API_HOST_PORT:-3000}:3000"
+      - "${API_HOST_PORT:-5050}:3000"
 
     depends_on:
       mysql:
         condition: service_healthy
 
+    networks:
+      - contractme
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   mysql_data:
+
+networks:
+  contractme:
