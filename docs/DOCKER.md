@@ -123,22 +123,20 @@ on the same machine, which is the case on the development machine
 
 ## Startup budget
 
-`depends_on: service_healthy` makes the chain sequential: the api container
-does not start until mysql reports healthy.
+With no health gate the two containers start together.
 
-| Scenario | Serving traffic | Both `healthy` |
-|---|---|---|
-| Existing volume | ~15–20s | ~40s |
-| Fresh volume | ~30–55s | ~60–85s |
+| Scenario | Serving traffic |
+|---|---|
+| Existing volume | ~15s |
+| Fresh volume | ~30–55s |
 
-The gap between the two columns is healthcheck cadence, not application speed.
-MySQL is up in 3–10s but its first check lands at `interval: 10s`; the api
-serves in 3–6s but its first check lands at `--interval=30s`.
+MySQL is up in 3–10s on an existing volume; a fresh volume adds the
+entrypoint's initialisation of the data directory. The api boots Nest, TypeORM
+and the Swagger document in 3–6s once the database answers.
 
-Treat as abnormal: mysql not healthy by 60s on an existing volume, `unhealthy`
-at ~150s (`start_period` plus 12 retries exhausted, after which the api never
-starts), or an api container in a restart loop — that last one is credentials
-or entities, not slowness.
+Treat as abnormal: an api container still restarting after a minute, or MySQL
+logs that never reach `ready for connections`. A restart loop is credentials or
+entities, not slowness — read `docker compose logs api`.
 
 ## Volume
 
@@ -150,21 +148,30 @@ points the API at an empty database.
 
 `docker compose down -v` destroys that volume. Use `docker compose down`.
 
-## Health probing
+## Health probing is disabled
 
-The mysql healthcheck talks to the server over its unix socket, not over
-`-h 127.0.0.1`. A TCP probe makes the server resolve the connecting client's
-address, and on a container host that round trip is slow enough to blow past a
-5s healthcheck timeout while the probe itself succeeds — the failure looks like
-a dead database but the output reads `mysqld is alive`.
+Both services set `healthcheck.disable: true`, and `api` waits only for
+`service_started`. This is a deliberate accommodation for the deploy host, not
+a default worth copying.
 
-`--skip-name-resolve` removes that resolution for every client, including the
-api container. It restricts grants to address patterns rather than hostnames,
-which is what `MYSQL_USER` already gets from the entrypoint.
+On that host Docker kills every health probe at its timeout without ever
+observing completion. Two unrelated probes were tried — `mysqladmin ping` over
+the unix socket, and a Node HTTP GET — and both recorded `ExitCode: -1` with
+`Health check exceeded timeout`. Raising the timeout from 5s to 10s moved the
+kill to 10s rather than letting it pass, and the same `mysqladmin` invocation
+returns in 46ms when run manually through `docker compose exec`. The probes are
+fine; the exec path is not. Slow container removal on the same host (20s to
+remove a stopped container) points the same way.
 
-The probe verifies that the server answers, not that credentials are valid;
-`mysqladmin ping` reports a live server even when authentication is refused.
-Wrong credentials surface in the api container's logs instead.
+Because the readiness gate is gone, a cold start can bring the api up before
+MySQL accepts connections. TypeORM then fails to connect, the process exits,
+and `restart: unless-stopped` retries until the database answers. Expect a
+restart cycle or two on a fresh boot, visible in `docker compose logs api`.
+
+The `HEALTHCHECK` instruction stays in the Dockerfile. `disable: true`
+overrides it per service, so nothing needs rebuilding, and the probe is ready
+to switch back on if the host's Docker is repaired: drop both `disable` keys and
+restore `condition: service_healthy`.
 
 ## Collation
 

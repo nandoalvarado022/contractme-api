@@ -23,13 +23,7 @@ services:
       - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
 
     healthcheck:
-      test:
-        - CMD-SHELL
-        - mysqladmin ping -uroot -p"$${MYSQL_ROOT_PASSWORD}" --silent
-      interval: 10s
-      timeout: 10s
-      retries: 12
-      start_period: 30s
+      disable: true
 
     networks:
       - contractme
@@ -67,9 +61,11 @@ services:
     ports:
       - "${API_BIND_ADDRESS:-127.0.0.1}:${API_HOST_PORT:-3000}:3000"
 
+    healthcheck:
+      disable: true
+
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
 
     networks:
       - contractme
