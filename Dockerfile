@@ -1,21 +1,57 @@
 # syntax=docker/dockerfile:1
 
-FROM node:20-bookworm-slim AS build
-WORKDIR /app
-COPY package*.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci --include=dev
-RUN test -x node_modules/.bin/nest || (echo "devDependencies missing after npm ci" && exit 1)
-COPY . .
-RUN npm run build && npm prune --omit=dev
+# ============================================================
+# Stage 1: Install dependencies required to build the app
+# ============================================================
+FROM node:20-bookworm-slim AS build-deps
 
-FROM node:20-bookworm-slim AS production
 WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
+
+
+# ============================================================
+# Stage 2: Build NestJS application
+# ============================================================
+FROM build-deps AS build
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm run build
+
+
+# ============================================================
+# Stage 3: Install production dependencies only
+# ============================================================
+FROM node:20-bookworm-slim AS production-deps
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
+
+
+# ============================================================
+# Stage 4: Production image
+# ============================================================
+FROM node:20-bookworm-slim AS production
+
+WORKDIR /app
+
 ENV NODE_ENV=production
-RUN apt-get update \
- && apt-get install -y --no-install-recommends default-mysql-client \
- && rm -rf /var/lib/apt/lists/*
-COPY --from=build /app/node_modules ./node_modules
+ENV PORT=3000
+
+COPY --from=production-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/package.json ./package.json
+COPY package.json ./
+
 EXPOSE 3000
-CMD ["node", "dist/main"]
+
+CMD ["node", "dist/main.js"]
