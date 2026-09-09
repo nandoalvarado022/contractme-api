@@ -1,37 +1,42 @@
 # syntax=docker/dockerfile:1.7
 
 ARG NODE_IMAGE=node:24-alpine
+ARG BUN_VERSION=1.4.0
 
 
-FROM ${NODE_IMAGE} AS dev-deps
+FROM ${NODE_IMAGE} AS base
 
-WORKDIR /app
+ARG BUN_VERSION
 
-COPY package.json package-lock.json ./
-
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --prefer-offline --no-audit --no-fund
-
-
-FROM ${NODE_IMAGE} AS prod-deps
+RUN npm install -g bun@${BUN_VERSION} \
+    && npm cache clean --force
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
 
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev --prefer-offline --no-audit --no-fund
+FROM base AS dev-deps
+
+COPY package.json bun.lock ./
+
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile
 
 
-FROM ${NODE_IMAGE} AS build
+FROM base AS prod-deps
 
-WORKDIR /app
+COPY package.json bun.lock ./
+
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile --production
+
+
+FROM base AS build
 
 COPY --from=dev-deps /app/node_modules ./node_modules
-COPY package.json package-lock.json nest-cli.json tsconfig.json tsconfig.build.json ./
+COPY package.json bun.lock nest-cli.json tsconfig.json tsconfig.build.json ./
 COPY src ./src
 
-RUN npm run build
+RUN bun run build
 
 
 FROM ${NODE_IMAGE} AS production

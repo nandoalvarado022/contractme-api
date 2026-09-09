@@ -28,34 +28,44 @@
 
 ## Project setup
 
+Bun is the package manager. Node.js remains the runtime.
+
 ```bash
-$ pnpm install
+$ bun install
 ```
 
 ## Compile and run the project
 
 ```bash
-# development
-$ pnpm run start
+# build once, then watch
+$ bun run dev
 
-# watch mode
-$ pnpm run start:dev
+# build
+$ bun run build
 
-# production mode
-$ pnpm run start:prod
+# run the compiled build
+$ bun run prod
 ```
 
 ## Run tests
 
 ```bash
 # unit tests
-$ pnpm run test
+$ bun run test
 
 # e2e tests
-$ pnpm run test:e2e
+$ bun run test:e2e
 
 # test coverage
-$ pnpm run test:cov
+$ bun run test:cov
+```
+
+## Docker
+
+See [docs/DOCKER.md](docs/DOCKER.md).
+
+```bash
+$ docker compose up -d --build
 ```
 
 ## Deployment
@@ -65,7 +75,7 @@ When you're ready to deploy your NestJS application to production, there are som
 If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
 ```bash
-$ pnpm install -g mau
+$ bun install -g mau
 $ mau deploy
 ```
 
