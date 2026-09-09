@@ -1,46 +1,28 @@
 # syntax=docker/dockerfile:1
 
-# ============================================================
-# Stage 1: Install dependencies required to build the app
-# ============================================================
-FROM node:20-bookworm-slim AS build-deps
+FROM node:20-bookworm-slim AS build
 
 WORKDIR /app
+
+ENV NODE_ENV=development
 
 COPY package.json package-lock.json ./
 
 RUN --mount=type=cache,target=/root/.npm \
-    npm ci
-
-
-# ============================================================
-# Stage 2: Build NestJS application
-# ============================================================
-FROM build-deps AS build
-
-WORKDIR /app
+    npm ci \
+    --prefer-offline \
+    --no-audit \
+    --no-fund
 
 COPY . .
 
 RUN npm run build
 
-
-# ============================================================
-# Stage 3: Install production dependencies only
-# ============================================================
-FROM node:20-bookworm-slim AS production-deps
-
-WORKDIR /app
-
-COPY package.json package-lock.json ./
-
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
+RUN npm prune --omit=dev \
+    --no-audit \
+    --no-fund
 
 
-# ============================================================
-# Stage 4: Production image
-# ============================================================
 FROM node:20-bookworm-slim AS production
 
 WORKDIR /app
@@ -48,9 +30,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-COPY --from=production-deps /app/node_modules ./node_modules
+COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
-COPY package.json ./
+COPY --from=build /app/package.json ./package.json
 
 EXPOSE 3000
 
