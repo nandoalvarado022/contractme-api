@@ -10,6 +10,7 @@ import { Cron } from "@nestjs/schedule";
 import { format } from "date-fns";
 import { exec } from "node:child_process";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import { promisify } from "node:util";
 
@@ -100,7 +101,7 @@ export class DatabaseBackupService {
 
     const timestamp = format(new Date(), "yyyy-MM-dd_HH-mm-ss");
     const fileName = `backup_${dbName}_${timestamp}.sql`;
-    const backupDir = path.join(process.cwd(), "temp-backups");
+    const backupDir = path.join(os.tmpdir(), "contractme-backups");
     const backupFilePath = path.join(backupDir, fileName);
 
     if (!fs.existsSync(backupDir)) {
