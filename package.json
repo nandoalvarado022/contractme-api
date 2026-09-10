@@ -32,6 +32,7 @@
     "migration:show:prod": "typeorm migration:show -d ./dist/database/data-source.js",
     "schema:log": "bun run --silent db:target && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:log -d ./src/database/data-source.ts",
     "schema:snapshot": "bun run --silent db:target && node -r ts-node/register/transpile-only -r tsconfig-paths/register scripts/schema-snapshot.ts",
+    "deploy": "git pull && docker compose up -d --build api",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d --build",
     "docker:down": "docker compose down",
