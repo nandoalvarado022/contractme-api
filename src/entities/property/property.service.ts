@@ -8,6 +8,7 @@ import { PropertyNote } from "./property-note.entity";
 import { PropertyInterested } from "./property-interested.entity";
 import { UserEntity } from "src/entities/user/user.entity";
 import { CreatePropertyNoteDto } from "./dto/create-property-note.dto";
+import { CreatePropertyInterestedDto } from "./dto/create-property-interested.dto";
 // import { AuditLogsEntity } from "src/audit_logs/audit.entity"
 
 @Injectable()
@@ -24,8 +25,8 @@ export class PropertyService {
 
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>, // @InjectRepository(AuditLogsEntity)
-  ) // private readonly logsRepository: Repository<AuditLogsEntity>
-  {}
+    // private readonly logsRepository: Repository<AuditLogsEntity>
+  ) {}
 
   async create(
     createPropertyDto: CreatePropertyDto,
@@ -39,9 +40,17 @@ export class PropertyService {
       throw new NotFoundException(`Owner with ID ${ownerUid} not found`);
     }
 
-    const { notes, interested, ...propertyData } = createPropertyDto;
     const newProperty = this.propertyRepository.create({
-      ...propertyData,
+      city: createPropertyDto.city,
+      address: createPropertyDto.address,
+      image: createPropertyDto.image,
+      price: createPropertyDto.price,
+      type: createPropertyDto.type,
+      bedrooms: createPropertyDto.bedrooms,
+      bathrooms: createPropertyDto.bathrooms,
+      area: createPropertyDto.area,
+      description: createPropertyDto.description,
+      registration_number: createPropertyDto.registrationNumber,
       owner_uid: ownerUid,
     });
     const savedProperty = await this.propertyRepository.save(newProperty);
@@ -122,13 +131,13 @@ export class PropertyService {
   ): Promise<PropertyEntity> {
     const property = await this.findOne(id);
 
-    if (updatePropertyDto.owner_uid) {
+    if (updatePropertyDto.ownerUid) {
       const owner = await this.userRepository.findOne({
-        where: { uid: updatePropertyDto.owner_uid },
+        where: { uid: updatePropertyDto.ownerUid },
       });
       if (!owner) {
         throw new NotFoundException(
-          `Owner with ID ${updatePropertyDto.owner_uid} not found`,
+          `Owner with ID ${updatePropertyDto.ownerUid} not found`,
         );
       }
     }
@@ -146,7 +155,23 @@ export class PropertyService {
 
     const { notes, interested, ...updateData } = updatePropertyDto;
 
-    Object.assign(property, updateData);
+    if (updateData.city !== undefined) property.city = updateData.city;
+    if (updateData.address !== undefined) property.address = updateData.address;
+    if (updateData.image !== undefined) property.image = updateData.image;
+    if (updateData.price !== undefined) property.price = updateData.price;
+    if (updateData.type !== undefined) property.type = updateData.type;
+    if (updateData.bedrooms !== undefined)
+      property.bedrooms = updateData.bedrooms;
+    if (updateData.bathrooms !== undefined)
+      property.bathrooms = updateData.bathrooms;
+    if (updateData.area !== undefined) property.area = updateData.area;
+    if (updateData.description !== undefined)
+      property.description = updateData.description;
+    if (updateData.ownerUid !== undefined)
+      property.owner_uid = updateData.ownerUid;
+    if (updateData.registrationNumber !== undefined)
+      property.registration_number = updateData.registrationNumber;
+
     await this.propertyRepository.save(property);
 
     if (notes) {
@@ -155,7 +180,7 @@ export class PropertyService {
       if (notes.length > 0) {
         for (const noteDto of notes) {
           const note = this.noteRepository.create({
-            ...noteDto,
+            text: noteDto.text,
             property_id: id,
           });
           await this.noteRepository.save(note);
@@ -169,7 +194,10 @@ export class PropertyService {
       if (interested.length > 0) {
         for (const interestedDto of interested) {
           const interestedPerson = this.interestedRepository.create({
-            ...interestedDto,
+            name: interestedDto.name,
+            phone: interestedDto.phone,
+            email: interestedDto.email,
+            user_id: interestedDto.userId,
             property_id: id,
           });
           await this.interestedRepository.save(interestedPerson);
@@ -222,24 +250,27 @@ export class PropertyService {
     const property = await this.findOne(propertyId);
 
     const note = this.noteRepository.create({
-      ...noteData,
+      text: noteData.text,
       property_id: property.id,
     });
 
-    return await this.noteRepository.save(note as any);
+    return await this.noteRepository.save(note);
   }
 
   async addInterested(
     propertyId: number,
-    interestedData: any,
+    interestedData: CreatePropertyInterestedDto,
   ): Promise<PropertyInterested> {
     const property = await this.findOne(propertyId);
 
     const interested = this.interestedRepository.create({
-      ...interestedData,
+      name: interestedData.name,
+      phone: interestedData.phone,
+      email: interestedData.email,
+      user_id: interestedData.userId,
       property_id: property.id,
     });
 
-    return await this.interestedRepository.save(interested as any);
+    return await this.interestedRepository.save(interested);
   }
 }

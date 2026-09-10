@@ -91,14 +91,20 @@ export class UserService {
     };
   }
 
-  async createUser(body, creatorUid) {
+  async createUser(body: CreateUserDto, creatorUid) {
     const defaultPassword = "contractme";
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
     const userDataToCreate: Partial<UserEntity> = {
-      ...body,
+      name: body.name,
       last_name: body.lastname,
+      email: body.email,
       password: hashedPassword,
+      phone: body.phone,
+      document_type: body.documentType,
+      document_number: body.documentNumber,
+      picture: body.picture,
+      birth_date: body.birthDate,
       role: Role.USER,
       created_by: creatorUid ? ({ uid: creatorUid } as UserEntity) : undefined,
     };
@@ -170,6 +176,13 @@ export class UserService {
     const updateData = {
       ...body,
       ...(body.lastname !== undefined && { last_name: body.lastname }),
+      ...(body.documentType !== undefined && {
+        document_type: body.documentType,
+      }),
+      ...(body.documentNumber !== undefined && {
+        document_number: body.documentNumber,
+      }),
+      ...(body.birthDate !== undefined && { birth_date: body.birthDate }),
     };
 
     const updatedUser = this.userRepository.merge(userFound, updateData);

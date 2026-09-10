@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { Expose, Transform, Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { EmptyToUndefined } from "src/common/decorators";
 import {
   IsBoolean,
@@ -19,8 +19,7 @@ export class GenerateContractDto {
     example: 5,
     type: Number,
   })
-  @Expose({ name: "tenant_uid" })
-  @EmptyToUndefined("tenant_uid")
+  @EmptyToUndefined("tenantUid")
   @IsOptional()
   @IsInt()
   @Type(() => Number)
@@ -30,7 +29,6 @@ export class GenerateContractDto {
     description: "Tenant full name",
     example: "John Doe",
   })
-  @Expose({ name: "tenant_name" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -40,7 +38,6 @@ export class GenerateContractDto {
     description: "Tenant email address",
     example: "tenant@example.com",
   })
-  @Expose({ name: "tenant_email" })
   @EmptyToUndefined()
   @IsOptional()
   @IsEmail()
@@ -50,7 +47,6 @@ export class GenerateContractDto {
     description: "Tenant phone number",
     example: "+1234567890",
   })
-  @Expose({ name: "tenant_phone" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -60,7 +56,6 @@ export class GenerateContractDto {
     description: "Tenant last name",
     example: "Doe",
   })
-  @Expose({ name: "tenant_lastname" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -70,7 +65,6 @@ export class GenerateContractDto {
     description: "Tenant document type",
     example: "CC",
   })
-  @Expose({ name: "tenant_document_type" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -80,7 +74,6 @@ export class GenerateContractDto {
     description: "Tenant document",
     example: "123456789",
   })
-  @Expose({ name: "tenant_document" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -90,7 +83,6 @@ export class GenerateContractDto {
     description: "Tenant address",
     example: "Street 123",
   })
-  @Expose({ name: "tenant_address" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -100,7 +92,6 @@ export class GenerateContractDto {
     description: "Tenant legal representative",
     example: "Representative Name",
   })
-  @Expose({ name: "tenant_legal_representative" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -110,7 +101,6 @@ export class GenerateContractDto {
     description: "Lessor (owner) full name",
     example: "Jane Smith",
   })
-  @Expose({ name: "lessor_name" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -120,7 +110,6 @@ export class GenerateContractDto {
     description: "Lessor email address",
     example: "lessor@example.com",
   })
-  @Expose({ name: "lessor_email" })
   @EmptyToUndefined()
   @IsOptional()
   @IsEmail()
@@ -130,7 +119,6 @@ export class GenerateContractDto {
     description: "Lessor phone number",
     example: "+0987654321",
   })
-  @Expose({ name: "lessor_phone" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -140,7 +128,6 @@ export class GenerateContractDto {
     description: "Lessor last name",
     example: "Smith",
   })
-  @Expose({ name: "lessor_lastname" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -150,7 +137,6 @@ export class GenerateContractDto {
     description: "Lessor document",
     example: "987654321",
   })
-  @Expose({ name: "lessor_document" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -160,7 +146,6 @@ export class GenerateContractDto {
     description: "Lessor address",
     example: "Main avenue 45",
   })
-  @Expose({ name: "lessor_address" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -170,14 +155,12 @@ export class GenerateContractDto {
     description: "Lessor legal representative",
     example: "Representative Name",
   })
-  @Expose({ name: "lessor_legal_representative" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
   lessorLegalRepresentative?: string;
 
   @IsOptional()
-  @Expose({ name: "lessor_document_type" })
   @EmptyToUndefined()
   @IsString()
   lessorDocumentType?: string;
@@ -186,7 +169,6 @@ export class GenerateContractDto {
     description: "Cosigner name",
     example: "Cosigner Name",
   })
-  @Expose({ name: "cosigner_name" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -196,7 +178,6 @@ export class GenerateContractDto {
     description: "Cosigner document",
     example: "1122334455",
   })
-  @Expose({ name: "cosigner_document" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -206,7 +187,6 @@ export class GenerateContractDto {
     description: "Cosigner address",
     example: "Cosigner street 10",
   })
-  @Expose({ name: "cosigner_address" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -216,7 +196,6 @@ export class GenerateContractDto {
     description: "Cosigner email",
     example: "cosigner@example.com",
   })
-  @Expose({ name: "cosigner_email" })
   @EmptyToUndefined()
   @IsOptional()
   @IsEmail()
@@ -226,7 +205,6 @@ export class GenerateContractDto {
     description: "Cosigner phone",
     example: "+123498765",
   })
-  @Expose({ name: "cosigner_phone" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -236,7 +214,6 @@ export class GenerateContractDto {
     description: "Contract duration",
     example: "12 months",
   })
-  @Expose({ name: "duration" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -246,7 +223,6 @@ export class GenerateContractDto {
     description: "Contract canon value",
     example: "1500000",
   })
-  @Expose({ name: "canon" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -256,7 +232,6 @@ export class GenerateContractDto {
     description: "Contract start date",
     example: "2026-06-01",
   })
-  @Expose({ name: "start_date" })
   @EmptyToUndefined()
   @IsOptional()
   @IsDateString()
@@ -266,7 +241,6 @@ export class GenerateContractDto {
     description: "Contract end date",
     example: "2027-06-01",
   })
-  @Expose({ name: "end_date" })
   @EmptyToUndefined()
   @IsOptional()
   @IsDateString()
@@ -276,7 +250,6 @@ export class GenerateContractDto {
     description: "Property address",
     example: "Property street 99",
   })
-  @Expose({ name: "place_address" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -286,7 +259,6 @@ export class GenerateContractDto {
     description: "Property municipality",
     example: "Bogota",
   })
-  @Expose({ name: "place_municipio" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -296,7 +268,6 @@ export class GenerateContractDto {
     description: "Property registration number",
     example: "REG-001",
   })
-  @Expose({ name: "registration_number" })
   @EmptyToUndefined()
   @IsOptional()
   @IsString()
@@ -306,7 +277,6 @@ export class GenerateContractDto {
     description: "Whether the contract has been signed",
     example: false,
   })
-  @Expose({ name: "has_signature" })
   @Transform(({ value }) => value === true || value === "true")
   @IsOptional()
   @IsBoolean()
@@ -317,8 +287,7 @@ export class GenerateContractDto {
     example: 1,
     type: Number,
   })
-  @Expose({ name: "template_id" })
-  @EmptyToUndefined("template_id")
+  @EmptyToUndefined("templateId")
   @IsOptional()
   @IsNumber()
   @IsPositive()

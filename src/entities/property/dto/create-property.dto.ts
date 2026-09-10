@@ -58,7 +58,7 @@ export class CreatePropertyDto {
     enum: ["sale", "rent"],
   })
   @IsString()
-  operation_type: OPERATION_TYPE;
+  operationType: OPERATION_TYPE;
 
   @ApiProperty({
     description: "Number of bedrooms",
@@ -98,7 +98,7 @@ export class CreatePropertyDto {
   })
   @IsNumber()
   @IsOptional()
-  owner_uid?: number;
+  ownerUid?: number;
 
   @ApiPropertyOptional({
     description: "Property notes",
@@ -125,5 +125,5 @@ export class CreatePropertyDto {
   @IsString()
   @MaxLength(100)
   @IsOptional()
-  registration_number?: string;
+  registrationNumber?: string;
 }

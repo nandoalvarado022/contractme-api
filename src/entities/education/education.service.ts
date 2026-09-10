@@ -34,11 +34,12 @@ export class EducationService {
   async createEducation(
     educationData: CreateEducationDto,
   ): Promise<EducationEntity> {
-    const { uid, ...restData } = educationData;
-
     const educationToCreate = {
-      ...restData,
-      ...(uid && { user: { uid } }),
+      place: educationData.place,
+      title: educationData.title,
+      start_date: educationData.startDate,
+      end_date: educationData.endDate,
+      ...(educationData.uid && { user: { uid: educationData.uid } }),
     };
 
     const education = this.educationRepository.create(educationToCreate);
@@ -51,7 +52,16 @@ export class EducationService {
   ): Promise<EducationEntity> {
     const education = await this.getEducationById(id);
 
-    Object.assign(education, updateData);
+    Object.assign(education, {
+      ...(updateData.place !== undefined && { place: updateData.place }),
+      ...(updateData.title !== undefined && { title: updateData.title }),
+      ...(updateData.startDate !== undefined && {
+        start_date: updateData.startDate,
+      }),
+      ...(updateData.endDate !== undefined && {
+        end_date: updateData.endDate,
+      }),
+    });
 
     return this.educationRepository.save(education);
   }
@@ -59,20 +69,20 @@ export class EducationService {
   async updateEducationByUserId(
     educationData: UpdateEducationDto & { uid: number },
   ): Promise<EducationEntity[]> {
-    const { uid, ...updateData } = educationData;
+    const { uid } = educationData;
 
-    // Delete existing education records for this user
     await this.educationRepository.delete({ user: { uid } });
 
-    // Create new education record with proper user relationship
     const educationToCreate = {
-      ...updateData,
+      place: educationData.place,
+      title: educationData.title,
+      start_date: educationData.startDate,
+      end_date: educationData.endDate,
       user: { uid },
     };
     const education = this.educationRepository.create(educationToCreate);
     await this.educationRepository.save(education);
 
-    // Return all education records for this user
     return this.getEducationByUid(uid);
   }
 

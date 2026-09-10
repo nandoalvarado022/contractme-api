@@ -18,7 +18,6 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { ResponseMessage, UserId } from "src/common/decorators";
-import { CamelToSnakeCaseInterceptor } from "src/common/interceptors";
 import { FilesService } from "src/files/files.service";
 import { ContractService } from "./contract.service";
 import { GenerateContractDto } from "./dtos/generate-contract.dto";
@@ -32,7 +31,7 @@ export class ContractController {
   ) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor("file"), CamelToSnakeCaseInterceptor)
+  @UseInterceptors(FileInterceptor("file"))
   @ResponseMessage("Contrato generado exitosamente")
   @ApiOperation({
     summary: "Generate new contract",

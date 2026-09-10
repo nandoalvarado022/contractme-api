@@ -8,7 +8,7 @@ export class CreatePropertyNoteDto {
     type: Number,
   })
   @IsNumber()
-  property_id: number;
+  propertyId: number;
 
   @ApiProperty({
     description: "Note text content",

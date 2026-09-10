@@ -54,14 +54,14 @@ export class CreateUserDto {
     example: DocumentType.CC,
   })
   @IsEnum(DocumentType)
-  document_type!: DocumentType;
+  documentType!: DocumentType;
 
   @ApiProperty({
     description: "Document number",
     example: "123456789",
   })
   @IsString()
-  document_number!: string;
+  documentNumber!: string;
 
   @ApiProperty({
     description: "Profile picture URL",
@@ -78,7 +78,7 @@ export class CreateUserDto {
     required: false,
   })
   @IsOptional()
-  birth_date?: string;
+  birthDate?: string;
 
   @ApiProperty({
     description: "User role",

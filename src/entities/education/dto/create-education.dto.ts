@@ -32,7 +32,7 @@ export class CreateEducationDto {
   })
   @IsDateString()
   @IsNotEmpty()
-  start_date: string;
+  startDate: string;
 
   @ApiPropertyOptional({
     description:
@@ -41,7 +41,7 @@ export class CreateEducationDto {
   })
   @IsDateString()
   @IsOptional()
-  end_date?: string;
+  endDate?: string;
 
   @ApiPropertyOptional({
     description: "User ID associated with this education record",

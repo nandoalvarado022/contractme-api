@@ -34,11 +34,12 @@ export class ExperienceService {
   async createExperience(
     experienceData: CreateExperienceDto,
   ): Promise<ExperienceEntity> {
-    const { uid, ...restData } = experienceData;
-
     const experienceToCreate = {
-      ...restData,
-      ...(uid && { user: { uid } }),
+      company: experienceData.company,
+      position: experienceData.position,
+      start_date: experienceData.startDate,
+      end_date: experienceData.endDate,
+      ...(experienceData.uid && { user: { uid: experienceData.uid } }),
     };
 
     const experience = this.experienceRepository.create(experienceToCreate);
@@ -51,7 +52,18 @@ export class ExperienceService {
   ): Promise<ExperienceEntity> {
     const experience = await this.getExperienceById(id);
 
-    Object.assign(experience, updateData);
+    Object.assign(experience, {
+      ...(updateData.company !== undefined && { company: updateData.company }),
+      ...(updateData.position !== undefined && {
+        position: updateData.position,
+      }),
+      ...(updateData.startDate !== undefined && {
+        start_date: updateData.startDate,
+      }),
+      ...(updateData.endDate !== undefined && {
+        end_date: updateData.endDate,
+      }),
+    });
 
     return this.experienceRepository.save(experience);
   }
@@ -59,20 +71,20 @@ export class ExperienceService {
   async updateExperienceByUserId(
     experienceData: UpdateExperienceDto & { uid: number },
   ): Promise<ExperienceEntity[]> {
-    const { uid, ...updateData } = experienceData;
+    const { uid } = experienceData;
 
-    // Delete existing experience records for this user
     await this.experienceRepository.delete({ user: { uid } });
 
-    // Create new experience record with proper user relationship
     const experienceToCreate = {
-      ...updateData,
+      company: experienceData.company,
+      position: experienceData.position,
+      start_date: experienceData.startDate,
+      end_date: experienceData.endDate,
       user: { uid },
     };
     const experience = this.experienceRepository.create(experienceToCreate);
     await this.experienceRepository.save(experience);
 
-    // Return all experience records for this user
     return this.getExperienceByUid(uid);
   }
 

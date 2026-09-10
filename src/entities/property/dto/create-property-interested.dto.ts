@@ -31,5 +31,5 @@ export class CreatePropertyInterestedDto {
   })
   @IsNumber()
   @IsOptional()
-  user_id?: number;
+  userId?: number;
 }
