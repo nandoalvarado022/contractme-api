@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MailService } from "src/common/emails/mail.service";
-import { Repository } from "typeorm";
+import { DeepPartial, Repository } from "typeorm";
 import { GlobalVariablesService } from "../global-variables/global-variables.service";
 import { TRANSACTION_TYPE } from "../transactions/consts/transactions.const";
 import { TransactionsService } from "../transactions/transaction.service";
@@ -52,9 +52,9 @@ export class ContractService {
       ];
 
       const emailPayload = {
-        tennatName: generateContractDto.tennatName ?? "No especificado",
-        tennatEmail: generateContractDto.tennatEmail ?? "No especificado",
-        tennatPhone: generateContractDto.tennatPhone ?? "No especificado",
+        tenantName: generateContractDto.tenantName ?? "No especificado",
+        tenantEmail: generateContractDto.tenantEmail ?? "No especificado",
+        tenantPhone: generateContractDto.tenantPhone ?? "No especificado",
         lessorName: generateContractDto.lessorName ?? "No especificado",
         lessorEmail: generateContractDto.lessorEmail ?? "No especificado",
         lessorPhone: generateContractDto.lessorPhone ?? "No especificado",
@@ -88,13 +88,52 @@ export class ContractService {
       });
     }
 
-    const contract = this.contractsRepository.create({
-      url: url ?? undefined,
-      ...generateContractDto,
-      tenant_uid: generateContractDto.tenantUid ?? undefined,
-      lessor_uid: uid ?? undefined,
-    });
+    const contract = this.contractsRepository.create(
+      this.toContractColumns(generateContractDto, url, uid),
+    );
     return await this.contractsRepository.save(contract);
+  }
+
+  private toContractColumns(
+    dto: GenerateContractDto,
+    url: string | null,
+    uid: number,
+  ): DeepPartial<ContractEntity> {
+    return {
+      tenant_uid: dto.tenantUid ?? undefined,
+      lessor_uid: uid ?? undefined,
+      tenant_name: dto.tenantName ?? undefined,
+      tenant_email: dto.tenantEmail ?? undefined,
+      tenant_phone: dto.tenantPhone ?? undefined,
+      tenant_lastname: dto.tenantLastname ?? undefined,
+      tenant_document_type: dto.tenantDocumentType ?? undefined,
+      tenant_document: dto.tenantDocument ?? undefined,
+      tenant_address: dto.tenantAddress ?? undefined,
+      tenant_legal_representative: dto.tenantLegalRepresentative ?? undefined,
+      lessor_name: dto.lessorName ?? undefined,
+      lessor_email: dto.lessorEmail ?? undefined,
+      lessor_phone: dto.lessorPhone ?? undefined,
+      lessor_lastname: dto.lessorLastname ?? undefined,
+      lessor_document: dto.lessorDocument ?? undefined,
+      lessor_document_type: dto.lessorDocumentType ?? undefined,
+      lessor_address: dto.lessorAddress ?? undefined,
+      lessor_legal_representative: dto.lessorLegalRepresentative ?? undefined,
+      cosigner_name: dto.cosignerName ?? undefined,
+      cosigner_document: dto.cosignerDocument ?? undefined,
+      cosigner_address: dto.cosignerAddress ?? undefined,
+      cosigner_email: dto.cosignerEmail ?? undefined,
+      cosigner_phone: dto.cosignerPhone ?? undefined,
+      duration: dto.duration ?? undefined,
+      canon: dto.canon ?? undefined,
+      start_date: dto.startDate ?? undefined,
+      end_date: dto.endDate ?? undefined,
+      place_address: dto.placeAddress ?? undefined,
+      place_municipio: dto.placeMunicipio ?? undefined,
+      registration_number: dto.registrationNumber ?? undefined,
+      hasSignature: dto.hasSignature ?? undefined,
+      ct_id: dto.templateId ?? undefined,
+      url: url ?? undefined,
+    };
   }
 
   async getOneTemplate(id: number) {

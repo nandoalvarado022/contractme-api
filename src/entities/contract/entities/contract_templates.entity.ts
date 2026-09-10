@@ -1,11 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {
-  Column,
-  Entity,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ContractTemplateFieldsEntity } from "./contract_templates_fields.entity";
 import { ContractEntity } from "./contract.entity";
 import {
@@ -73,12 +67,12 @@ export class ContractTemplateEntity {
   status: StatusContract;
 
   @ApiProperty({
-    description: "Contract using this template",
-    type: () => ContractEntity,
+    description: "Contracts using this template",
+    type: () => [ContractEntity],
     required: false,
   })
-  @OneToOne(() => ContractEntity, (contract) => contract.template)
-  cid: ContractEntity;
+  @OneToMany(() => ContractEntity, (contract) => contract.template)
+  cid: ContractEntity[];
 
   @ApiProperty({
     description: "Template fields for data entry",

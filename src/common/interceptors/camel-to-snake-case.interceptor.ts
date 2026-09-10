@@ -36,7 +36,7 @@ function transformKeysToSnakeCase(obj: any): any {
   const newObj: any = {};
 
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const snakeKey = camelToSnakeCase(key);
       const value = obj[key];
 

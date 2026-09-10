@@ -18,6 +18,7 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { ResponseMessage, UserId } from "src/common/decorators";
+import { CamelToSnakeCaseInterceptor } from "src/common/interceptors";
 import { FilesService } from "src/files/files.service";
 import { ContractService } from "./contract.service";
 import { GenerateContractDto } from "./dtos/generate-contract.dto";
@@ -31,7 +32,7 @@ export class ContractController {
   ) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file"), CamelToSnakeCaseInterceptor)
   @ResponseMessage("Contrato generado exitosamente")
   @ApiOperation({
     summary: "Generate new contract",
@@ -43,32 +44,52 @@ export class ContractController {
     description: "Contract generation data with optional file upload",
     schema: {
       type: "object",
-      required: [
-        "tennatName",
-        "tennatEmail",
-        "tennatPhone",
-        "lessorName",
-        "lessorEmail",
-        "lessorPhone",
-        "hasSignature",
-        "templateId",
-      ],
       properties: {
-        tennatName: {
+        tenantUid: {
+          type: "number",
+          example: 5,
+          description: "Tenant user id when the tenant is a registered user",
+        },
+        tenantName: {
           type: "string",
           example: "John Doe",
           description: "Tenant full name",
         },
-        tennatEmail: {
+        tenantEmail: {
           type: "string",
           format: "email",
           example: "tenant@example.com",
           description: "Tenant email address",
         },
-        tennatPhone: {
+        tenantPhone: {
           type: "string",
           example: "+1234567890",
           description: "Tenant phone number",
+        },
+        tenantLastname: {
+          type: "string",
+          example: "Doe",
+          description: "Tenant last name",
+        },
+        tenantDocumentType: {
+          type: "string",
+          example: "CC",
+          description: "Tenant document type",
+        },
+        tenantDocument: {
+          type: "string",
+          example: "123456789",
+          description: "Tenant document number",
+        },
+        tenantAddress: {
+          type: "string",
+          example: "Street 123",
+          description: "Tenant address",
+        },
+        tenantLegalRepresentative: {
+          type: "string",
+          example: "Representative Name",
+          description: "Tenant legal representative",
         },
         lessorName: {
           type: "string",
@@ -85,6 +106,94 @@ export class ContractController {
           type: "string",
           example: "+0987654321",
           description: "Lessor phone number",
+        },
+        lessorLastname: {
+          type: "string",
+          example: "Smith",
+          description: "Lessor last name",
+        },
+        lessorDocument: {
+          type: "string",
+          example: "987654321",
+          description: "Lessor document number",
+        },
+        lessorDocumentType: {
+          type: "string",
+          example: "NIT",
+          description: "Lessor document type",
+        },
+        lessorAddress: {
+          type: "string",
+          example: "Main avenue 45",
+          description: "Lessor address",
+        },
+        lessorLegalRepresentative: {
+          type: "string",
+          example: "Representative Name",
+          description: "Lessor legal representative",
+        },
+        cosignerName: {
+          type: "string",
+          example: "Cosigner Name",
+          description: "Cosigner full name",
+        },
+        cosignerDocument: {
+          type: "string",
+          example: "1122334455",
+          description: "Cosigner document number",
+        },
+        cosignerAddress: {
+          type: "string",
+          example: "Cosigner street 10",
+          description: "Cosigner address",
+        },
+        cosignerEmail: {
+          type: "string",
+          format: "email",
+          example: "cosigner@example.com",
+          description: "Cosigner email address",
+        },
+        cosignerPhone: {
+          type: "string",
+          example: "+123498765",
+          description: "Cosigner phone number",
+        },
+        duration: {
+          type: "string",
+          example: "12 months",
+          description: "Contract duration",
+        },
+        canon: {
+          type: "string",
+          example: "1500000",
+          description: "Contract canon value",
+        },
+        startDate: {
+          type: "string",
+          format: "date",
+          example: "2026-06-01",
+          description: "Contract start date",
+        },
+        endDate: {
+          type: "string",
+          format: "date",
+          example: "2027-06-01",
+          description: "Contract end date",
+        },
+        placeAddress: {
+          type: "string",
+          example: "Property street 99",
+          description: "Property address",
+        },
+        placeMunicipio: {
+          type: "string",
+          example: "Bogota",
+          description: "Property municipality",
+        },
+        registrationNumber: {
+          type: "string",
+          example: "REG-001",
+          description: "Property registration number",
         },
         hasSignature: {
           type: "boolean",
@@ -112,13 +221,38 @@ export class ContractController {
         message: "Contrato generado exitosamente",
         data: {
           cid: 1,
+          tenant_uid: 5,
+          lessor_uid: 2,
           tenant_name: "John Doe",
           tenant_email: "tenant@example.com",
-          tennat_phone: "+1234567890",
+          tenant_phone: "+1234567890",
+          tenant_lastname: "Doe",
+          tenant_document_type: "CC",
+          tenant_document: "123456789",
+          tenant_address: "Street 123",
+          tenant_legal_representative: "Representative Name",
           lessor_name: "Jane Smith",
           lessor_email: "lessor@example.com",
           lessor_phone: "+0987654321",
+          lessor_lastname: "Smith",
+          lessor_document: "987654321",
+          lessor_document_type: "NIT",
+          lessor_address: "Main avenue 45",
+          lessor_legal_representative: "Representative Name",
+          cosigner_name: "Cosigner Name",
+          cosigner_document: "1122334455",
+          cosigner_address: "Cosigner street 10",
+          cosigner_email: "cosigner@example.com",
+          cosigner_phone: "+123498765",
+          duration: "12 months",
+          canon: "1500000",
+          start_date: "2026-06-01",
+          end_date: "2027-06-01",
+          place_address: "Property street 99",
+          place_municipio: "Bogota",
+          registration_number: "REG-001",
           hasSignature: false,
+          ct_id: 1,
           url: "https://cdn.example.com/contracts/contract_1.pdf",
           created_at: "2025-12-09T10:00:00.000Z",
         },

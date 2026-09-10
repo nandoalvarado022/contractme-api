@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ContractTemplateEntity } from "./contract_templates.entity";
@@ -35,9 +35,9 @@ export class ContractEntity {
   @ApiProperty({
     description: "Tenant full name",
     example: "John Doe",
-    maxLength: 30,
+    maxLength: 150,
   })
-  @Column({ nullable: true, type: "varchar", length: 30 })
+  @Column({ nullable: true, type: "varchar", length: 150 })
   tenant_name: string;
 
   @ApiProperty({
@@ -51,17 +51,52 @@ export class ContractEntity {
   @ApiProperty({
     description: "Tenant phone number",
     example: "+1234567890",
-    maxLength: 15,
+    maxLength: 30,
   })
-  @Column({ nullable: true, type: "varchar", length: 15 })
-  tennat_phone: string;
+  @Column({ nullable: true, type: "varchar", length: 30 })
+  tenant_phone: string;
+
+  @ApiProperty({
+    description: "Tenant last name",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 100 })
+  tenant_lastname?: string;
+
+  @ApiProperty({
+    description: "Tenant document type",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 20 })
+  tenant_document_type?: string;
+
+  @ApiProperty({
+    description: "Tenant document number",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 50 })
+  tenant_document?: string;
+
+  @ApiProperty({
+    description: "Tenant address",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 255 })
+  tenant_address?: string;
+
+  @ApiProperty({
+    description: "Tenant legal representative",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 150 })
+  tenant_legal_representative?: string;
 
   @ApiProperty({
     description: "Lessor (owner) full name",
     example: "Jane Smith",
-    maxLength: 30,
+    maxLength: 150,
   })
-  @Column({ nullable: true, type: "varchar", length: 30 })
+  @Column({ nullable: true, type: "varchar", length: 150 })
   lessor_name: string;
 
   @ApiProperty({
@@ -75,10 +110,129 @@ export class ContractEntity {
   @ApiProperty({
     description: "Lessor phone number",
     example: "+0987654321",
-    maxLength: 15,
+    maxLength: 30,
   })
-  @Column({ nullable: true, type: "varchar", length: 15 })
+  @Column({ nullable: true, type: "varchar", length: 30 })
   lessor_phone: string;
+
+  @ApiProperty({
+    description: "Lessor last name",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 100 })
+  lessor_lastname?: string;
+
+  @ApiProperty({
+    description: "Lessor document number",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 50 })
+  lessor_document?: string;
+
+  @ApiProperty({
+    description: "Lessor document type",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 20 })
+  lessor_document_type?: string;
+
+  @ApiProperty({
+    description: "Lessor address",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 255 })
+  lessor_address?: string;
+
+  @ApiProperty({
+    description: "Lessor legal representative",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 150 })
+  lessor_legal_representative?: string;
+
+  @ApiProperty({
+    description: "Cosigner full name",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 150 })
+  cosigner_name?: string;
+
+  @ApiProperty({
+    description: "Cosigner document number",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 50 })
+  cosigner_document?: string;
+
+  @ApiProperty({
+    description: "Cosigner address",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 255 })
+  cosigner_address?: string;
+
+  @ApiProperty({
+    description: "Cosigner email address",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 100 })
+  cosigner_email?: string;
+
+  @ApiProperty({
+    description: "Cosigner phone number",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 30 })
+  cosigner_phone?: string;
+
+  @ApiProperty({
+    description: "Contract duration",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 50 })
+  duration?: string;
+
+  @ApiProperty({
+    description: "Contract canon value",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 50 })
+  canon?: string;
+
+  @ApiProperty({
+    description: "Contract start date",
+    required: false,
+  })
+  @Column({ nullable: true, type: "date" })
+  start_date?: string;
+
+  @ApiProperty({
+    description: "Contract end date",
+    required: false,
+  })
+  @Column({ nullable: true, type: "date" })
+  end_date?: string;
+
+  @ApiProperty({
+    description: "Property address",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 255 })
+  place_address?: string;
+
+  @ApiProperty({
+    description: "Property municipality",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 100 })
+  place_municipio?: string;
+
+  @ApiProperty({
+    description: "Property registration number",
+    required: false,
+  })
+  @Column({ nullable: true, type: "varchar", length: 100 })
+  registration_number?: string;
 
   @ApiProperty({
     description: "Whether the contract has been signed",
@@ -97,10 +251,17 @@ export class ContractEntity {
   url: string;
 
   @ApiProperty({
+    description: "Contract template id (FK to contracts_templates)",
+    required: false,
+  })
+  @Column({ nullable: true, type: "int" })
+  ct_id?: number;
+
+  @ApiProperty({
     description: "Associated contract template",
     type: () => ContractTemplateEntity,
   })
-  @OneToOne(() => ContractTemplateEntity, (template) => template.cid)
+  @ManyToOne(() => ContractTemplateEntity, { nullable: true })
   @JoinColumn({ name: "ct_id" })
   template: ContractTemplateEntity;
 
