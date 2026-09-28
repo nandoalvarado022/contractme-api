@@ -1,0 +1,21 @@
+src/entities/contract/contract.service.ts
+  s_fdb94f3299e981::t_e9a15bb190591f 71-73
+  s_fdb94f3299e981::t_635787af5fde07 68-70
+  s_fdb94f3299e981::t_db2f24ded341eb 74-76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ceca6849f5ce2ec3666bdad9931b963f9c1f9d5e",
+  "prompts": {},
+  "sessions": {
+    "s_fdb94f3299e981": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "45bf9010-b4bf-4f50-836d-8829591eaa90",
+        "model": "grok-4.6"
+      },
+      "human_author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  }
+}
