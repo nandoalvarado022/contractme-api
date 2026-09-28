@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { BalanceEntity } from "./entities/balance.entity";
-import { last } from "rxjs";
 
 @Injectable()
 export class BalanceService {
@@ -16,13 +15,23 @@ export class BalanceService {
   ) {}
 
   async getBalanceByUserId(uid: number) {
-    const balance = await this.balanceRepository.findOne({
+    let balance = await this.balanceRepository.findOne({
       where: { uid },
       relations: ["lastTransactionId"],
     });
 
     if (!balance) {
-      throw new NotFoundException(`Balance not found for user with ID ${uid}`);
+      await this.createBalance(uid);
+      balance = await this.balanceRepository.findOne({
+        where: { uid },
+        relations: ["lastTransactionId"],
+      });
+
+      if (!balance) {
+        throw new NotFoundException(
+          `Balance could not be created for user with ID ${uid}`,
+        );
+      }
     }
 
     return {
