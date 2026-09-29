@@ -104,18 +104,24 @@ credentials stay and the API stops authenticating. Change it with `ALTER USER`
 inside the container instead.
 
 Fill `DB_REMOTE_*` in a local `.env` only to point the host-side typeorm CLI at
-the container. It must then mirror `MYSQL_*` on the published loopback port.
+the container. It must then mirror `MYSQL_*` on the published port.
 
 ## Ports
 
 | Service | Host | Container |
 |---|---|---|
 | `api` | `${API_BIND_ADDRESS:-127.0.0.1}:${API_HOST_PORT:-3000}` | `3000` |
-| `mysql` | `127.0.0.1:${MYSQL_HOST_PORT:-3310}` | `3306` |
+| `mysql` | `${MYSQL_BIND_ADDRESS:-0.0.0.0}:${MYSQL_HOST_PORT:-3310}` | `3306` |
 
 The API binds to loopback because a reverse proxy on the host terminates TLS
 for `api.contractme.cloud`; Nest itself serves plain HTTP. Set
 `API_BIND_ADDRESS=0.0.0.0` for a host with no proxy in front.
+
+MySQL is published on all interfaces so it is reachable from outside the host
+without an SSH tunnel. Docker writes its own iptables rules for published
+ports, so ufw/firewalld do not filter it: restrict source IPs in the cloud
+provider firewall or the `DOCKER-USER` chain. Set `MYSQL_BIND_ADDRESS=127.0.0.1`
+to go back to loopback only.
 
 MySQL is published off 3306 so it never collides with a MySQL running natively
 on the same machine, which is the case on the development machine

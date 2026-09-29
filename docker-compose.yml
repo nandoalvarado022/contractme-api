@@ -16,7 +16,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
 
     ports:
-      - "127.0.0.1:${MYSQL_HOST_PORT:-3310}:3306"
+      - "${MYSQL_BIND_ADDRESS:-0.0.0.0}:${MYSQL_HOST_PORT:-3310}:3306"
 
     volumes:
       - mysql_data:/var/lib/mysql
