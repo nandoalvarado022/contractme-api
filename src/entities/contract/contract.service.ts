@@ -68,9 +68,9 @@ export class ContractService {
       ];
 
       const emailPayload = {
-        tennatName: generateContractDto.tennatName ?? "No especificado",
-        tennatEmail: generateContractDto.tennatEmail ?? "No especificado",
-        tennatPhone: generateContractDto.tennatPhone ?? "No especificado",
+        tennatName: generateContractDto.tenantName ?? "No especificado",
+        tennatEmail: generateContractDto.tenantEmail ?? "No especificado",
+        tennatPhone: generateContractDto.tenantPhone ?? "No especificado",
         lessorName: generateContractDto.lessorName ?? "No especificado",
         lessorEmail: generateContractDto.lessorEmail ?? "No especificado",
         lessorPhone: generateContractDto.lessorPhone ?? "No especificado",

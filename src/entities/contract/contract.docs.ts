@@ -19,37 +19,17 @@ export function ApiGenerateContract() {
       description: "Contract generation data with optional file upload",
       schema: {
         type: "object",
-        required: [
-          "tennatName",
-          "tennatEmail",
-          "tennatPhone",
-          "lessorName",
-          "lessorEmail",
-          "lessorPhone",
-          "hasSignature",
-          "templateId",
-        ],
+        required: ["templateId"],
         properties: {
-          tennatName: {
-            type: "string",
-            example: "John Doe",
-            description: "Tenant full name",
-          },
-          tennatEmail: {
-            type: "string",
-            format: "email",
-            example: "tenant@example.com",
-            description: "Tenant email address",
-          },
-          tennatPhone: {
-            type: "string",
-            example: "+1234567890",
-            description: "Tenant phone number",
-          },
           lessorName: {
             type: "string",
             example: "Jane Smith",
             description: "Lessor (owner) full name",
+          },
+          lessorLastname: {
+            type: "string",
+            example: "Smith",
+            description: "Lessor last name",
           },
           lessorEmail: {
             type: "string",
@@ -61,6 +41,128 @@ export function ApiGenerateContract() {
             type: "string",
             example: "+0987654321",
             description: "Lessor phone number",
+          },
+          lessorDocumentType: {
+            type: "string",
+            example: "CC",
+            description: "Lessor document type",
+          },
+          lessorDocument: {
+            type: "string",
+            example: "1234567890",
+            description: "Lessor document number",
+          },
+          lessorAddress: {
+            type: "string",
+            example: "Calle 10 #20-30",
+            description: "Lessor address",
+          },
+          lessorLegalRepresentative: {
+            type: "string",
+            example: "Carlos Perez",
+            description: "Lessor legal representative",
+          },
+          tenantName: {
+            type: "string",
+            example: "John Doe",
+            description: "Tenant full name",
+          },
+          tenantLastname: {
+            type: "string",
+            example: "Doe",
+            description: "Tenant last name",
+          },
+          tenantEmail: {
+            type: "string",
+            format: "email",
+            example: "tenant@example.com",
+            description: "Tenant email address",
+          },
+          tenantPhone: {
+            type: "string",
+            example: "+1234567890",
+            description: "Tenant phone number",
+          },
+          tenantDocumentType: {
+            type: "string",
+            example: "CC",
+            description: "Tenant document type",
+          },
+          tenantDocument: {
+            type: "string",
+            example: "9876543210",
+            description: "Tenant document number",
+          },
+          tenantAddress: {
+            type: "string",
+            example: "Carrera 15 #8-40",
+            description: "Tenant address",
+          },
+          tenantLegalRepresentative: {
+            type: "string",
+            example: "Ana Gomez",
+            description: "Tenant legal representative",
+          },
+          cosignerName: {
+            type: "string",
+            example: "Pedro Ruiz",
+            description: "Cosigner full name",
+          },
+          cosignerDocument: {
+            type: "string",
+            example: "1122334455",
+            description: "Cosigner document number",
+          },
+          cosignerAddress: {
+            type: "string",
+            example: "Avenida 4 #12-05",
+            description: "Cosigner address",
+          },
+          cosignerEmail: {
+            type: "string",
+            format: "email",
+            example: "cosigner@example.com",
+            description: "Cosigner email address",
+          },
+          cosignerPhone: {
+            type: "string",
+            example: "+573001112233",
+            description: "Cosigner phone number",
+          },
+          duration: {
+            type: "string",
+            example: "12 meses",
+            description: "Contract duration",
+          },
+          canon: {
+            type: "number",
+            example: 1500000,
+            description: "Monthly rent (canon)",
+          },
+          startDate: {
+            type: "string",
+            example: "2026-01-01",
+            description: "Contract start date",
+          },
+          endDate: {
+            type: "string",
+            example: "2026-12-31",
+            description: "Contract end date",
+          },
+          placeAddress: {
+            type: "string",
+            example: "Calle 50 #10-20",
+            description: "Property address",
+          },
+          placeMunicipio: {
+            type: "string",
+            example: "Barranquilla",
+            description: "Property municipality",
+          },
+          registrationNumber: {
+            type: "string",
+            example: "080-123456",
+            description: "Property registration number",
           },
           hasSignature: {
             type: "boolean",
@@ -90,7 +192,7 @@ export function ApiGenerateContract() {
             cid: 1,
             tenant_name: "John Doe",
             tenant_email: "tenant@example.com",
-            tennat_phone: "+1234567890",
+            tenantPhone: "+1234567890",
             lessor_name: "Jane Smith",
             lessor_email: "lessor@example.com",
             lessor_phone: "+0987654321",

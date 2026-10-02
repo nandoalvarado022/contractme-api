@@ -37,10 +37,15 @@ export class ContractEntity {
   @ApiProperty({
     description: "Tenant phone number",
     example: "+1234567890",
-    maxLength: 15,
+    maxLength: 30,
   })
-  @Column({ nullable: false, type: "varchar", length: 15 })
-  tennat_phone: string;
+  @Column({
+    name: "tenant_phone",
+    nullable: true,
+    type: "varchar",
+    length: 30,
+  })
+  tenantPhone: string;
 
   @ApiProperty({
     description: "Lessor (owner) full name",
