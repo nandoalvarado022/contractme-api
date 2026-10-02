@@ -1,0 +1,50 @@
+src/entities/contract/entities/contract.entity.ts
+  h_15f0de19236f1a 48
+  s_753d71c8b7fb58::t_ce0a9d844fc8a1 40
+  s_753d71c8b7fb58::t_1f1af444bcc189 42-46
+  s_753d71c8b7fb58::t_9a7cbc8aaa0e0e 41
+package.json
+  s_fdb94f3299e981::t_7838c197b230e7 12-13
+src/entities/contract/contract.docs.ts
+  s_fdb94f3299e981::t_d6a1d2f618269f 22,24-65,70-75,81,86,88-89,91-121,124-125,127,129-165
+  h_15f0de19236f1a 195
+src/entities/contract/dtos/generate-contract.dto.ts
+  s_fdb94f3299e981::t_a10a890d1c6ff3 2,15-34,36-79,86-94,102-103,111,113-115,119,121-131,133-172,176,178-188,195-244,253,260-261
+  s_fdb94f3299e981::t_fcca894f5c8163 35
+  s_fdb94f3299e981::t_1bca0476997a16 190-192
+  s_fdb94f3299e981::t_fc559972e00638 100
+  s_fdb94f3299e981::t_90413c51002f8e 173
+pnpm-lock.yaml
+  h_15f0de19236f1a 1-11727
+src/entities/contract/contract.service.ts
+  h_15f0de19236f1a 71-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "46ad73b7f9726cfdc7ddcdc2edf3b0e9bd34fe27",
+  "prompts": {},
+  "humans": {
+    "h_15f0de19236f1a": {
+      "author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_753d71c8b7fb58": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "afd1135b-918b-4cbc-87f2-226cf10047a1",
+        "model": "grok-4.7"
+      },
+      "human_author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    },
+    "s_fdb94f3299e981": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "45bf9010-b4bf-4f50-836d-8829591eaa90",
+        "model": "grok-4.6"
+      },
+      "human_author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  }
+}
