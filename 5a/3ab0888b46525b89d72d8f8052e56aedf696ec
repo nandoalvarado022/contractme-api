@@ -1,0 +1,14 @@
+src/entities/property/property.service.ts
+  h_15f0de19236f1a 27-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "5a3ab0888b46525b89d72d8f8052e56aedf696ec",
+  "prompts": {},
+  "humans": {
+    "h_15f0de19236f1a": {
+      "author": "Nando (Hernando Alvarado) <nandoalvarado022@gmail.com>"
+    }
+  }
+}
