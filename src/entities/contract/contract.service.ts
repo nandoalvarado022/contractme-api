@@ -4,11 +4,13 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ContractEntity } from "./entities/contract.entity";
 import { GenerateContractDto } from "./dtos/generate-contract.dto";
+import { BalanceService } from "../balance/balance.service";
 import { TransactionsService } from "../transactions/transaction.service";
 import { TRANSACTION_TYPE } from "../transactions/consts/transactions.const";
 import { GlobalVariablesService } from "../global-variables/global-variables.service";
 import { STATUS_CONTRACT } from "./consts/contract.consts";
 import { MailService } from "src/common/emails/mail.service";
+import { FilesService } from "src/files/files.service";
 
 @Injectable()
 export class ContractService {
@@ -22,25 +24,39 @@ export class ContractService {
     private contractTemplatesRepository: Repository<ContractTemplateEntity>,
     @InjectRepository(ContractEntity)
     private contractsRepository: Repository<ContractEntity>,
+    private readonly balanceService: BalanceService,
     private readonly transactionsService: TransactionsService,
     private readonly globalVariablesService: GlobalVariablesService,
     private readonly emailService: MailService,
+    private readonly filesService: FilesService,
   ) {}
 
   async generateOne(
     generateContractDto: GenerateContractDto,
-    url: string | null,
+    file: Express.Multer.File | undefined,
     uid: number,
   ) {
-    const costVariable = await this.globalVariablesService.findByKey(
-      "contract_generation_cost",
-    );
-    const amount = parseInt(costVariable.value, 10);
+    let amount: number = 0;
+    let url: string | null = null;
+    console.log(file, generateContractDto);
+    if (generateContractDto.hasSignature) {
+      const costVariable = await this.globalVariablesService.findByKey(
+        "contract_generation_cost",
+      );
+      amount = parseInt(costVariable.value, 10);
 
-    await this.transactionsService.createTransaction({
+      await this.balanceService.deductBalance(uid, amount);
+
+      if (file) {
+        const uploadResult = await this.filesService.uploadFile(file, uid);
+        url = uploadResult.url;
+      }
+    }
+
+    await this.transactionsService.createTransactionRecord({
       uid,
       concept: "Generación de contrato",
-      amount,
+      amount: amount,
       type: TRANSACTION_TYPE.REMOVE,
     });
 
@@ -52,9 +68,9 @@ export class ContractService {
       ];
 
       const emailPayload = {
-        tennatName: generateContractDto.tennatName ?? "No especificado",
-        tennatEmail: generateContractDto.tennatEmail ?? "No especificado",
-        tennatPhone: generateContractDto.tennatPhone ?? "No especificado",
+        tennatName: generateContractDto.tenantName ?? "No especificado",
+        tennatEmail: generateContractDto.tenantEmail ?? "No especificado",
+        tennatPhone: generateContractDto.tenantPhone ?? "No especificado",
         lessorName: generateContractDto.lessorName ?? "No especificado",
         lessorEmail: generateContractDto.lessorEmail ?? "No especificado",
         lessorPhone: generateContractDto.lessorPhone ?? "No especificado",

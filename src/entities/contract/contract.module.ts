@@ -6,6 +6,7 @@ import { ContractTemplateEntity } from "./entities/contract_templates.entity";
 import { ContractEntity } from "./entities/contract.entity";
 import { ContractTemplateFieldsEntity } from "./entities/contract_templates_fields.entity";
 import { FilesModule } from "src/files/files.module";
+import { BalanceModule } from "../balance/balance.module";
 import { TransactionModule } from "../transactions/transactions.module";
 import { GlobalVariablesModule } from "../global-variables/global-variables.module";
 import { MailModule } from "src/common/emails/mail.module";
@@ -13,6 +14,7 @@ import { MailModule } from "src/common/emails/mail.module";
 @Module({
   imports: [
     FilesModule,
+    BalanceModule,
     TransactionModule,
     GlobalVariablesModule,
     MailModule,
